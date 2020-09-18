@@ -1,0 +1,51 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Inicio</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+        <link rel="stylesheet" th:href="@{/css/all.css}">
+        <link rel="stylesheet" th:href="@{/css/fontawesome.css}">
+        <link rel="stylesheet" th:href="@{/css/shard.min.css}">
+        <link rel="stylesheet" th:href="@{/css/solid.css}">
+        <link rel="stylesheet" th:href="@{/css/index.css}">
+        
+	</head>
+	<body>
+	<div class="modal-dialog text-center">
+        <div class="col-sm-8 main-section">
+            <div class="modal-content">
+                <div class="col-12 user-img">
+                    <img th:src="@{/images/user.png}"/>
+                </div>
+                <form class="col-12" th:action="@{/}" method="post">
+                    <div class="form-group" id="user-group">
+                        <input type="email" class="form-control" placeholder="Email" name="email"/>
+                    </div>
+                    <div class="form-group" id="contrasena-group">
+                        <input type="password" class="form-control" placeholder="Contraseña" name="password"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  Ingresar </button>
+                </form>
+                <div class="col-12 forgot">
+                    <a th:href="@{/addusuario}">Registrarse</a>
+                </div>
+                <div th:if="${param.error}" class="alert alert-danger" role="alert">
+		            Invalid username and password.
+		        </div>
+		        <div th:if="${param.logout}" class="alert alert-success" role="alert">
+		            You have been logged out.
+		        </div>
+            </div>
+        </div>
+    </div>
+	
+	<script th:src="@{/js/jquery.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/brands.js}"></script>
+    <script th:src="@{/js/solid.js}"></script>
+    <script th:src="@{/js/fontawesome.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    </body>
+</html>
