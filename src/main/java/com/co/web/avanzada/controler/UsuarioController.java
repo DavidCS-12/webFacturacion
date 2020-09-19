@@ -51,12 +51,13 @@ public class UsuarioController {
     	Modelos(model);
         return "add-usuario";
     }
-    @GetMapping("/admin")
+    @GetMapping("/admind")
 	public String InicioAdmin(Model model) {
 		return "index-admin";
 	}
-    @PostMapping("/add_usuario")
-    public String addusuario(@Validated Usuario usuario, BindingResult result, Model model) {
+    
+    @PostMapping("/add_usuario/{rol}")
+    public String addusuario(@Validated Usuario usuario, BindingResult result, Model model, @PathVariable("rol") String rol) {
     	if (result.hasErrors()) {
     		model.addAttribute("usuario", usuario);
     		Modelos(model);
@@ -65,7 +66,7 @@ public class UsuarioController {
         
         System.out.println("este es el usuario que vamos aregistrar"+ usuario.toString());
         
-        Authority autorizacion= authorityRepository.findByAuthority("ROLE_ADMIN");
+        Authority autorizacion= authorityRepository.findByAuthority(rol);
                
         
         Set<Authority> authority= new HashSet<Authority>();

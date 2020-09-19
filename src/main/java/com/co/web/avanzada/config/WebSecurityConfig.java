@@ -21,8 +21,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		http.authorizeRequests().antMatchers(resources).permitAll().antMatchers("/usuario/upload","/ajax/municipios","/ajax/departamentos","/ajax/subcategorias","/","/addusuario","/add_usuario").permitAll()
-				.antMatchers("/admin").hasAnyRole("ADMIN")
+		http.authorizeRequests().antMatchers(resources).permitAll().antMatchers("/usuario/upload","/ajax/municipios","/ajax/departamentos","/ajax/subcategorias","/","/addusuario","/add_usuario/{rol}").permitAll()
+				.antMatchers("/admind").hasAnyRole("ADMIN")
 				.antMatchers("/admind/addCategoria").hasAnyRole("ADMIN")
 				.antMatchers("/admind/add_categoria").hasAnyRole("ADMIN")
 				.antMatchers("/admind/editCategoria/**").hasAnyRole("ADMIN")
@@ -60,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/admind/deleteMunicipio/**").hasAnyRole("ADMIN")
 				.antMatchers("/admind/listarMunicipios").hasAnyRole("ADMIN")
 				.anyRequest().authenticated().and().formLogin()
-				.loginPage("/").permitAll().defaultSuccessUrl("/admin").failureUrl("/?error=true")
+				.loginPage("/").permitAll().defaultSuccessUrl("/admind").failureUrl("/?error=true")
 				.usernameParameter("email").passwordParameter("password");
 	}
 

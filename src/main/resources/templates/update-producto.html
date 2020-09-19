@@ -20,7 +20,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
 	    <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admin}">Inicio</a>
+	        <a class="nav-link" th:href="@{/admind}">Inicio</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
 	        <a class="nav-link" th:href="@{/admind/listarcategorias}">Lista categorías</a>
@@ -106,7 +106,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 		                       	</div>
 		                       	<div class="form-group col-md-6">
 		                            	<label  for="file-upload" class="subir btn btn-primary" >
-				    					<i class="fas fa-cloud-upload-alt" ></i> 
+				    					<i class="fas fa-cloud-upload-alt" >Subir imagen</i> 
 										</label>
 					    				<input type="file" id="file-upload" accept="image/*" class="form-control-file" style='display: none;' name="file">
 					    				<span th:if="${#fields.hasErrors('urlFoto')}" th:errors="*{urlFoto}" class="text-danger"></span>

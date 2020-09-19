@@ -25,7 +25,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
 	    <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admin}">Inicio</a>
+	        <a class="nav-link" th:href="@{/admind}">Inicio</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
 	        <a class="nav-link" th:href="@{/admind/listarcategorias}">Lista categorías</a>
@@ -65,7 +65,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
                                     <th>Descripción</th>
                                     <th>Precio compra</th>
                                     <th>Precio venta</th>
-                                    <th>Url Foto</th>
+                                    <th>Foto</th>
                                     <th>Categoria</th>
                                     <th>Proveedor</th>
                                     <th>Editar</th>
@@ -79,7 +79,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
                                     <td th:text="${pro.descripcion}"></td>
                                     <td th:text="${pro.precioCompra}"></td>
                                     <td th:text="${pro.precioVenta}"></td>
-                                    <td th:text="${pro.urlFoto}"></td>
+                                    <td>
+					                    <img id="imcargar" th:src="${pro.urlFoto}" class="img-fluid rounded mt-2" style='width: 14rem; heigth: auto;'>					                    
+                                    </td>
                                     <td th:text="${pro.categoria.nombre}"></td>
                                     <td th:text="${pro.proveedor.nombreProveedor}"></td>
                                     <td><a th:href="@{/admind/editProducto/{codigoProducto}(codigoProducto=${pro.codigoProducto})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
