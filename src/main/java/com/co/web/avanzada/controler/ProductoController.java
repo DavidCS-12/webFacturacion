@@ -11,10 +11,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.cloudinary.utils.ObjectUtils;
 import com.co.web.avanzada.config.CloudinaryConfig;
 import com.co.web.avanzada.entity.Producto;
@@ -23,7 +21,6 @@ import com.co.web.avanzada.repository.IProductoRepo;
 import com.co.web.avanzada.repository.IProveedorRepo;
 
 @Controller
-@RequestMapping("/admind")
 public class ProductoController {
 	@Autowired
 	private  IProductoRepo iProductoRepo;

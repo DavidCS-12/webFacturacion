@@ -20,25 +20,31 @@
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind}">Inicio</a>
+	        <a class="nav-link" th:href="@{/index}">Inicio</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarcategorias}">Lista categorías</a>
+	        <a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarPaises}">Lista paises</a>
+	        <a class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarDepartamentos}">Lista departamentos</a>
+	        <a class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarMunicipios}">Lista municipios</a>
+	        <a class="nav-link" th:href="@{/listarMunicipios}">Lista municipios</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarProveedor}">Lista proveedor</a>
+	        <a class="nav-link" th:href="@{/listarProveedor}">Lista proveedor</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarProducto}">Lista producto</a>
+	        <a class="nav-link" th:href="@{/listarProducto}">Lista producto</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarVendedores}">Lista vendedores</a>
 	      </li>
 	    </ul>
 	 
@@ -67,8 +73,8 @@
                                 <tr th:each="depa : ${departamentos}">
                                     <td th:text="${depa.nombre}"></td> 
                                     <td th:text="${depa.pai.nombre}"></td>
-                                    <td><a th:href="@{/admind/editDepartamento/{idDepartamento}(idDepartamento=${depa.idDepartamento})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
-                                    <td><a th:href="@{/admind/deleteDepartamento/{idDepartamento}(idDepartamento=${depa.idDepartamento})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>
+                                    <td><a th:href="@{/editDepartamento/{idDepartamento}(idDepartamento=${depa.idDepartamento})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
+                                    <td><a th:href="@{/deleteDepartamento/{idDepartamento}(idDepartamento=${depa.idDepartamento})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>
                                   
                                 </tr>
                             </tbody>
@@ -76,7 +82,7 @@
                         
                         
                     </div>      
-                    <p class="my-5"><a th:href="@{/admind/addDepartamento}"
+                    <p class="my-5"><a th:href="@{/addDepartamento}"
                      class="btn btn-primary"><i class="fas fa-user-plus ml-2"></i></a></p>
                 </div>
             </div>

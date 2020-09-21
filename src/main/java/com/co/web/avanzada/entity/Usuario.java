@@ -19,17 +19,17 @@ public class Usuario implements Serializable {
 
 	@Id
 	private int dni;
-	 
+	@Column
 	private String nombre;
-    
+	@Column
 	private String apellido;
-	
+	@Column
 	private String telefono;
-	
+	@Column
 	private String email;
-	
+	@Column
 	private String password;
-	
+	@Column
 	private String direccion;
 	
 	@ManyToOne
@@ -38,12 +38,14 @@ public class Usuario implements Serializable {
 	
 	@Column
 	private boolean enabled;
-
+	
+	@Column
+	private String rol;
+	
 	public Usuario() {
 	}
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "authorities_users", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "authority_id"))
 	private Set<Authority> authority;
-	
 }

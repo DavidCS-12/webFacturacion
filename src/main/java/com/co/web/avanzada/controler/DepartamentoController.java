@@ -9,17 +9,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.co.web.avanzada.entity.Departamento;
 import com.co.web.avanzada.repository.IDepartamentoRepo;
 import com.co.web.avanzada.repository.IMunicipioRepo;
 import com.co.web.avanzada.repository.IPaiRepo;
 
 @Controller
-/*Se hace referencia a la anotación requestMapping para asignar la url padre de todos y cada uno de los métodos
- * del controlador*/
-@RequestMapping("/admind")
 public class DepartamentoController {
 	
 	/*Con esta anotación se crea la instancia del been cada vez que el sistema lo requiera.*/

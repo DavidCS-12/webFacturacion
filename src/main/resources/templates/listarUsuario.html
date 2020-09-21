@@ -2,8 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
+    	<meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title th:text="#{listarCategorias.titulo1}"></title>
+        <title>Lista de usuarios</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="stylesheet" href="css/shards.min.css">
@@ -24,16 +25,31 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarcategorias}">Lista categorías</a>
+	        <a class="nav-link" th:href="@{/index}">Inicio</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarPaises}">Lista paises</a>
+	        <a class="nav-link" th:href="@{/listarcategorias}">Lista categorÃ­as</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarDepartamentos}">Lista departamentos</a>
+	        <a class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarMunicipios}">Lista municipios</a>
+	        <a class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarMunicipios}">Lista municipios</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarProveedor}">Lista proveedores</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarProducto}">Lista productos</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarVendedores}">Lista vendedores</a>
 	      </li>
 	    </ul>
 	    <form th:action="@{/}" method="post" class="form-inline my-2 my-lg-0">
@@ -44,9 +60,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
         <div th:switch="${usuario}" class="container my-5">
             <div class="row">
                 <div class="col-md-6">
-                    <h2 th:case="null">Lista de vendedores</h2>
+                    <h2 th:case="null">Lista de usuarios</h2>
                     <div th:case="*">
-                        <h2 class="my-5">Lista de vendedores</h2>
+                        <h2 class="my-5">Lista de usuarios</h2>
                         <table class="table table-striped table-responsive-md">
                             <thead>
                                 <tr>
@@ -55,7 +71,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
                                     <th>Apellido</th>
                                     <th>Telefono</th>
                                     <th>Email</th>
-                                    <th>Dirección</th>
+                                    <th>DirecciÃ³n</th>
                                     <th>Municipio</th>
                                     <th>Editar</th>
                                     <th>Eliminar</th>
@@ -64,20 +80,19 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
                             <tbody>
                                 <tr th:each="usu : ${usuario}">
                                     <td th:text="${usu.dni}"></td>
-                                    <td th:text="${usu.nombre}"></td>
-                                     <td th:text="${usu.apellido}"></td>
+                                    <td th:text="${usu.nombre}"></td> 
+                                    <td th:text="${usu.apellido}"></td>
                                     <td th:text="${usu.telefono}"></td>
                                     <td th:text="${usu.email}"></td>
-                                    <td th:text="${usu.descripcion}"></td>
-                                    <td th:text="${usu.municipio}"></td>
+                                    <td th:text="${usu.direccion}"></td>
+                                    <td th:text="${usu.municipio.nombre}"></td>
                                      <td><a th:href="@{/edit/{dni}(dni=${usu.dni})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
                                     <td><a th:href="@{/delete/{dni}(dni=${usu.dni})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>
-                                    
                                 </tr>
                             </tbody>
                         </table>
                     </div>      
-                    <p class="my-5"><a href="/addusuario" class="btn btn-primary"><i class="fas fa-user-plus ml-2"></i></a></p>
+                    <p class="my-5"><a th:href="@{/addusuario}" class="btn btn-primary"><i class="fas fa-user-plus ml-2"></i></a></p>
                 </div>
             </div>
         </div>

@@ -8,15 +8,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.co.web.avanzada.entity.Pai;
 import com.co.web.avanzada.repository.IPaiRepo;
 
 @Controller
-/*Se hace referencia a la anotación requestMapping para asignar la url padre de todos y cada uno de los métodos
- * del controlador*/
-@RequestMapping("/admind")
 public class PaiController {
 	private final IPaiRepo iPaiRepo;
 	

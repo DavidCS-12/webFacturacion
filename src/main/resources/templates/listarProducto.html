@@ -25,25 +25,31 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
 	    <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind}">Inicio</a>
+	        <a class="nav-link" th:href="@{/index}">Inicio</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarcategorias}">Lista categorías</a>
+	        <a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarPaises}">Lista paises</a>
+	        <a class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarDepartamentos}">Lista departamentos</a>
+	        <a class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarMunicipios}">Lista municipios</a>
+	        <a class="nav-link" th:href="@{/listarMunicipios}">Lista municipios</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarProveedor}">Lista proveedor</a>
+	        <a class="nav-link" th:href="@{/listarProveedor}">Lista proveedor</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/admind/listarProducto}">Lista producto</a>
+	        <a class="nav-link" th:href="@{/listarProducto}">Lista producto</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarVendedores}">Lista vendedores</a>
 	      </li>
 	    </ul>
 	    <form th:action="@{/}" method="post" class="form-inline my-2 my-lg-0">
@@ -84,13 +90,13 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
                                     </td>
                                     <td th:text="${pro.categoria.nombre}"></td>
                                     <td th:text="${pro.proveedor.nombreProveedor}"></td>
-                                    <td><a th:href="@{/admind/editProducto/{codigoProducto}(codigoProducto=${pro.codigoProducto})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
-                                    <td><a th:href="@{/admind/deleteProducto/{codigoProducto}(codigoProducto=${pro.codigoProducto})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>
+                                    <td><a th:href="@{/editProducto/{codigoProducto}(codigoProducto=${pro.codigoProducto})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
+                                    <td><a th:href="@{/deleteProducto/{codigoProducto}(codigoProducto=${pro.codigoProducto})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>      
-                    <p class="my-5"><a href="/admind/addproducto" class="btn btn-primary"><i class="fas fa-user-plus ml-2"></i></a></p>
+                    <p class="my-5"><a th:href="@{/addproducto}" class="btn btn-primary"><i class="fas fa-user-plus ml-2"></i></a></p>
                 </div>
             </div>
         </div>
