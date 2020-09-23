@@ -37,13 +37,13 @@ public class CategoriaController {
     	 * en la base de datos y retorna a la lista de categorías.*/
         if (result.hasErrors()) {
         	 model.addAttribute("categorias", iCategoriaRepo.findAll());
-            return "redirect:/admind/addCategoria";
+            return "redirect:/addCategoria";
         }
         /*Mediante el método .save del repositorio se guardan los datos despues de pasar todas las validaciones.*/
         iCategoriaRepo.save(categoria);
         /* Se cargan todas las categorias existentes en la base de datos al modelo para poder listarlas.*/
         model.addAttribute("categorias", iCategoriaRepo.findAll());
-        return "redirect:/admind/listarcategorias";
+        return "redirect:/listarcategorias";
     }
     
     /*En este método se recibe del formulario en donde se listan las categorías el id de la categoría a editar, este id se
@@ -66,13 +66,13 @@ public class CategoriaController {
     	if (result.hasErrors()) {
         	model.addAttribute("categorias", iCategoriaRepo.findAll());
         	categoria.setIdCategoria(idCategoria);
-            return "redirect:/admind/editCategoria";
+            return "redirect:/editCategoria";
         }
         /*De lo contrario, guardara los datos con el método .save del repositorio.*/
         iCategoriaRepo.save(categoria);
         /*Cargara los nuevos datos al modelo para que estos puedan aparecer en la lista de categorías*/
         model.addAttribute("categorias", iCategoriaRepo.findAll());
-        return "redirect:/admind/listarcategorias";
+        return "redirect:/listarcategorias";
     }
     /*En este método se recibe como parametro de la lista de categorías el id de la categoría seleccionada*/
     @GetMapping("/deleteCategoria/{idCategoria}")
@@ -85,7 +85,7 @@ public class CategoriaController {
         iCategoriaRepo.delete(categoria);
         /* Se carga una lista actualiza de categorías al modelo y se redirige a la página de listar.*/
     	model.addAttribute("categorias", iCategoriaRepo.findAll());
-    	return "redirect:/admind/listarcategorias";
+    	return "redirect:/listarcategorias";
     }
     /*Método encargado de enviar al modelo o plantilla la lista de categoría existentes en la base de datos.*/
     @GetMapping("/listarcategorias")

@@ -38,13 +38,13 @@ public class PaiController {
     	 * a retornar al formulario de agregar país de lo contrario hace la inserción de los datos 
     	 * en la base de datos y retorna a la lista de paises.*/
         if (result.hasErrors()) {
-            return "redirect:/admind/addpai";
+            return "redirect:/addpai";
         }
         /*Mediante el método .save del repositorio se guardan los datos despues de pasar todas las validaciones.*/
         iPaiRepo.save(pai);
         /* Se cargan todas los paises existentes en la base de datos al modelo para poder listarlas.*/
         model.addAttribute("pai", iPaiRepo.findAll());
-        return "redirect:/admind/listarPaises";
+        return "redirect:/listarPaises";
     }
     
     /*En este método se recibe del formulario en donde se listan los paises el id del país a editar, este id se
@@ -66,13 +66,13 @@ public class PaiController {
          * de modificación.*/
     	if (result.hasErrors()) {
         	pai.setIdPais(idPais);
-            return "redirect:/admind/updatePai";
+            return "redirect:/updatePai";
         }
     	/*De lo contrario, guardara los datos con el método .save del repositorio.*/
         iPaiRepo.save(pai);
         /*Cargara los nuevos datos al modelo para que estos puedan aparecer en la lista de pasises*/
         model.addAttribute("pai", iPaiRepo.findAll());
-        return "redirect:/admind/listarPaises";
+        return "redirect:/listarPaises";
     }
     /*En este método se recibe como parametro de la lista de paises el id del país seleccionado*/
     @GetMapping("/deletePai/{idPais}")
@@ -85,7 +85,7 @@ public class PaiController {
         iPaiRepo.delete(pai);
         /* Se carga una lista actualiza de paises al modelo y se redirige a la página de listar.*/
         model.addAttribute("pai", iPaiRepo.findAll());
-        return "redirect:/admind/listarPaises";
+        return "redirect:/listarPaises";
     }
     /*Método encargado de enviar al modelo o plantilla la lista de paises existentes en la base de datos.*/
     @GetMapping("/listarPaises")

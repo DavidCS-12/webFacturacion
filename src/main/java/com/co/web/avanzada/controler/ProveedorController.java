@@ -44,13 +44,13 @@ public class ProveedorController {
     	if (result.hasErrors()) {
     		model.addAttribute("proveedor", proveedor);
     		Modelos(model);
-            return "redirect:/admind/addproveedor";
+            return "redirect:/addproveedor";
         }
     	/*Mediante el método .save del repositorio se guardan los datos despues de pasar todas las validaciones.*/
         iProveedorRepo.save(proveedor);
         /* Se cargan todas los proveedores existentes en la base de datos al modelo para poder listarlas.*/
         model.addAttribute("proveedor", iProveedorRepo.findAll());
-        return "redirect:/admind/listarProveedor";
+        return "redirect:/listarProveedor";
     }
     
     public void Modelos(Model model) {
@@ -80,13 +80,13 @@ public class ProveedorController {
     	if (result.hasErrors()) {
     		model.addAttribute("proveedor", proveedor);
     		Modelos(model);
-            return "redirect:/admind/updateProveedor/"+nit;
+            return "redirect:/updateProveedor/"+nit;
         }
     	/*De lo contrario, guardara los datos con el método .save del repositorio.*/
         iProveedorRepo.save(proveedor);
         /*Cargara los nuevos datos al modelo para que estos puedan aparecer en la lista de proveedores*/
         model.addAttribute("proveedor", iProveedorRepo.findAll());
-        return "redirect:/admind/listarProveedor";
+        return "redirect:/listarProveedor";
     }
     /*En este método se recibe como parametro de la lista de proveedores el id del proveedor seleccionado*/
     @GetMapping("/deleteProveedor/{nit}")
@@ -99,7 +99,7 @@ public class ProveedorController {
         iProveedorRepo.delete(proveedor);
         /* Se carga una lista actualiza de proveedores al modelo y se redirige a la página de listar.*/
         model.addAttribute("proveedor", iProveedorRepo.findAll());
-        return "redirect:/admind/listarProveedor";
+        return "redirect:/listarProveedor";
     }
     /*Método encargado de enviar al modelo o plantilla la lista de proveedores existentes en la base de datos.*/
     @GetMapping("/listarProveedor")
