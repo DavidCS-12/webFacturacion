@@ -40,6 +40,7 @@ public class VendedorController {
     public String addvendedor(@Validated Usuario usuario, BindingResult result, Model model) {
     	if (result.hasErrors()) {
     		model.addAttribute("usuario", usuario);
+    		
     		Modelos(model);
             return "add-usuario-vendedor";
         }
@@ -65,8 +66,11 @@ public class VendedorController {
     }
     public void Modelos(Model model) {
         model.addAttribute("paises", iPaiRepo.findAll());
+       
+
     	model.addAttribute("municipios", new Municipio());
     	model.addAttribute("departamentos", new Departamento());
+ 
     }
     @GetMapping("/editVendedor/{dni}")
     public String editVendedor(@PathVariable("dni") int dni, Model model) {

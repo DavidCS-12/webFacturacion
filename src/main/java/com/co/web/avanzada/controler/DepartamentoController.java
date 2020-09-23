@@ -49,13 +49,13 @@ public class DepartamentoController {
     	if (result.hasErrors()) {
         	model.addAttribute("paises", iPaiRepo.findAll());
             model.addAttribute("municipios", iMunicipioRepo.findAll());
-           return "redirect:/admind/addDepartamento";
+           return "redirect:/addDepartamento";
         }
     	/*Mediante el método .save del repositorio se guardan los datos despues de pasar todas las validaciones.*/
         iDepartamentoRepo.save(departamento);
         /* Se cargan todas los departamentos existentes en la base de datos al modelo para poder listarlas.*/
         model.addAttribute("departamentos", iDepartamentoRepo.findAll());
-        return "redirect:/admind/listarDepartamentos";
+        return "redirect:/listarDepartamentos";
     }
     
     /*En este método se recibe del formulario en donde se listan los departamentos el id del departamento a editar, este id se
@@ -81,13 +81,13 @@ public class DepartamentoController {
             model.addAttribute("municipios", iMunicipioRepo.findAll());
         	model.addAttribute("departamentos", departamento);
         	departamento.setIdDepartamento(idDepartamento); 
-            return "redirect:/admind/editDepartamento";
+            return "redirect:/editDepartamento";
         }
     	/*De lo contrario, guardara los datos con el método .save del repositorio.*/
         iDepartamentoRepo.save(departamento);
         /*Cargara los nuevos datos al modelo para que estos puedan aparecer en la lista de departamentos*/
         model.addAttribute("departamentos", iDepartamentoRepo.findAll());
-        return "redirect:/admind/listarDepartamentos";
+        return "redirect:/listarDepartamentos";
     }
     /*En este método se recibe como parametro de la lista de departamentos el id del departamento seleccionado*/
     @GetMapping("/deleteDepartamento/{idDepartamento}")
@@ -100,7 +100,7 @@ public class DepartamentoController {
         iDepartamentoRepo.delete(departamento);
         /* Se carga una lista actualiza de departamentos al modelo y se redirige a la página de listar.*/
         model.addAttribute("departamentos", iDepartamentoRepo.findAll());
-        return "redirect:/admind/listarDepartamentos";
+        return "redirect:/listarDepartamentos";
     }
     /*Método encargado de enviar al modelo o plantilla la lista de departamentos existentes en la base de datos.*/
     @GetMapping("/listarDepartamentos")

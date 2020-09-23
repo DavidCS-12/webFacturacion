@@ -52,7 +52,7 @@ public class MunicipioController {
         iMunicipioRepo.save(municipio);
         /* Se cargan todas los municipios existentes en la base de datos al modelo para poder listarlas.*/
         model.addAttribute("municipio", iMunicipioRepo.findAll());
-        return "redirect:/admind/listarMunicipios";
+        return "redirect:/listarMunicipios";
     }
     
     /*En este método se recibe del formulario en donde se listan los municipios el id del municipio a editar, este id se
@@ -85,7 +85,7 @@ public class MunicipioController {
         iMunicipioRepo.save(municipio);
         /*Cargara los nuevos datos al modelo para que estos puedan aparecer en la lista de municipios*/
         model.addAttribute("municipio", iMunicipioRepo.findAll());
-        return "redirect:/admind/listarMunicipios";
+        return "redirect:/listarMunicipios";
     }
     /*En este método se recibe como parametro de la lista de departamentos el id del municipio seleccionado*/
     @GetMapping("/deleteMunicipio/{idMunicipio}")
@@ -98,7 +98,7 @@ public class MunicipioController {
         iMunicipioRepo.delete(municipio);
         /* Se carga una lista actualiza de municipios al modelo y se redirige a la página de listar.*/
         model.addAttribute("municipio", iMunicipioRepo.findAll());
-        return "redirect:/admind/listarMunicipios";
+        return "redirect:/listarMunicipios";
     }
     /*Método encargado de enviar al modelo o plantilla la lista de municipios existentes en la base de datos.*/
     @GetMapping("/listarMunicipios")

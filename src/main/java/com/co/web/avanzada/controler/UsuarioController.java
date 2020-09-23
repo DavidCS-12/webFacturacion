@@ -86,6 +86,7 @@ public class UsuarioController {
     }
     public void Modelos(Model model) {
         model.addAttribute("paises", iPaiRepo.findAll());
+        
     	model.addAttribute("municipios", new Municipio());
     	model.addAttribute("departamentos", new Departamento());
     }
