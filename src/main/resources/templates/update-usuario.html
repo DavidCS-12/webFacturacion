@@ -56,7 +56,7 @@
                         <div class="row">
                            <div class="form-group col-md-6">
                                 <label for="dni" class="col-form-label">Documento</label>
-                                <input type="text" th:field="*{dni}" class="form-control" id="dni"  placeholder="Documento" required="required">
+                                <input  type="text" th:field="*{dni}" class="form-control" id="dni"  placeholder="Documento" required="required" readonly="readonly">
                                 <span th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" class="text-danger"></span>
                             </div>
                          
