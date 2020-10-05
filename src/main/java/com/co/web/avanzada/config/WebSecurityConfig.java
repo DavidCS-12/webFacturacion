@@ -16,8 +16,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	// Necesario para evitar que la seguridad se aplique a los resources
 	// Como los css, imagenes y javascripts
-	String[] resources = new String[] { "/include/**", "/css/**", "/icons/**", "/images/**", "/js/**", "/layer/**" };
-	
+	String[] resources = new String[] {"/css/**", "/images/**","/webfonts/**","/img/**", "/js/**"};
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
@@ -60,7 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/listarMunicipios").hasAnyRole("ADMIN")
 				.anyRequest().authenticated().and().formLogin()
 				.loginPage("/").permitAll().defaultSuccessUrl("/index").failureUrl("/?error=true")
-				.usernameParameter("email").passwordParameter("password");
+				.usernameParameter("email").passwordParameter("password").and().logout().permitAll()
+				.logoutSuccessUrl("/?logout");;
 	}
 
 	BCryptPasswordEncoder bCryptPasswordEncoder;

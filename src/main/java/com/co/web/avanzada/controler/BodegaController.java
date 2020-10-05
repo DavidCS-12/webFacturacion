@@ -1,6 +1,5 @@
 package com.co.web.avanzada.controler;
 
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,21 +9,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.cloudinary.utils.ObjectUtils;
-import com.co.web.avanzada.config.CloudinaryConfig;
 import com.co.web.avanzada.entity.Bodega;
 import com.co.web.avanzada.entity.Departamento;
 import com.co.web.avanzada.entity.Municipio;
 import com.co.web.avanzada.repository.IBodegaRepo;
-import com.co.web.avanzada.repository.ICategoriaRepo;
-import com.co.web.avanzada.repository.IDepartamentoRepo;
-import com.co.web.avanzada.repository.IMunicipioRepo;
 import com.co.web.avanzada.repository.IPaiRepo;
-import com.co.web.avanzada.repository.IProveedorRepo;
 import com.co.web.avanzada.repository.IUsuarioRepo;
 
 @Controller
@@ -42,17 +33,11 @@ public class BodegaController {
 	 */
 
 	@Autowired
-	private IMunicipioRepo iMunicipioRepo;
-	@Autowired
-	private IDepartamentoRepo iDepartamentoRepo;
-	@Autowired
 	private IPaiRepo iPaiRepo;
 	@Autowired
 	private IUsuarioRepo iUsuarioRepo;
 	@Autowired
 	private IBodegaRepo iBodegaRepo;
-	@Autowired
-	private CloudinaryConfig cloudc;
 
 	/*
 	 * Método que mapea el formulario necesario para hacer el registro de una

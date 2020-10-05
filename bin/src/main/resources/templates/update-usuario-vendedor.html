@@ -15,11 +15,10 @@
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
 	
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">  
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/index}">Inicio</a>
-	      </li>
+	 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav mr-auto">
+	    <li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/index}">Inicio</a></li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
 	        <a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
 	      </li>
@@ -39,12 +38,13 @@
 	        <a class="nav-link" th:href="@{/listarProducto}">Lista productos</a>
 	      </li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarVendedores}">Lista vendedores</a>
+	        <a class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a>
 	      </li>
+	    
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarClientes}">Lista clientes</a>
+	        <a class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a>
 	      </li>
-	    </ul>
+	     </ul>
 	    <form th:action="@{/}" method="post" class="form-inline my-2 my-lg-0">
             <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
         </form>
@@ -58,7 +58,7 @@
                         <div class="row">
                            <div class="form-group col-md-6">
                                 <label for="dni" class="col-form-label">Documento</label>
-                                <input type="text" th:field="*{dni}" class="form-control" id="dni"  placeholder="Documento" required="required">
+                                <input type="text" th:field="*{dni}" class="form-control" id="dni"  placeholder="Documento" required="required" readonly="readonly">
                                 <span th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" class="text-danger"></span>
                             </div>
                          
