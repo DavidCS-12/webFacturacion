@@ -1,0 +1,85 @@
+.ml-5, .mx-5 {
+	margin-left: 30rem !important;
+}
+
+.mr-5, .mx-5 {
+	margin-right: 30rem !important;
+}
+
+.mt-5, .my-5 {
+	margin-top: 8rem !important;
+}
+
+.btn {
+	display: inline-block;
+	font-weight: 400;
+	color: #212529;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-color: #00b7ff;
+	border: 1px solid black;
+	font-size: 2rem;
+	line-height: 1.5;
+	border-radius: 3.25rem;
+	transition: color .15s ease-in-out, background-color .15s ease-in-out,
+		border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+	height: -1px;
+	width: 381px;
+	margin-top: 18 !important;
+}
+
+.btn:hover {
+	color: #fff;
+	background-color: #742d9b;
+	border-color: #0062cc;
+}
+
+.navbar {
+	position: relative;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-ms-flex-align: center;
+	align-items: center;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	padding: .5rem 1rem;
+	background-color: #d770d5 !important;
+	border-radius: 3.25rem;
+}
+
+.navbar1 {
+	position: relative;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-ms-flex-align: center;
+	align-items: center;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	padding: .5rem 4rem;
+	background-color: #00b7ff !important;
+	border-radius: 3.25rem;
+}
+
+.btn1 {
+	position: relative;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-ms-flex-align: center;
+	align-items: center;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	padding: .5rem 1rem;
+	background-color: #d770d5 !important;
+	border-radius: 3.25rem;
+	width: 386px;
+	text-align: left;
+}
