@@ -2,7 +2,9 @@ package com.co.web.avanzada.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /**
@@ -11,6 +13,8 @@ import lombok.Data;
  */
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="pais")
 @NamedQuery(name="Pai.findAll", query="SELECT p FROM Pai p")
 public class Pai implements Serializable {
@@ -22,6 +26,4 @@ public class Pai implements Serializable {
 
 	private String nombre;
 
-	public Pai() {
-	}
 }

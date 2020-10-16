@@ -1,3 +1,10 @@
+body{
+    background: url(../images/inicio.png);
+    background-size: cover;
+}
+
+
+
 .ml-5, .mx-5 {
 	margin-left: 45rem !important;
 }

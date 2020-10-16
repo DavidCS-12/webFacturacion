@@ -9,9 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.co.web.avanzada.entity.Usuario;
 
 @Repository
-public interface IUsuarioRepo extends
-CrudRepository<Usuario, Integer>{
-	public Optional<Usuario> findByEmail(String email);
+public interface IUsuarioRepo extends CrudRepository<Usuario, Integer>{
+ 	public Optional<Usuario> findByEmail(String email);
 
 	@Query("Select U from Usuario U where U.rol='CLIENTE'")
 	List<Usuario> findByRoleCliente();

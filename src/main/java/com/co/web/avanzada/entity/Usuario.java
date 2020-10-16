@@ -4,16 +4,21 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /**
  * The persistent class for the usuario database table.
  * 
  */
-@Entity
+
 @Data
-@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "usuario")
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -42,8 +47,6 @@ public class Usuario implements Serializable {
 	@Column
 	private String rol;
 	
-	public Usuario() {
-	}
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "authorities_users", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "authority_id"))

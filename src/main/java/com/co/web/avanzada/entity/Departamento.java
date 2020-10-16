@@ -1,7 +1,11 @@
 package com.co.web.avanzada.entity;
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /**
@@ -10,6 +14,9 @@ import lombok.Data;
  */
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name="departamento")
 @NamedQuery(name="Departamento.findAll", query="SELECT d FROM Departamento d")
 public class Departamento implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,7 +31,4 @@ public class Departamento implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="pais_fk")
 	private Pai pai;
-
-	public Departamento() {
-	}
 }

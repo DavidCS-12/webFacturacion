@@ -1,17 +1,23 @@
 package com.co.web.avanzada.entity;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /**
  * The persistent class for the proveedor database table.
  * 
  */
-@Entity
 @Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name="proveedor")
 @NamedQuery(name="Proveedor.findAll", query="SELECT p FROM Proveedor p")
 public class Proveedor implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -33,6 +39,4 @@ public class Proveedor implements Serializable {
 	@JoinColumn(name="municipio_fk")
 	private Municipio municipio;
 
-	public Proveedor() {
-	}
 }

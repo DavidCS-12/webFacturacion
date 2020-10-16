@@ -2,15 +2,20 @@ package com.co.web.avanzada.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /**
  * The persistent class for the producto database table.
  * 
  */
-@Entity
 @Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name="producto")
 @NamedQuery(name="Producto.findAll", query="SELECT p FROM Producto p")
 public class Producto implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -41,7 +46,4 @@ public class Producto implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="proveedor_fk")
 	private Proveedor proveedor;
-
-	public Producto() {
-	}
 }

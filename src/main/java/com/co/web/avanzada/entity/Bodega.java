@@ -2,14 +2,20 @@ package com.co.web.avanzada.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * The persistent class for the bodega database table.
  * 
  */
-@Entity
 @Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name="bodega")
 @NamedQuery(name="Bodega.findAll", query="SELECT b FROM Bodega b")
 public class Bodega implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -31,6 +37,4 @@ public class Bodega implements Serializable {
 	@JoinColumn(name="vendedor_fk")
 	private Usuario usuario;
 
-	public Bodega() {
-	}
 }

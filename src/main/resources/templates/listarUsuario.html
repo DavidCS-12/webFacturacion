@@ -11,7 +11,6 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
         <link rel="stylesheet" th:href="@{/css/brands.css}">
         <link rel="stylesheet" th:href="@{/css/fontawesome.css}">
         <link rel="stylesheet" th:href="@{/css/solid.css}">
-           <link rel="stylesheet" th:href="@{/css/listas.css}">
         <script th:src="@{/js/brands.js}"></script>
         <script th:src="@{/js/solid.js}"></script>
         <script th:src="@{/js/fontawesome.js}"></script>
@@ -24,81 +23,48 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	  </button>
 	
 	
-	 
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav mr-auto">
+	    <li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/index}">Inicio</a></li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarMunicipios}">Lista municipios</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarProveedor}">Lista proveedores</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarProducto}">Lista productos</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a>
+	      </li>
+	   	      
+	        <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a>
+	      </li>
+	      
+	      
+	    </ul>
+	    <form th:action="@{/}" method="post" class="form-inline my-2 my-lg-0">
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
+        </form>
+	  </div>
 	  
-	</nav>  
+	</nav>   
 	
 	
 	 
-	  
-	  <div class="menu-admin ml-5 mt-4 mr-5">
-		<nav class="navbar1 navbar-light bg-light">
-			<a class="navbar-brand" text=""> MENU ADMINISTRADOR</a>
-		</nav>
-		
-	
-				
-		<br>
-		<button class="btn1">
-			<a class="navbar-brand1" sec:authorize="${hasRole('ADMIN')}"
-				th:href="@{/listarcategorias}">Lista Categorías</a>
-		</button>
-		<br>
-		<button class="btn1">
-			<a class="navbar-brand1" sec:authorize="${hasRole('ADMIN')}"
-				th:href="@{/listarPaises}">Lista Paises</a>
-		</button>
-		<br>
-		<button class="btn1">
-			<a class="navbar-brand1" sec:authorize="${hasRole('ADMIN')}"
-				th:href="@{/listarDepartamentos}">Lista Departamentos</a>
-		</button>
-		<br>
-		<button class="btn1">
-			<a class="navbar-brand1" sec:authorize="${hasRole('ADMIN')}"
-				th:href="@{/listarMunicipios}">Lista Municipios</a>
-		</button>
-		<br>
-		<button class="btn1">
-			<a class="navbar-brand1" sec:authorize="${hasRole('ADMIN')}"
-				th:href="@{/listarProveedor}">Lista Proveedores</a>
-		</button>
-		<br>
-		<button class="btn1">
-			<a class="navbar-brand1" sec:authorize="${hasRole('ADMIN')}"
-				th:href="@{/listarProducto}">Lista Productos</a>
-		</button>
-		<br>
-		<button class="btn1">
-			<a class="navbar-brand1" sec:authorize="${hasRole('ADMIN')}"
-				th:href="@{/listarUsuarios}">Lista Clientes</a>
-		</button>
-		<br>
-		<button class="btn1">
-			<a class="navbar-brand1" sec:authorize="${hasRole('ADMIN')}"
-				th:href="@{/listarVendedores}">Lista Vendedores</a>
-		</button>
-		<br>
-		<button class="btn1">
-			<a class="navbar-brand1" sec:authorize="${hasRole('ADMIN')}"
-				th:href="@{/listarBodega}">Lista Bodegas</a>
-		</button>
-		<form th:action="@{/?logout}" method="post"
-			class="form-inline my-2 my-lg-0">
-			<input class="btn btn-outline-success my-2 my-sm-5" type="submit"
-				value="Salir" />
-		</form>
-			<button class="btn">
-		<a class="navbar-brand1" th:href="@{/index}"> Inicio</a>
-              
-		
-		</button>
-		  
-
-	</div>
-	  
-	    
-        <div th:switch="${usuario}" class="container my-5">
+	    <div th:switch="${usuario}" class="container my-5">
             <div class="row">
                 <div class="col-md-6">
                        <div th:case="*">
