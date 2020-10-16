@@ -59,6 +59,7 @@ public class BodegaTest {
 	    assertThat(bodega).hasFieldOrPropertyWithValue("direccion", "direccionPrueba");
 	    assertThat(bodega).hasFieldOrPropertyWithValue("idBodega", 1);
 	  }
+	
 	@Test
 	public void should_find_all_bodegas() {
 		Pai pai= new Pai(41, "Colombia");
