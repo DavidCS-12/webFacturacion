@@ -21,8 +21,10 @@ public class Inventario implements Serializable {
 
 	private int cantidad;
 
-	@Column(name="producto_fk")
-	private int productoFk;
+	//bi-directional many-to-one association to Producto
+	@ManyToOne
+	@JoinColumn(name="producto_fk")
+	private Producto producto;
 
 	//bi-directional many-to-one association to Bodega
 	@ManyToOne

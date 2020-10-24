@@ -138,7 +138,32 @@ public class ProductoController {
     
     /*Método encargado de enviar al modelo o plantilla la lista de productos existentes en la base de datos.*/
     @GetMapping("/listarProducto")
-    public String ListarDepa(Model model) {
+    public String ListarProductos(Model model) {
+    	/*Se buscan los productos mediante el método del repositorio findbyid y se cargan en la variable 'productos' 
+    	 * a la plantilla o medelo de la plantilla.*/
+    	model.addAttribute("productos", iProductoRepo.findAll());
+        return "listarProducto";
+    }
+    /*Método encargado de enviar al modelo o plantilla la lista de productos existentes en la base de datos.*/
+    @GetMapping("/ajax/listarProductoMunicipio")
+    public String ListarProductosMunicipio(Model model , @RequestParam("idMunicipio") String idCategoria) {
+    	/*Se buscan los productos mediante el método del repositorio findbyid y se cargan en la variable 'productos' 
+    	 * a la plantilla o medelo de la plantilla.*/
+    	int id = Integer.parseInt(idCategoria);
+		model.addAttribute("productos", iProductoRepo.findByMunicipio(id));
+		return "index :: categorias";
+    }
+    @GetMapping("/ajax/listarProductoCategoria")
+    public String ListarProductosCategoría(Model model, @RequestParam("idCategoria") String idCategoria) {
+    	/*Se buscan los productos mediante el método del repositorio findbyid y se cargan en la variable 'productos' 
+    	 * a la plantilla o medelo de la plantilla.*/
+    	int id = Integer.parseInt(idCategoria);
+		model.addAttribute("productos", iProductoRepo.findByCategoria(id));
+		return "index :: categorias";
+    }
+    
+    @GetMapping("/listarProductosBodega")
+    public String ListarProductosBodega(Model model) {
     	/*Se buscan los productos mediante el método del repositorio findbyid y se cargan en la variable 'productos' 
     	 * a la plantilla o medelo de la plantilla.*/
     	model.addAttribute("productos", iProductoRepo.findAll());

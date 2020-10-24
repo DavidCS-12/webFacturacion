@@ -57,16 +57,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/updateMunicipio/**").hasAnyRole("ADMIN")
 				.antMatchers("/deleteMunicipio/**").hasAnyRole("ADMIN")
 				.antMatchers("/listarMunicipios").hasAnyRole("ADMIN")
-				.antMatchers("/addbodega").hasAnyRole("ADMIN")
-				.antMatchers("/add_bodega").hasAnyRole("ADMIN")
-				.antMatchers("/editBodega/**").hasAnyRole("ADMIN")
-				.antMatchers("/updateBodega/**").hasAnyRole("ADMIN")
-				.antMatchers("/deleteBodega/**").hasAnyRole("ADMIN")
-				.antMatchers("/listarBodega").hasAnyRole("ADMIN")
+				.antMatchers("/addbodega/**").hasAnyRole("ADMIN", "VENDEDOR")
+				.antMatchers("/add_bodega").hasAnyRole("ADMIN", "VENDEDOR")
+				.antMatchers("/editBodega/**").hasAnyRole("ADMIN", "VENDEDOR")
+				.antMatchers("/updateBodega/**").hasAnyRole("ADMIN", "VENDEDOR")
+				.antMatchers("/deleteBodega/**").hasAnyRole("ADMIN", "VENDEDOR")
+				.antMatchers("/listarBodega").hasAnyRole("ADMIN", "VENDEDOR")
+				.antMatchers("/listarBodegasVendedor/**").hasAnyRole("VENDEDOR")
 				.anyRequest().authenticated().and().formLogin()
 				.loginPage("/").permitAll().defaultSuccessUrl("/index").failureUrl("/?error=true")
 				.usernameParameter("email").passwordParameter("password").and().logout().permitAll()
-				.logoutSuccessUrl("/?logout");;
+				.logoutSuccessUrl("/?logout");
 	}
 
 	BCryptPasswordEncoder bCryptPasswordEncoder;

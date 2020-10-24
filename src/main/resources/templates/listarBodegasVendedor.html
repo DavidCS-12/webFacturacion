@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Lista bodegas</title>
+<title>Lista productos</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -30,34 +30,9 @@
 		
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
-	    <li class="nav-item" sec:authorize="${hasRole('ADMIN') || hasRole('VENDEDOR')}"><a
-					class="nav-link" th:href="@{/index}">Inicio</a></li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarMunicipios}">Lista municipios</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarProveedor}">Lista proveedores</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarProducto}">Lista productos</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarVendedores}">Lista vendedores</a>
-	      </li>
-	   
-	      
+	    	<li class="nav-item" sec:authorize="${hasRole('ADMIN') || hasRole('VENDEDOR')}"><a
+					class="nav-link" th:href="@{/index}">Inicio</a>
+			</li>
 	    </ul>
 	    <form th:action="@{/}" method="post" class="form-inline my-2 my-lg-0">
             <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
@@ -81,27 +56,29 @@
                             </thead>
                             <tbody>
                                 <tr th:each="bo : ${bodegas}">
-									<td th:text="${bo.usuario.nombre}"></td>
-									<td th:text="${bo.direccion}"></td>
-									<td th:text="${bo.municipio.nombre}"></td>
-									<td>
-							 			<a
-										th:href="@{/editBodega/{idBodega}(idBodega=${bo.idBodega})}"
-										class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a>
-										<a
-										th:href="@{/deleteBodega/{idBodega}(idBodega=${bo.idBodega})}"
-										class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a>
-									</td>
+								<td th:text="${bo.usuario.nombre}"></td>
+								<td th:text="${bo.direccion}"></td>
+								<td th:text="${bo.municipio.nombre}"></td>
+								<td>
+							 		<a
+									th:href="@{/editBodega/{idBodega}(idBodega=${bo.idBodega})}"
+									class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a>
+
+
+									<a
+									th:href="@{/deleteBodega/{idBodega}(idBodega=${bo.idBodega})}"
+									class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a>
+
+								</td>
+
 								</tr>
                             </tbody>
                         </table>
                         
                         
                     </div>      
-                    <p class="my-5"><a th:href="@{/addbodega}" sec:authorize="${hasRole('ADMIN')}"
+                    <p class="my-5"><a th:href="@{/addbodega}"
                      class="btn btn-primary"><i class="fas fa-user-plus ml-2"></i></a></p>
-                    <p class="my-5"><a th:href="@{/addbodega/{email}(email=${#httpServletRequest.remoteUser})}" sec:authorize="${hasRole('VENDEDOR')}"
-                     class="btn btn-primary"><i class="fas fa-user-plus ml-2"></i></a></p> 
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Registro de Bodegas</title>
+<title>Actualización de Bodegas</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -27,26 +27,25 @@
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN') || hasRole('VENDEDOR')}"><a
 					class="nav-link" th:href="@{/index}">Inicio</a></li>
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
-					class="nav-link" th:href="@{/listarcategorias}">Lista
-						categorías</a></li>
+					class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a></li>
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
 					class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
 				</li>
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
-					class="nav-link" th:href="@{/listarDepartamentos}">Lista
-						departamentos</a></li>
+					class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
+				</li>
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
-					class="nav-link" th:href="@{/listarMunicipios}">Lista
-						municipios</a></li>
+					class="nav-link" th:href="@{/listarMunicipios}">Lista municipios</a>
+				</li>
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
-					class="nav-link" th:href="@{/listarProveedor}">Lista
-						proveedores</a></li>
+					class="nav-link" th:href="@{/listarProveedor}">Lista proveedores</a>
+				</li>
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
-					class="nav-link" th:href="@{/listarProducto}">Lista
-						proproductos</a></li>
+					class="nav-link" th:href="@{/listarProducto}">Lista proproductos</a>
+				</li>
 			</ul>
 			<form th:action="@{/}" method="post" class="form-inline my-2 my-lg-0">
 				<input class="btn btn-outline-success my-2 my-sm-0" type="submit"
@@ -57,55 +56,55 @@
 
 
 	<div class="container register">
-		<h2 class="mb-5" th:text="Agregar-Bodega"></h2>
 		<div class="row">
 			<div class="col-md-3 register-left">
 				<img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
-				<h3>Registrar</h3>
 			</div>
-			<div class="col-md-9 register-right">
+			<div class="col-md-9 register-right mt-5">
 				<h3 class="register-heading">Registrar Bodega</h3>
-				<form action="#" th:action="@{/add_bodega}" th:object="${bodega}"
+				<form th:object="${bodega}" action="#" th:action="@{/updateBodega/{idBodega}(idBodega=${bodega.idBodega})}" 
 					method="post">
 					<div class="tab-content" id="myTabContent">
-						<br> <br> <br> <br> <br>
+						<input type="text" th:field="*{usuario}" class="form-control" id="usuario" style="visibility:hidden">				
 						<div class="row">
-
-
-
-							<div class="form-group col-md-6">
-								<label for="Usuario" class="col-form-label">Vendedor</label> <select
-									th:field="*{usuario}" id="usuario" class="form-control">
+							<div class="form-group col-md-6"  sec:authorize="${hasRole('ADMIN')}">
+								<label for="Usuario" class="col-form-label">Vendedor</label> 
+								<select th:field="*{usuario}" id="usuario" class="form-control">
 									<option th:value="*{usuario.dni}" th:text="*{usuario.nombre}"
-										selected></option>
+										selected>
+									</option>
 									<option th:each="usu : ${usuarios}"
 										th:if="(${usu.dni}!=*{usuario.dni})" th:id="${usu.dni}"
-										th:value="${usu.dni}" th:text="${usu.nombre}"></option>
-
+										th:value="${usu.dni}" th:text="${usu.nombre}">
+									</option>
 								</select>
 							</div>
-
+							<div class="form-group col-md-6" sec:authorize="${hasRole('VENDEDOR')}" >
+								<label for="Usuario" class="col-form-label">Vendedor</label>
+								<input type="text" th:field="${bodega.usuario.nombre}" class="form-control" id="usuario" readonly="readonly">
+                                <span th:if="${#fields.hasErrors('usuario')}" th:errors="*{usuario.nombre}" class="text-danger"></span>
+							</div>
 							<div class="form-group col-md-6">
 								<label for="pais" class="col-form-label">País</label> <select
-									th:field="${paises}" id="pais" class="form-control">
-									
+									th:field="*{municipio.departamento.pai}" id="pais" class="form-control">
 									<option th:each="pais : ${paises}"
-									
-										th:id="${pais.idPais}" th:value="${pais.idPais}"
-										th:text="${pais.nombre}">
+										th:id="${pais.idPais}" 
+										th:value="${pais.idPais}"
+										th:text="${pais.nombre}" 
+										th:selected="${bodega.municipio.departamento.pai.idPais}">
 									</option>
 								</select>
 							</div>
 							<div class="form-group col-md-6">
 								<label for="departamento" class="col-form-label">Departamento</label>
-								<select th:field="${departamentos}" id="departamentos"
+								<select th:field="*{municipio.departamento}" id="departamentos"
 									class="form-control">
-									
 									<option th:fragment="departamentos"
 										th:each="depa : ${departamentos}"
-										
 										th:id="${depa.idDepartamento}"
-										th:value="${depa.idDepartamento}" th:text="${depa.nombre}">
+										th:value="${depa.idDepartamento}" 
+										th:text="${depa.nombre}"
+										th:selected="${bodega.municipio.departamento.idDepartamento}">
 									</option>
 								</select>
 							</div>
@@ -113,10 +112,11 @@
 								<label for="municipio" class="col-form-label">Municipio</label>
 								<select th:field="*{municipio}" id="municipios"
 									class="form-control">
-									
-									<option th:fragment="municipios" th:each="mun : ${municipios}"
-										
-										th:value="${mun.idMunicipio}" th:text="${mun.nombre}">
+									<option th:fragment="municipios" 
+										th:each="mun : ${municipios}"
+										th:value="${mun.idMunicipio}" 
+										th:text="${mun.nombre}"
+										th:selected="${bodega.municipio.idMunicipio}">
 									</option>
 								</select>
 							</div>
@@ -130,11 +130,9 @@
 									th:errors="*{direccion}" class="text-danger"></span>
 
 								<div class="col-md-6 mt-5">
-									<input type="submit" class="btnAgrgarBodega"
-										th:value="Agregar ">
+									<input type="submit" class="btn btn-primary"
+										th:value="Actualizar ">
 								</div>
-
-
 							</div>
 						</div>
 					</div>
@@ -177,12 +175,6 @@
 										"id_departamento="
 												+ $("#departamentos").val());
 							});
-		});
-		$("#locales").change(function() {
-			var selectedOption = $('#locales').val();
-			if (selectedOption != '') {
-				window.location.replace('?lang=' + selectedOption);
-			}
 		});
 	</script>
 

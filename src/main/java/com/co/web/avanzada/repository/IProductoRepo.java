@@ -11,5 +11,9 @@ import com.co.web.avanzada.entity.Producto;
 public interface IProductoRepo extends
 CrudRepository<Producto, Integer>{
 	@Query("Select P from Producto P where P.categoria.idCategoria=?1")
-	List<Producto> findByCategoria(int id_categoria);
+	List<Producto> findByCategoria(int idCategoria);
+	
+	@Query("Select P from Producto P where P.proveedor.municipio=?1")
+	List<Producto> findByMunicipio(int idMunicipio);
+	
 }

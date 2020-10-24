@@ -1,6 +1,7 @@
 package com.co.web.avanzada.controler;
 
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.co.web.avanzada.entity.Bodega;
 import com.co.web.avanzada.entity.Departamento;
 import com.co.web.avanzada.entity.Municipio;
+import com.co.web.avanzada.entity.Usuario;
 import com.co.web.avanzada.repository.IBodegaRepo;
 import com.co.web.avanzada.repository.IPaiRepo;
 import com.co.web.avanzada.repository.IUsuarioRepo;
@@ -56,6 +58,34 @@ public class BodegaController {
 		 * requerimos de el para poder hacer una inserción.
 		 */
 		model.addAttribute("usuarios", iUsuarioRepo.findByRoleVendedor());
+		/*
+		 * Se le agrega a la plantilla un modelo de paises ya que requerimos de ellos
+		 * para poder hacer una inserción.
+		 */
+		model.addAttribute("paises", iPaiRepo.findAll());
+		/*
+		 * Se le agrega a la plantilla un modelo vacio del been al que vamos a hacer una
+		 * inserción
+		 */
+		model.addAttribute("municipios", new Municipio());
+		/*
+		 * Se le agrega a la plantilla un modelo vacio del been al que vamos a hacer una
+		 * inserción
+		 */
+		model.addAttribute("departamentos", new Departamento());
+		/* Se retorna la plantilla o formulario html para el registro de una bodega */
+		return "add-bodega";
+	}
+	@GetMapping("/addbodega/{email}")
+	public String agregarBodegaVendedor(Model model, @PathVariable("email")String email) {
+		/*
+		 * Se le agrega a la plantilla un modelo vacio del been al que vamos a hacer una
+		 * inserción
+		 */
+		Bodega bodega = new Bodega();
+		bodega.setUsuario(iUsuarioRepo.findByEmail(email).get());
+		model.addAttribute("bodega", bodega);
+		
 		/*
 		 * Se le agrega a la plantilla un modelo de paises ya que requerimos de ellos
 		 * para poder hacer una inserción.
@@ -123,6 +153,7 @@ public class BodegaController {
 		Bodega bodega = iBodegaRepo.findById(idBodega).orElseThrow(() -> new IllegalArgumentException("Invalid bodega id:" + idBodega));
 		/*Carga en el modelo los datos de la bodega buscada,los vendedores, paise, municipios y departamentos disponibles para poder hacer la modificación.*/
     	model.addAttribute("bodega", bodega);
+		model.addAttribute("usuario", iUsuarioRepo.findById(bodega.getUsuario().getDni()));
 		model.addAttribute("usuarios", iUsuarioRepo.findByRoleVendedor());
 		model.addAttribute("paises", iPaiRepo.findAll());
 		model.addAttribute("municipios", new Municipio());
@@ -133,12 +164,16 @@ public class BodegaController {
 	
     /*Recibe los nuevos datos ingresados , valida que no falte ningún atributo y que todos sean los necesarios y realiza la modificación*/
 	@PostMapping("/updateBodega/{idBodega}")
-	public String updateBodega(@PathVariable("idBodega") int idBodega, @Validated Bodega bodega, BindingResult result,
-			Model model, @RequestParam("file") MultipartFile file, @RequestParam("cambioUrl") boolean cambioUrl) {
+	public String updateBodega(@PathVariable("idBodega") int idBodega, @Validated Bodega bodega, BindingResult result ,Model model) {
 		/* Si se encuentra algún error a la hora de hacer la inserción de los nuevos datos va a retornar al formulario 
          * de modificación.*/
 		if (result.hasErrors()) {
 			model.addAttribute("bodega", bodega);
+			model.addAttribute("usuario", iUsuarioRepo.findById(bodega.getUsuario().getDni()));
+			model.addAttribute("usuarios", iUsuarioRepo.findByRoleVendedor());
+			model.addAttribute("paises", iPaiRepo.findAll());
+			model.addAttribute("municipios", new Municipio());
+			model.addAttribute("departamentos", new Departamento());
 			return "update-bodega";
 		}
         /* Si se cumple o o la condición se modifica los datos cambiados en dicha bodega. */
@@ -164,10 +199,18 @@ public class BodegaController {
 
 	 /*Método encargado de enviar al modelo o plantilla la lista de bodegas existentes en la base de datos.*/
 	@GetMapping("/listarBodega")
-	public String ListarDepa(Model model) {
+	public String ListarBodega(Model model) {
 		/*Se buscan las bodegas mediante el método del repositorio findbyid y se cargan en la variable 'bodegas' 
     	 * a la plantilla o medelo de la plantilla.*/
 		model.addAttribute("bodegas", iBodegaRepo.findAll());
+		return "listarBodega";
+	}
+	@GetMapping("/listarBodegasVendedor/{email}")
+	public String ListarBodegasVendedor(Model model, @PathVariable("email") String email) {
+		/*Se buscan las bodegas mediante el método del repositorio findbyid y se cargan en la variable 'bodegas' 
+    	 * a la plantilla o medelo de la plantilla.*/
+		Optional<Usuario> usuario = iUsuarioRepo.findByEmail(email);
+		model.addAttribute("bodegas", iBodegaRepo.findByVendedor(usuario.get().getDni()));
 		return "listarBodega";
 	}
 
