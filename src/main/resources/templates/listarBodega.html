@@ -76,7 +76,9 @@
                                     <th>Vendedor</th>
 									<th>Dirección</th>
 									<th>Municipio</th>
-									<th>Acciones</th>
+									<th>Editar</th>
+									<th>Eliminar</th>
+									<th>Inventario</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -88,9 +90,16 @@
 							 			<a
 										th:href="@{/editBodega/{idBodega}(idBodega=${bo.idBodega})}"
 										class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a>
+									</td>
+									<td>
 										<a
 										th:href="@{/deleteBodega/{idBodega}(idBodega=${bo.idBodega})}"
 										class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a>
+									</td>
+									<td>
+										<a
+										th:href="@{/listarInventario/{idBodega}(idBodega=${bo.idBodega})}"
+										class="btn btn-primary">Inventario</a>
 									</td>
 								</tr>
                             </tbody>

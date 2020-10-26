@@ -87,11 +87,16 @@
 							<div class="form-group col-md-6">
 								<label for="pais" class="col-form-label">País</label> <select
 									th:field="*{municipio.departamento.pai}" id="pais" class="form-control">
+									<option th:value="${bodega.municipio.departamento.pai.idPais}" 
+										th:text="${bodega.municipio.departamento.pai.nombre}" 
+										th:selected="${bodega.municipio.departamento.pai.idPais}">
+									</option>
 									<option th:each="pais : ${paises}"
 										th:id="${pais.idPais}" 
+										th:if="${pais.idPais!=bodega.municipio.departamento.pai.idPais}"
 										th:value="${pais.idPais}"
 										th:text="${pais.nombre}" 
-										th:selected="${bodega.municipio.departamento.pai.idPais}">
+									>
 									</option>
 								</select>
 							</div>
@@ -99,12 +104,19 @@
 								<label for="departamento" class="col-form-label">Departamento</label>
 								<select th:field="*{municipio.departamento}" id="departamentos"
 									class="form-control">
+									<option th:value="${bodega.municipio.departamento.idDepartamento}" 
+										th:id="${bodega.municipio.departamento.idDepartamento}"
+										th:text="${bodega.municipio.departamento.nombre}" 
+										th:selected="${bodega.municipio.departamento.idDepartamento}"
+										>
+									</option>
 									<option th:fragment="departamentos"
 										th:each="depa : ${departamentos}"
 										th:id="${depa.idDepartamento}"
+										th:if="${depa.idDepartamento!=bodega.municipio.departamento.idDepartamento}"
 										th:value="${depa.idDepartamento}" 
 										th:text="${depa.nombre}"
-										th:selected="${bodega.municipio.departamento.idDepartamento}">
+										>
 									</option>
 								</select>
 							</div>
@@ -112,11 +124,15 @@
 								<label for="municipio" class="col-form-label">Municipio</label>
 								<select th:field="*{municipio}" id="municipios"
 									class="form-control">
+									<option th:value="${bodega.municipio.idMunicipio}" 
+										th:text="${bodega.municipio.nombre}" 
+										th:selected="${bodega.municipio.idMunicipio}">
+									</option>
 									<option th:fragment="municipios" 
 										th:each="mun : ${municipios}"
 										th:value="${mun.idMunicipio}" 
 										th:text="${mun.nombre}"
-										th:selected="${bodega.municipio.idMunicipio}">
+										th:selected="${mun.idMunicipio}==${bodega.municipio.idMunicipio}">
 									</option>
 								</select>
 							</div>
