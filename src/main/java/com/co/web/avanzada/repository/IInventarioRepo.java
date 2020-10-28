@@ -1,16 +1,13 @@
 package com.co.web.avanzada.repository;
 
-import java.util.Optional;
-
+import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-
-import com.co.web.avanzada.entity.Bodega;
+import org.springframework.stereotype.Repository;
 import com.co.web.avanzada.entity.Inventario;
-
+@Repository
 public interface IInventarioRepo extends CrudRepository<Inventario, Integer>{
 	
-	@Query("Select * from Inventario I where I.bodega.idBodega=?1")
-	Optional<Bodega> findByBodegaId(int idBodega);
-
+	@Query("Select I from Inventario I where I.bodega.idBodega=?1")
+	List<Inventario> findByBodegaId(int idBodega);
 }

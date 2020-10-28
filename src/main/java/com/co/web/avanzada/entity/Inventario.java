@@ -2,7 +2,9 @@ package com.co.web.avanzada.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /**
@@ -10,6 +12,8 @@ import lombok.Data;
  * 
  */
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @NamedQuery(name="Inventario.findAll", query="SELECT i FROM Inventario i")
 public class Inventario implements Serializable {
@@ -31,6 +35,4 @@ public class Inventario implements Serializable {
 	@JoinColumn(name="bodega_fk")
 	private Bodega bodega;
 
-	public Inventario() {
-	}
 }

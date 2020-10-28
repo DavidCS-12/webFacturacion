@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		http.authorizeRequests().antMatchers(resources).permitAll().antMatchers("/usuario/upload","/ajax/municipios","/ajax/departamentos","/ajax/subcategorias","/","/addusuario","/add_usuario").permitAll()
+		http.authorizeRequests().antMatchers(resources).permitAll().antMatchers("/usuario/upload","/ajax/productos","/ajax/municipios","/ajax/departamentos","/","/addusuario","/add_usuario").permitAll()
 				.antMatchers("/addCategoria").hasAnyRole("ADMIN")
 				.antMatchers("/add_categoria").hasAnyRole("ADMIN")
 				.antMatchers("/editCategoria/**").hasAnyRole("ADMIN")
@@ -63,7 +63,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/updateBodega/**").hasAnyRole("ADMIN", "VENDEDOR")
 				.antMatchers("/deleteBodega/**").hasAnyRole("ADMIN", "VENDEDOR")
 				.antMatchers("/listarBodega").hasAnyRole("ADMIN", "VENDEDOR")
-				.antMatchers("/listarBodegasVendedor/**").hasAnyRole("VENDEDOR")
+				.antMatchers("/listarInventario/**").hasAnyRole("VENDEDOR","ADMIN")
+				.antMatchers("/addInventario/**").hasAnyRole("VENDEDOR")
+				.antMatchers("/add_inventario/**").hasAnyRole("VENDEDOR")
+				.antMatchers("/editarInventario/**").hasAnyRole("VENDEDOR")
+				.antMatchers("/updateInventario/**").hasAnyRole("VENDEDOR")
+				.antMatchers("/eliminarInventario/**").hasAnyRole("VENDEDOR")
 				.anyRequest().authenticated().and().formLogin()
 				.loginPage("/").permitAll().defaultSuccessUrl("/index").failureUrl("/?error=true")
 				.usernameParameter("email").passwordParameter("password").and().logout().permitAll()
