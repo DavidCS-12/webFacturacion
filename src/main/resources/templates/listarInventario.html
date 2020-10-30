@@ -79,8 +79,8 @@
                                     <th>Producto</th>
 									<th>Bodega</th>
 									<th>Cantidad</th>
-									<th>Editar</th>
-									<th>Eliminar</th>
+									<th sec:authorize="${hasRole('VENDEDOR')}">Editar</th>
+									<th sec:authorize="${hasRole('VENDEDOR')}">Eliminar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -88,12 +88,12 @@
 									<td th:text="${inv.producto.nombre}"></td>
 									<td th:text="${inv.bodega.direccion}"></td>
 									<td th:text="${inv.cantidad}"></td>
-									<td>
+									<td sec:authorize="${hasRole('VENDEDOR')}">
 							 			<a
 										th:href="@{/editInventario/{idInventario}(idInventario=${inv.idInventario})}"
 										class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a>
 									</td>
-									<td>
+									<td sec:authorize="${hasRole('VENDEDOR')}">
 										<a
 										th:href="@{/deleteInventario/{idInventario}(idInventario=${inv.idInventario})}"
 										class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a>
@@ -101,7 +101,7 @@
 								</tr>
                             </tbody>
                         </table>
-                        <p class="my-5"><a th:href="@{/addInventario/{idBodega}(idBodega=${bodega.idBodega})}" sec:authorize="${hasRole('ADMIN') || hasRole('VENDEDOR')}"
+                        <p class="my-5"><a th:href="@{/addInventario/{idBodega}(idBodega=${bodega.idBodega})}" sec:authorize="${hasRole('VENDEDOR')}"
                      	class="btn btn-primary"><i class="fas fa-user-plus ml-2"></i></a></p> 
                     </div>      
                 </div>

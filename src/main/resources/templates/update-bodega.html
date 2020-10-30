@@ -46,6 +46,9 @@
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
 					class="nav-link" th:href="@{/listarProducto}">Lista proproductos</a>
 				</li>
+				<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}">
+	      			<a class="nav-link" th:href="@{/listarBodegasVendedor/{email}(email=${#httpServletRequest.remoteUser})}">Mis bodegas</a>
+	      		</li>
 			</ul>
 			<form th:action="@{/}" method="post" class="form-inline my-2 my-lg-0">
 				<input class="btn btn-outline-success my-2 my-sm-0" type="submit"
@@ -61,7 +64,7 @@
 				<img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
 			</div>
 			<div class="col-md-9 register-right mt-5">
-				<h3 class="register-heading">Registrar Bodega</h3>
+				<h3 class="register-heading">Actualizar Bodega</h3>
 				<form th:object="${bodega}" action="#" th:action="@{/updateBodega/{idBodega}(idBodega=${bodega.idBodega})}" 
 					method="post">
 					<div class="tab-content" id="myTabContent">
@@ -71,7 +74,7 @@
 								<label for="Usuario" class="col-form-label">Vendedor</label> 
 								<select th:field="*{usuario}" id="usuario" class="form-control">
 									<option th:value="*{usuario.dni}" th:text="*{usuario.nombre}"
-										selected>
+										th:selected="selected">
 									</option>
 									<option th:each="usu : ${usuarios}"
 										th:if="(${usu.dni}!=*{usuario.dni})" th:id="${usu.dni}"
@@ -87,63 +90,56 @@
 							<div class="form-group col-md-6">
 								<label for="pais" class="col-form-label">País</label> <select
 									th:field="*{municipio.departamento.pai}" id="pais" class="form-control">
-									<option th:value="${bodega.municipio.departamento.pai.idPais}" 
-										th:text="${bodega.municipio.departamento.pai.nombre}" 
-										th:selected="${bodega.municipio.departamento.pai.idPais}">
-									</option>
-									<option th:each="pais : ${paises}"
+									<option 
+										th:each="pais : ${paises}"
 										th:id="${pais.idPais}" 
-										th:if="${pais.idPais!=bodega.municipio.departamento.pai.idPais}"
 										th:value="${pais.idPais}"
-										th:text="${pais.nombre}" 
+										th:text="${pais.nombre}"
+										th:selected="${pais.idPais==bodega.municipio.departamento.pai.idPais}" 
 									>
 									</option>
 								</select>
 							</div>
 							<div class="form-group col-md-6">
-								<label for="departamento" class="col-form-label">Departamento</label>
-								<select th:field="*{municipio.departamento}" id="departamentos"
-									class="form-control">
-									<option th:value="${bodega.municipio.departamento.idDepartamento}" 
-										th:id="${bodega.municipio.departamento.idDepartamento}"
-										th:text="${bodega.municipio.departamento.nombre}" 
-										th:selected="${bodega.municipio.departamento.idDepartamento}"
-										>
-									</option>
-									<option th:fragment="departamentos"
+								<label for="departamentos" class="col-form-label">Departamento</label>
+								<select   th:field="*{municipio.departamento}" id="departamentos" class="form-control">
+									<option
+										th:fragment="departamentos" 
 										th:each="depa : ${departamentos}"
 										th:id="${depa.idDepartamento}"
-										th:if="${depa.idDepartamento!=bodega.municipio.departamento.idDepartamento}"
 										th:value="${depa.idDepartamento}" 
 										th:text="${depa.nombre}"
+										th:selected="${depa.idDepartamento==bodega.municipio.departamento.idDepartamento}"
 										>
 									</option>
 								</select>
 							</div>
 							<div class="form-group col-md-6">
-								<label for="municipio" class="col-form-label">Municipio</label>
-								<select th:field="*{municipio}" id="municipios"
+								<label for="municipios" class="col-form-label">Municipio</label>
+								<select id="municipios" name="municipio" th:field="*{municipio}" 
 									class="form-control">
-									<option th:value="${bodega.municipio.idMunicipio}" 
-										th:text="${bodega.municipio.nombre}" 
-										th:selected="${bodega.municipio.idMunicipio}">
-									</option>
-									<option th:fragment="municipios" 
+									<option th:value="''" th:text="Select"></option>
+									<option
+										th:fragment="municipios"
 										th:each="mun : ${municipios}"
 										th:value="${mun.idMunicipio}" 
 										th:text="${mun.nombre}"
-										th:selected="${mun.idMunicipio}==${bodega.municipio.idMunicipio}">
+										th:selected="${mun.idMunicipio} == *{municipio.idMunicipio}"
+										>
+										
 									</option>
 								</select>
 							</div>
 
 							<div class="form-group col-md-6">
-								<label for="descripcion" class="col-form-label"
-									th:text="Direccion"></label> <input type="text"
+								<label for="descripcion" class="col-form-label" th:text="Direccion"></label> 
+									<input type="text"
 									th:field="*{direccion}" class="form-control" id="direccion"
-									th:placeholder="Direccion" required="required"> <span
+									th:placeholder="Direccion" required="required">
+									<span
 									th:if="${#fields.hasErrors('direccion')}"
-									th:errors="*{direccion}" class="text-danger"></span>
+									th:errors="*{direccion}" class="text-danger">
+									</span>
 
 								<div class="col-md-6 mt-5">
 									<input type="submit" class="btn btn-primary"
@@ -160,7 +156,6 @@
 	</div>
 
 	<script th:src="@{/js/jquery.js}"></script>
-	<script src="js/subirImagen.js" th:src="@{/js/subirImagen.js}"></script>
 	<script th:src="@{/js/bootstrap.min.js}"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -170,18 +165,14 @@
 
 	<script th:inline="javascript">
 		$(function() {
-			$("#departamentos").load('/ajax/departamentos',
-					"id_pais=" + $("#pais").val());
-			$('#pais').on(
-					'change',
+			$("#departamentos").load('/ajax/departamentos',"id_pais=" + $("#pais").val());
+			$('#pais').on('change',
 					function() {
-						$("#departamentos").load('/ajax/departamentos',
-								"id_pais=" + $("#pais").val());
+						$("#departamentos").load('/ajax/departamentos',"id_pais=" + $("#pais").val());
 					});
 		});
 		$(function() {
-			$("#municipios").load('/ajax/municipios',
-					"id_departamento=" + $("#departamentos").val());
+			$("#municipios").load('/ajax/municipios',"id_departamento=" + $("#departamentos").val());
 			$('#departamentos')
 					.on(
 							'change',

@@ -21,7 +21,7 @@ public class DespachoPedido implements Serializable {
 	//bi-directional many-to-one association to Cliente
 	@ManyToOne
 	@JoinColumn(name="cliente_despacho_fk")
-	private Cliente cliente;
+	private Usuario cliente;
 
 	//bi-directional many-to-one association to Usuario
 	@ManyToOne
