@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		http.authorizeRequests().antMatchers(resources).permitAll().antMatchers("/usuario/upload","/ajax/productos","/ajax/municipios","/ajax/departamentos","/","/addusuario","/add_usuario").permitAll()
+		http.authorizeRequests().antMatchers(resources).permitAll().antMatchers("/usuario/upload","/ajax/productos","/ajax/municipios","/ajax/listarProductoCategoria","/listarProductosBodega","/ajax/departamentos","/","/addusuario","/add_usuario").permitAll()
 				.antMatchers("/addCategoria").hasAnyRole("ADMIN")
 				.antMatchers("/add_categoria").hasAnyRole("ADMIN")
 				.antMatchers("/editCategoria/**").hasAnyRole("ADMIN")

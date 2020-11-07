@@ -8,7 +8,6 @@
 <link rel="stylesheet" th:href="@{/css/all.css}">
 <link rel="stylesheet" th:href="@{/css/brands.css}">
 <link rel="stylesheet" th:href="@{/css/fontawesome.css}">
-<link rel="stylesheet" th:href="@{/css/shard.min.css}">
 <link rel="stylesheet" th:href="@{/css/solid.css}">
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
@@ -16,7 +15,7 @@
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">	 	
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
-	    <li class="nav-item" sec:authorize="${hasRole('ADMIN') || hasRole('VENDEDOR')}"><a
+	    <li class="nav-item" sec:authorize="${hasRole('ADMIN') || hasRole('VENDEDOR') || hasRole('CLIENTE')}"><a
 					class="nav-link" th:href="@{/index}">Inicio</a></li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
 	        <a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
@@ -48,15 +47,31 @@
 	      </li>
 	      
 	    </ul>
+	    <form th:action="@{/carroCompras}" method="post" class="form-inline my-2 my-lg-0 mr-2" sec:authorize="${hasRole('CLIENTE')}">
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Mi Carrito" />
+        </form>
 	    <form th:action="@{/}" method="post" class="form-inline my-2 my-lg-0">
             <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
         </form>
-	  </div>
 	</nav>
+	<div class="container mt-5">
+		<div class="row row-cols-1 row-cols-md-3">
+			<div class="col mb-6 mt-2"  th:each="pro : ${productos}">
+			<div class="card border-success h-100">
+			  <img th:src="${pro.urlFoto}" class="card-img-top">
+			  <div class="card-body">
+			    <h5 class="card-title" th:text="${pro.nombre}"></h5>
+			    <p class="card-text" th:text="${pro.descripcion}"></p>
+			    <a href="#" sec:authorize="${hasRole('CLIENTE')}" class="btn btn-success">Añadir al carrito</a>
+			  </div>
+			</div>
+			</div>
+		</div>
+	</div>
+	
+	
 	<script th:src="@{/js/jquery.js}"></script>
 	<script th:src="@{/js/bootstrap.min.js}"></script>
-	
-    
 </body>
 <footer> </footer>
 </html>

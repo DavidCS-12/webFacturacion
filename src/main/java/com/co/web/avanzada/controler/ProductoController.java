@@ -75,7 +75,7 @@ public class ProductoController {
         iProductoRepo.save(producto);
         /* Se cargan todas los productos existentes en la base de datos al modelo para poder listarlas.*/
         model.addAttribute("productos", iProductoRepo.findAll());
-        return "redirect:/admind/listarProducto";
+        return "redirect:/listarProducto";
     }
     
     

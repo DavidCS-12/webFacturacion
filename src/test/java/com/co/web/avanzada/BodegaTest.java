@@ -68,7 +68,7 @@ public class BodegaTest {
 		Authority authority = new Authority(Integer.toUnsignedLong(1), "ROLE VENDEDOR");
 		Set<Authority> recibirAuthority = new HashSet<>();
 		recibirAuthority.add(authority);
-	    Usuario user = new Usuario(123, "Diana", "Valencia", "31232421", "@dianaValencia", "12345", "Centro de armenia", municipio, true, "VENDEDOR", recibirAuthority);
+	    Usuario user = new Usuario(123,  "Diana", "Valencia", "31232421", "@dianaValencia", "12345", "Centro de armenia", municipio, true, "VENDEDOR", recibirAuthority);
 		
 		
 	    Bodega bodega1 = new Bodega(2, "direccionPrueba", municipio, user);

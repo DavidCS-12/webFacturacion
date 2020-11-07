@@ -22,6 +22,7 @@ import com.co.web.avanzada.repository.AuthorityRepository;
 import com.co.web.avanzada.repository.IDepartamentoRepo;
 import com.co.web.avanzada.repository.IMunicipioRepo;
 import com.co.web.avanzada.repository.IPaiRepo;
+import com.co.web.avanzada.repository.IProductoRepo;
 import com.co.web.avanzada.repository.IUsuarioRepo;
 import com.co.web.avanzada.util.Passgenerator;
 
@@ -35,6 +36,8 @@ public class UsuarioController {
 	private  IUsuarioRepo iUsuarioRepo;
 	@Autowired
 	private  IPaiRepo iPaiRepo;
+	@Autowired
+	private  IProductoRepo iProductoRepo;
 	@Autowired
 	private IDepartamentoRepo iDepartamentoRepo;
 	@Autowired
@@ -66,6 +69,7 @@ public class UsuarioController {
 	 /*Método que direcciona al inicio del menu de un administrador.*/
     @GetMapping("/index")
 	public String InicioAdmin(Model model) {
+    	model.addAttribute("productos", iProductoRepo.findByInventario());
 		return "index";
 	}
     
