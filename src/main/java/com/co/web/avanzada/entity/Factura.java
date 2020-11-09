@@ -1,8 +1,12 @@
 package com.co.web.avanzada.entity;
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /**
@@ -11,6 +15,8 @@ import lombok.Data;
  */
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @NamedQuery(name="Factura.findAll", query="SELECT f FROM Factura f")
 public class Factura implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -19,16 +25,18 @@ public class Factura implements Serializable {
 	@Column(name="id_factura")
 	private int idFactura;
 
-	private int cantidad;
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_venta")
+	private Date fechaVenta;
 
-	@Column(name="producto_fk")
-	private int productoFk;
+	@Column(name="valor_compra")
+	private double valorCompra;
+	
+	@Column(name="valor_compra_iva")
+	private double valorCompraIva;
 
-	//bi-directional many-to-one association to DetalleFactura
+	//bi-directional many-to-one association to DespachoPedido
 	@ManyToOne
-	@JoinColumn(name="detalle_factura_fk")
-	private DetalleFactura detalleFactura;
-
-	public Factura() {
-	}
+	@JoinColumn(name="despacho_pedido_fk")
+	private DespachoPedido despachoPedido;
 }

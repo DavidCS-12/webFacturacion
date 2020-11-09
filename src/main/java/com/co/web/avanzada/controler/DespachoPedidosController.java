@@ -1,7 +1,5 @@
 package com.co.web.avanzada.controler;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,10 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.cloudinary.utils.ObjectUtils;
 import com.co.web.avanzada.entity.DespachoPedido;
-import com.co.web.avanzada.entity.Producto;
 import com.co.web.avanzada.repository.IDespachoPedidosRepo;
 import com.co.web.avanzada.repository.IUsuarioRepo;
 
@@ -28,38 +23,49 @@ public class DespachoPedidosController {
 	@Autowired
 	private IDespachoPedidosRepo iDespachoPedidosRepo;
 
-    @GetMapping("/addDespachopedido/")
-    public String showSignUpForm(Model model) {
+	
+    @GetMapping("/addDespacho/{email}")
+    public String showSignUpForm(Model model, @PathVariable("email")String email) {
     	/*Se le agrega a la plantilla un modelo vacio del been al que vamos a hacer una inserción*/
-        model.addAttribute("despacho_Pedido",new DespachoPedido());
+        model.addAttribute("despacho",new DespachoPedido());
         /*Se le agrega a la plantilla un modelo de proveedores ya que requerimos de ellos para poder hacer una inserción.*/
-    	model.addAttribute("usuario", iUsuarioRepo.findAll());
+    	model.addAttribute("cliente", iUsuarioRepo.findByRoleCliente());
     	 /*Se le agrega a la plantilla un modelo de categorias ya que requerimos de ellos para poder hacer una inserción.*/
-        model.addAttribute("cliente", iUsuarioRepo.findAll());
+        model.addAttribute("vendedor", iUsuarioRepo.findByEmail(email).get());
         /*Se retorna la plantilla o formulario html para el registro del producto*/
-    	return "add-despachoPedido";
+    	return "add-despacho";
     }
     
     
     /*Se reciben y se validan todos los datos del formulario mediante las anotaciones postMapping y validated, con el blinding result se manejan los resultados
      * de la inserción de los datos.*/    
-    @PostMapping("/add_despachoPedido")
-    public String addDespachoPedido(@Validated DespachoPedido despachoPedido, BindingResult result, Model model,@RequestParam("file") MultipartFile file) {
+    @PostMapping("/add_despacho")
+    public String addDespachoPedido(@Validated DespachoPedido despachoPedido, BindingResult result, Model model) {
     	/* Si el result de blinding result encuentra algun error a la hora de insertar los datos va  
     	 * a retornar al formulario de agregar productos, de lo contrario hace la inserción de los datos 
     	 * en la base de datos y retorna a la lista de productos.*/
-        if (result.hasErrors()) {
-        	model.addAttribute("despacho_Pedido", iDespachoPedidosRepo.findAll());
-        	model.addAttribute("usuario", iUsuarioRepo.findAll());
-            model.addAttribute("cliente", iUsuarioRepo.findAll());
-
-        	return "add-despachoPedido";
+    	
+        if(result.hasErrors()) {
+        	model.addAttribute("despacho", new DespachoPedido());
+    		model.addAttribute("cliente", iUsuarioRepo.findByRoleCliente());
+    		model.addAttribute("vendedor", iUsuarioRepo.findByEmail(despachoPedido.getVendedor().getEmail()).get());
+        	return "add-despacho";
+        
         }
-    	/*Mediante el método .save del repositorio se guardan los datos despues de pasar todas las validaciones.*/
+        
+        despachoPedido.setEstado(false);
         iDespachoPedidosRepo.save(despachoPedido);
-        /* Se cargan todas los productos existentes en la base de datos al modelo para poder listarlas.*/
-        model.addAttribute("despacho_Pedido", iDespachoPedidosRepo.findAll());
-        return "redirect:/listarDespacho";
+        int idDespacho = 0;
+        for(int i = 0 ; i<iDespachoPedidosRepo.Listar().size();i++) {
+        	if(iDespachoPedidosRepo.Listar().get(i).getCliente().equals(despachoPedido.getCliente()) 
+        			&& iDespachoPedidosRepo.Listar().get(i).getVendedor().equals(despachoPedido.getVendedor()) 
+        			&& !iDespachoPedidosRepo.Listar().get(i).isEstado()) {
+        		idDespacho = iDespachoPedidosRepo.Listar().get(i).getIdDespacho();
+        	}
+        }
+        return "redirect:/addFactura/"+idDespacho;    
+    	/*Mediante el método .save del repositorio se guardan los datos despues de pasar todas las validaciones.*/
+        
     }
     
     

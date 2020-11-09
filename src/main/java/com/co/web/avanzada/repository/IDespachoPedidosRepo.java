@@ -16,4 +16,6 @@ CrudRepository<DespachoPedido, Integer>{
 	@Query ("Select d from DespachoPedido d WHERE d.idDespacho=?1")
 	List<DespachoPedido> ListarDespacho (int idDespacho);
 	
+	@Query ("Select d from DespachoPedido d")
+	List<DespachoPedido> Listar ();
 }
