@@ -10,7 +10,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import com.co.web.avanzada.entity.DespachoPedido;
 import com.co.web.avanzada.entity.Factura;
 import com.co.web.avanzada.entity.Usuario;
@@ -40,7 +39,7 @@ public class FacturaController {
 		return "add-factura";
 	} 
 	@PostMapping("/add_factura")
-	public String addProducto(@Validated Factura factura, BindingResult result, Model model) {
+	public String addFactura(@Validated Factura factura, BindingResult result, Model model) {
 		/*
 		 * Si el result de blinding result encuentra algun error a la hora de insertar
 		 * los datos va a retornar al formulario de agregar una bodega, de lo contrario
@@ -84,11 +83,26 @@ public class FacturaController {
 		}
 		return valor;
 	}
+	
+	@GetMapping("/editFactura/{idFactura}")
+	public String editFactura(@PathVariable("idFactura")int idFactura, Model model){
+		model.addAttribute("factura", iFacturaRepo.findById(idFactura).get());
+		model.addAttribute("detalles", iDetalleRepo.detalleFactura(idFactura));
+		return "mostrar-factura";
+	}
+	
+	@GetMapping("/deleteFactura/{idFactura}")
+	public String deleteFactura(@PathVariable("idFactura")int idFactura, Model model) {
+		Factura factura = iFacturaRepo.findById(idFactura).get();
+		iFacturaRepo.delete(factura);
+		iDespachoPedidosRepo.delete(factura.getDespachoPedido());
+		return "redirect:/listarFacturas/"+factura.getDespachoPedido().getVendedor().getEmail();
+	}
+	
 	@GetMapping("/listarFacturas/{email}")
 	public String ListarFacturas(Model model, @PathVariable("email") String email) {
 		Usuario vendedor = iUsuarioRepo.findByEmail(email).get(); 
 		model.addAttribute("facturas", iFacturaRepo.findByVendedor(vendedor.getDni()));
 		return "listar-facturas";
 	}
-	
 }

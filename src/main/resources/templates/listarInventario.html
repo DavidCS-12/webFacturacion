@@ -17,17 +17,9 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#navbarSupportedContent"
-			aria-controls="navbarSupportedContent" aria-expanded="false"
-			aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-		
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
-	    <li class="nav-item" sec:authorize="${hasRole('ADMIN') || hasRole('VENDEDOR')}"><a
+	    <li class="nav-item" sec:authorize="${hasRole('ADMIN') || hasRole('VENDEDOR') || hasRole('CLIENTE')}"><a
 					class="nav-link" th:href="@{/index}">Inicio</a></li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
 	        <a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
@@ -38,9 +30,7 @@
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
 	        <a class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
 	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarMunicipios}">Lista municipios</a>
-	      </li>
+	     
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
 	        <a class="nav-link" th:href="@{/listarProveedor}">Lista proveedores</a>
 	      </li>
@@ -53,15 +43,22 @@
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
 	        <a class="nav-link" th:href="@{/listarVendedores}">Lista vendedores</a>
 	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}">
-	      	<a class="nav-link" th:href="@{/listarBodegasVendedor/{email}(email=${#httpServletRequest.remoteUser})}">Mis bodegas</a>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a>
 	      </li>
-	   
-	      
+	      <li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}">
+	        <a class="nav-link" th:href="@{/listarBodegasVendedor/{email}(email=${#httpServletRequest.remoteUser})}">Mis Bodegas</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}">
+	        <a class="nav-link" th:href="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}">Historial de ventas</a>
+	      </li>
 	    </ul>
+	    <form th:action="@{/carroCompras}" method="post" class="form-inline my-2 my-lg-0 mr-2" sec:authorize="${hasRole('CLIENTE')}">
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Mi Carrito" />
+        </form>
 	    <form th:action="@{/}" method="post" class="form-inline my-2 my-lg-0">
             <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
-        </form>
+        </form>	    
 	  </div>
 	</nav>
 

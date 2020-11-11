@@ -16,6 +16,6 @@ CrudRepository<Producto, Integer>{
 	@Query("Select P from Producto P , Inventario I where I.producto.codigoProducto= P.codigoProducto and P.proveedor.municipio=?1")
 	List<Producto> findByMunicipio(int idMunicipio);
 	
-	@Query("Select P from Producto P, Inventario I where I.producto.codigoProducto=P.codigoProducto")
+	@Query("Select P from Producto P, Inventario I where I.producto.codigoProducto=P.codigoProducto and I.cantidad>0")
 	List<Producto> findByInventario();
 }

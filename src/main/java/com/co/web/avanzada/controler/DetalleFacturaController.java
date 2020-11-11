@@ -1,5 +1,7 @@
 package com.co.web.avanzada.controler;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.co.web.avanzada.entity.DetalleFactura;
-import com.co.web.avanzada.repository.IDespachoPedidosRepo;
+import com.co.web.avanzada.entity.Factura;
+import com.co.web.avanzada.entity.Inventario;
 import com.co.web.avanzada.repository.IDetalleFacturaRepo;
+import com.co.web.avanzada.repository.IFacturaRepo;
+import com.co.web.avanzada.repository.IInventarioRepo;
 
 @Controller
 public class DetalleFacturaController {
@@ -21,25 +26,32 @@ public class DetalleFacturaController {
 	@Autowired
 	private IDetalleFacturaRepo iDetalleFacturaRepo;
 	@Autowired
-	private IDespachoPedidosRepo iDespachoPedidosRepo;
-
-	@GetMapping("/addDetalleFactura/")
-	public String showSignUpForm(Model model) {
+	private IFacturaRepo iFacturaRepo;
+	@Autowired
+	private IInventarioRepo iInventarioRepo;
+	
+	
+	@GetMapping("/addDetalle/{idFactura}")
+	public String showSignUpForm(Model model, @PathVariable("idFactura")int idFactura) {
+		Factura factura = iFacturaRepo.findById(idFactura).get();
+		
 		/*
 		 * Se le agrega a la plantilla un modelo vacio del been al que vamos a hacer una
 		 * inserción
 		 */
-		model.addAttribute("detalle_factura", new DetalleFactura());
+		model.addAttribute("detalle", new DetalleFactura());
 		/*
 		 * Se le agrega a la plantilla un modelo de detalle factura ya que requerimos de
 		 * ellos para poder hacer una inserción.
 		 */
-		model.addAttribute("despacho_Pedido", iDespachoPedidosRepo.findAll());
+		model.addAttribute("factura", factura);
+		
+		model.addAttribute("productos", iInventarioRepo.findByBodegaVendedor(factura.getDespachoPedido().getVendedor().getDni()));
 		/*
 		 * Se retorna la plantilla o formulario html para el registro del detalle
 		 * factura
 		 */
-		return "add-detalleFactura";
+		return "add-detalle";
 	}
 
 	/*
@@ -47,31 +59,56 @@ public class DetalleFacturaController {
 	 * anotaciones postMapping y validated, con el blinding result se manejan los
 	 * resultados de la inserción de los datos.
 	 */
-	@PostMapping("/add_detalleFactura")
-	public String addDetalleFactura(@Validated DetalleFactura detalleFactura, BindingResult result, Model model,
-			@RequestParam("file") MultipartFile file) {
+	@PostMapping("/add_detalle")
+	public String addDetalleFactura(@Validated DetalleFactura detalleFactura, BindingResult result, Model model) {
 		/*
 		 * Si el result de blinding result encuentra algun error a la hora de insertar
 		 * los datos va a retornar al formulario de agregar un detalle factura, de lo
 		 * contrario hace la inserción de los datos en la base de datos y retorna a la
 		 * lista de detalle facturas.
 		 */
-		if (result.hasErrors()) {
-			model.addAttribute("detalle_facura", iDetalleFacturaRepo.findAll());
-			model.addAttribute("despacho_Pedido", iDespachoPedidosRepo.findAll());
-			return "add-detalleFactura";
+		System.out.println("cantidad: "+detalleFactura.getCantidad());
+		Factura factura = detalleFactura.getFactura();
+		boolean respuesta = false;
+		List<Inventario> inventarios = iInventarioRepo.findByBodegaVendedor(factura.getDespachoPedido().getVendedor().getDni());
+		int cantidad=0;
+		for(int i=0;i<inventarios.size();i++) {
+			if(inventarios.get(i).getProducto()==detalleFactura.getProducto() && detalleFactura.getCantidad()<inventarios.get(i).getCantidad()) {
+				cantidad = inventarios.get(i).getCantidad()-detalleFactura.getCantidad();
+				inventarios.get(i).setCantidad(cantidad);
+				iInventarioRepo.save(inventarios.get(i));
+				respuesta = true;
+				break;
+			}
 		}
+		
+		if (result.hasErrors()) {
+			model.addAttribute("detalle", new DetalleFactura());
+			model.addAttribute("factura", factura.getIdFactura());
+			model.addAttribute("productos", inventarios);
+			return "redirect:/addDetalle/"+factura.getIdFactura();
+		}
+		if(respuesta==false) {
+			model.addAttribute("detalle", new DetalleFactura());
+			model.addAttribute("factura", factura.getIdFactura());
+			model.addAttribute("productos", inventarios);
+			return "redirect:/addDetalle/"+factura.getIdFactura();
+		}
+		
 		/*
 		 * Mediante el método .save del repositorio se guardan los datos despues de
 		 * pasar todas las validaciones.
 		 */
 		iDetalleFacturaRepo.save(detalleFactura);
-		/*
-		 * Se cargan todas los productos existentes en la base de datos al modelo para
-		 * poder listarlas.
-		 */
-		model.addAttribute("detalle_factura", iDetalleFacturaRepo.findAll());
-		return "redirect:/listarDetalleFactura";
+		double precioSinIva=detalleFactura.getCantidad()*detalleFactura.getProducto().getPrecioCompra();
+		double precioIva=detalleFactura.getCantidad()*detalleFactura.getProducto().getPrecioVenta();
+		double valorSinIva = detalleFactura.getFactura().getValorCompra()+precioSinIva; 
+		double valorIva = detalleFactura.getFactura().getValorCompra()+precioIva;
+		factura.setValorCompra(valorSinIva);
+		factura.setValorCompraIva(valorIva);
+		iFacturaRepo.save(factura);
+		
+		return "redirect:/editFactura/"+detalleFactura.getFactura().getIdFactura();
 	}
 
 	/*
@@ -79,8 +116,8 @@ public class DetalleFacturaController {
 	 * id del producto a editar, este id se se busca en la base de datos y se carga
 	 * su información en el modelo o formulario de modificación del producto.
 	 */
-	@GetMapping("/editDetalleFactura/{idDetalleFactura}")
-	public String showUpdateForm(@PathVariable("idDetalleFactura") int idDetalleFactura, Model model) {
+	@GetMapping("/editDetalle/{idDetalle}")
+	public String showUpdateForm(@PathVariable("idDetalle") int idDetalleFactura, Model model) {
 		/*
 		 * En esta parte se crea un bean de tipo producto y se le asigna el bean de la
 		 * busqueda realizada a la base de datos mediante el método del repositorio
@@ -92,27 +129,26 @@ public class DetalleFacturaController {
 		 * Carga en el modelo los datos del producto buscado,los proveedores y
 		 * categorias disponibles para poder hacer la modificación.
 		 */
-		model.addAttribute("detalle_factura", detalleFactura);
-		model.addAttribute("despacho_Pedido", iDespachoPedidosRepo.findAll());
-		return "update-detalleFactura";
+		model.addAttribute("detalle", detalleFactura);
+		model.addAttribute("productos", iInventarioRepo.findByBodegaVendedor(detalleFactura.getFactura().getDespachoPedido().getVendedor().getDni()));
+		return "update-detalle";
 	}
 
 	/*
 	 * Recibe los nuevos datos ingresados , valida que no falte ningún atributo y
 	 * que todos sean los necesarios y realiza la modificación
 	 */
-	@PostMapping("/updateDetalleFactura/{idDetalleFactura}")
-	public String updateDetalleFactura(@PathVariable("idDetalleFactura") int idDetalleFactura,
-			@Validated DetalleFactura detalleFactura, BindingResult result, Model model,
-			@RequestParam("file") MultipartFile file, @RequestParam("cambioUrl") boolean cambioUrl) {
+	@PostMapping("/updateDetalle/{idDetalle}")
+	public String updateDetalleFactura(@PathVariable("idDetalle") int idDetalleFactura,
+			@Validated DetalleFactura detalleFactura, BindingResult result, Model model) {
 		/*
 		 * Si se encuentra algún error a la hora de hacer la inserción de los nuevos
 		 * datos va a retornar al formulario de modificación.
 		 */
 		if (result.hasErrors()) {
-			model.addAttribute("detalle_factura", iDetalleFacturaRepo.findAll());
-			model.addAttribute("despacho_Pedido", iDespachoPedidosRepo.findAll());
-			return "update-detalleFactura";
+			model.addAttribute("detalle", detalleFactura);
+			model.addAttribute("productos", iInventarioRepo.findByBodegaVendedor(detalleFactura.getFactura().getDespachoPedido().getVendedor().getDni()));
+			return "update-detalle";
 		}
 
 		/*
@@ -124,16 +160,17 @@ public class DetalleFacturaController {
 		 * Cargara los nuevos datos al modelo para que estos puedan aparecer en la lista
 		 * de productos
 		 */
-		model.addAttribute("detalle_factura", iDetalleFacturaRepo.findAll());
-		return "redirect:/listarDetalleFactura";
+		model.addAttribute("detalle", detalleFactura);
+		model.addAttribute("productos", iInventarioRepo.findByBodegaVendedor(detalleFactura.getFactura().getDespachoPedido().getVendedor().getDni()));
+		return "redirect:/editFactura/"+detalleFactura.getFactura().getIdFactura();
 	}
 
 	/*
 	 * En este método se recibe como parametro de la lista de productos el id del
 	 * producto seleccionado
 	 */
-	@GetMapping("/deleteDetalleFactura/{idDetalleFactura}")
-	public String deleteDetalleFactura(@PathVariable("idDetalleFactura") int idDetalleFactura, Model model) {
+	@GetMapping("/deleteDetalle/{idDetalle}")
+	public String deleteDetalleFactura(@PathVariable("idDetalle") int idDetalleFactura, Model model) {
 		/*
 		 * Se instancia un bean tipo producto y se le asigna los valores obtenidos por
 		 * el método del repositorio findById el cual va a buscar el producto dado el id
@@ -150,8 +187,9 @@ public class DetalleFacturaController {
 		 * Se carga una lista actualiza de productos al modelo y se redirige a la página
 		 * de listar.
 		 */
-		model.addAttribute("detalle_factura", iDetalleFacturaRepo.findAll());
-		return "redirect:/listarDetalleFactura";
+		model.addAttribute("detalle", detalleFactura);
+		model.addAttribute("productos", iInventarioRepo.findByBodegaVendedor(detalleFactura.getFactura().getDespachoPedido().getVendedor().getDni()));
+		return "redirect:/editFactura/"+detalleFactura.getFactura().getIdFactura();
 	}
 
 	/*
