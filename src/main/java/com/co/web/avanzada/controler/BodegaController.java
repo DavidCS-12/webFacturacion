@@ -172,7 +172,7 @@ public class BodegaController {
 			model.addAttribute("paises", iPaiRepo.findAll());
 			model.addAttribute("municipios", new Municipio());
 			model.addAttribute("departamentos", new Departamento());
-			return "update-bodega";
+			return "redirect:/editBodega/"+idBodega;
 		}
         /* Si se cumple o o la condición se modifica los datos cambiados en dicha bodega. */
 		iBodegaRepo.save(bodega);

@@ -22,7 +22,6 @@ public class DespachoPedidosController {
 	private IUsuarioRepo iUsuarioRepo;
 	@Autowired
 	private IDespachoPedidosRepo iDespachoPedidosRepo;
-
 	
     @GetMapping("/addDespacho/{email}")
     public String showSignUpForm(Model model, @PathVariable("email")String email) {
@@ -49,7 +48,7 @@ public class DespachoPedidosController {
         	model.addAttribute("despacho", new DespachoPedido());
     		model.addAttribute("cliente", iUsuarioRepo.findByRoleCliente());
     		model.addAttribute("vendedor", iUsuarioRepo.findByEmail(despachoPedido.getVendedor().getEmail()).get());
-        	return "add-despacho";
+        	return "redirect:/addDespacho/"+despachoPedido.getIdDespacho();
         
         }
         
@@ -71,40 +70,40 @@ public class DespachoPedidosController {
     
     /*En este método se recibe del formulario en donde se listan los productos el id del producto a editar, este id se
      * se busca en la base de datos y se carga su información en el modelo o formulario de modificación del producto.*/
-    @GetMapping("/editDespachoPedido/{idDespacho}")
+    @GetMapping("/editDespacho/{idDespacho}")
     public String showUpdateForm(@PathVariable("idDespacho") int idDespacho, Model model) {
     	/*En esta parte se crea un bean de tipo producto y se le asigna el bean de la busqueda realizada a la base de datos
     	 * mediante el método del repositorio findbyid. Si no encuentra el producto arroja el
     	 * mensaje de error.*/
     	DespachoPedido despachoPedido = iDespachoPedidosRepo.findById(idDespacho).orElseThrow(() -> new IllegalArgumentException("Invalid despacho_pedido id:" + idDespacho));
     	/*Carga en el modelo los datos del producto buscado,los proveedores y categorias disponibles para poder hacer la modificación.*/
-    	model.addAttribute("producto", despachoPedido);
-    	model.addAttribute("usuario", iUsuarioRepo.findAll());
-        model.addAttribute("cliente", iUsuarioRepo.findAll());
-        return "update-despachoPedido";
+    	model.addAttribute("despacho", despachoPedido);
+    	model.addAttribute("vendedor", despachoPedido.getVendedor());
+        model.addAttribute("cliente", iUsuarioRepo.findByRoleCliente());
+        return "update-despacho";
     }
     
     /*Recibe los nuevos datos ingresados , valida que no falte ningún atributo y que todos sean los necesarios y realiza la modificación*/
-    @PostMapping("/updateDespachoPedido/{idDespacho}")
-    public String updateDespachoPedido(@PathVariable("idDespacho") int idDespacho, @Validated DespachoPedido despachoPedido, BindingResult result, Model model,@RequestParam("file") MultipartFile file, @RequestParam("cambioUrl") boolean cambioUrl){
+    @PostMapping("/updateDespacho/{idDespacho}")
+    public String updateDespachoPedido(@PathVariable("idDespacho") int idDespacho, @Validated DespachoPedido despachoPedido, BindingResult result, Model model){
     	/* Si se encuentra algún error a la hora de hacer la inserción de los nuevos datos va a retornar al formulario 
          * de modificación.*/
     	if (result.hasErrors()) {
-            model.addAttribute("despacho_Pedido", iDespachoPedidosRepo.findAll());
-            model.addAttribute("usuario", iUsuarioRepo.findAll());
-            model.addAttribute("cliente", iUsuarioRepo.findAll());
-            return "update-despachoPedido";
+            model.addAttribute("despacho", iDespachoPedidosRepo.findById(idDespacho));
+            model.addAttribute("vendedor", despachoPedido.getVendedor());
+            model.addAttribute("cliente", iUsuarioRepo.findByRoleCliente());
+            return "redirect:/editDespacho/"+idDespacho;
         }
        
         /* Si se cumple o o la condición se modifica los datos cambiados en dicho producto. */
     	iDespachoPedidosRepo.save(despachoPedido);
         /*Cargara los nuevos datos al modelo para que estos puedan aparecer en la lista de productos*/
         model.addAttribute("despacho_pedido", iDespachoPedidosRepo.findAll());
-        return "redirect:/listarDespacho";
+        return "redirect:/listarFacturas/"+despachoPedido.getVendedor().getEmail();
     }
     
     /*En este método se recibe como parametro de la lista de productos el id del producto seleccionado*/
-    @GetMapping("/deleteDespachoPedido/{idDespacho}")
+    @GetMapping("/deleteDespacho/{idDespacho}")
     public String deleteDespachoPedido(@PathVariable("idDespacho") int idDespacho, Model model) {
     	/*Se instancia un bean tipo producto y se le asigna los valores obtenidos por el método del repositorio
     	 * findById el cual va a buscar el producto dado el id recibido*/
@@ -114,15 +113,15 @@ public class DespachoPedidosController {
     	iDespachoPedidosRepo.delete(despachoPedido);
     	  /* Se carga una lista actualiza de productos al modelo y se redirige a la página de listar.*/
         model.addAttribute("despacho_Pedido", iDespachoPedidosRepo.findAll());
-        return "redirect:/listarDespacho";
+        return "redirect:/listarFacturas/"+despachoPedido.getVendedor().getEmail();
     }
     
     /*Método encargado de enviar al modelo o plantilla la lista de productos existentes en la base de datos.*/
-    @GetMapping("/listarDespacho")
+    @GetMapping("/listarDespachos")
     public String ListarDespacho(Model model) {
     	/*Se buscan los productos mediante el método del repositorio findbyid y se cargan en la variable 'productos' 
     	 * a la plantilla o medelo de la plantilla.*/
-    	model.addAttribute("despacho_Pedido", iDespachoPedidosRepo.findAll());
+    	model.addAttribute("despachos", iDespachoPedidosRepo.findAll());
         return "listarDespacho";
     }
   

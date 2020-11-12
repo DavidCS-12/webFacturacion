@@ -13,5 +13,8 @@ public interface IFacturaRepo extends CrudRepository<Factura, Integer>{
 
 	@Query("SELECT F FROM Factura F WHERE F.despachoPedido.vendedor.dni=?1")
 	List<Factura> findByVendedor(int dni);
+
+	@Query("SELECT F FROM Factura F WHERE F.despachoPedido.idDespacho=?1")
+	Factura findByDespacho(int idDespacho);
 	
 }
