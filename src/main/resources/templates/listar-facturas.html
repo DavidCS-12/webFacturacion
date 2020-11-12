@@ -73,9 +73,7 @@
 									<th>Valor compra sin IVA</th>
 									<th>Valor compra con IVA</th>
 									<th>Estado del despacho</th>
-									<th sec:authorize="${hasRole('VENDEDOR')}">Editar Despacho</th>
-									<th sec:authorize="${hasRole('VENDEDOR')}">Ver Factura</th>
-									<th sec:authorize="${hasRole('VENDEDOR')}">Eliminar Factura</th>
+									<th sec:authorize="${hasRole('VENDEDOR')}">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -86,20 +84,19 @@
 									<td th:text="${fac.valorCompraIva}"></td>
 									<td th:text="${fac.despachoPedido.estado}"></td>
 									
-									<td sec:authorize="${hasRole('VENDEDOR')}" th:if="${fac.despachoPedido.estado}!=true">
-							 			<a
+									<td sec:authorize="${hasRole('VENDEDOR')}">
+							 			<a th:if="${fac.despachoPedido.estado}!=true"
 										th:href="@{/editDespacho/{idDespacho}(idDespacho=${fac.despachoPedido.idDespacho})}"
-										class="btn btn-primary">Editar</a>
-									</td>
-									<td sec:authorize="${hasRole('VENDEDOR')}" th:if="${fac.despachoPedido.estado}!=true">
-							 			<a
+										class="btn btn-primary my-1 col">Editar Destinatario</a>
+									
+							 			<a 
 										th:href="@{/editFactura/{idFactura}(idFactura=${fac.idFactura})}"
-										class="btn btn-primary">Ver</a>
-									</td>
-									<td sec:authorize="${hasRole('VENDEDOR')}" th:if="${fac.despachoPedido.estado}!=true">
-										<a
+										class="btn btn-primary  my-1 col">Ver Factura</a>
+									
+									
+										<a 
 										th:href="@{/deleteFactura/{idFactura}(idFactura=${fac.idFactura})}"
-										class="btn btn-primary">Eliminar</a>
+										class="btn btn-primary my-1 col">Eliminar Factura</a>
 									</td>
 								</tr>
                             </tbody>

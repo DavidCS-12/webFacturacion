@@ -105,4 +105,13 @@ public class FacturaController {
 		model.addAttribute("facturas", iFacturaRepo.findByVendedor(vendedor.getDni()));
 		return "listar-facturas";
 	}
+	
+	@GetMapping("/terminarCompra/{idFactura}")
+	public String imprimirFactura(@PathVariable("idFactura")int idFactura, Model model) {
+		Factura factura = iFacturaRepo.findById(idFactura).get();
+		DespachoPedido despacho = factura.getDespachoPedido();
+		despacho.setEstado(true);
+		iDespachoPedidosRepo.save(despacho);
+		return "redirect:/editFactura/"+idFactura;
+	}
 }

@@ -11,7 +11,7 @@ import com.co.web.avanzada.entity.Factura;
 @Repository
 public interface IFacturaRepo extends CrudRepository<Factura, Integer>{
 
-	@Query("SELECT F FROM Factura F WHERE F.despachoPedido.vendedor.dni=?1")
+	@Query("SELECT F FROM Factura F WHERE F.despachoPedido.vendedor.dni=?1 or F.despachoPedido.cliente=?1")
 	List<Factura> findByVendedor(int dni);
 
 	@Query("SELECT F FROM Factura F WHERE F.despachoPedido.idDespacho=?1")
