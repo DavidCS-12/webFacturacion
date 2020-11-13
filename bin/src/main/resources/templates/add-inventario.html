@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Registro de Inventario</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://nom.fontawesome.com/releases/v5.4.1/css/all.css"
+	integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+	crossorigin="anonymous">
+<link rel="stylesheet" href="../css/shards.min.css">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav mr-auto">
+	    <li class="nav-item" sec:authorize="${hasRole('ADMIN') || hasRole('VENDEDOR')}"><a
+					class="nav-link" th:href="@{/index}">Inicio</a></li>
+					
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarMunicipios}">Lista municipios</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarProveedor}">Lista proveedores</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarProducto}">Lista productos</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarVendedores}">Lista vendedores</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}">
+	        <a class="nav-link" th:href="@{/listarBodegasVendedor/{email}(email=${#httpServletRequest.remoteUser})}">Mis Bodegas</a>
+	      </li>
+	     </ul>
+	    <form th:action="@{/}" method="post" class="form-inline my-2 my-lg-0">
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
+        </form>
+	  </div>
+	  
+	</nav>
+	
+	
+	<div class="container register">
+		<div class="row">
+			<div class="col-md-3 register-left">
+				<img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+			</div>
+			<div class="col-md-9 register-right mt-5">
+				<h3 class="register-heading">Registrar Productos en Inventario</h3>
+				<form action="#" th:action="@{/add_inventario}" th:object="${inventario}" method="post">
+						<div class="row">										 
+						 <div class="form-group col-md-6">
+	                             <label for="categorias" class="col-form-label">Categoría</label>
+	                             <select  th:field="${categorias}" id="categorias" class="form-control">
+	          	                 	<option 
+	          	                 			th:fragment="categorias"
+	          	                 			th:each="cat : ${categorias}" 
+	          	                 			th:id="${cat.idCategoria}"
+	          	                    		th:value="${cat.idCategoria}" 
+	           	                    		th:text="${cat.nombre}"
+	           	                    		>
+	       	                    	</option>
+	       						</select>
+	                         
+                   	        	<label for="productos" class="col-form-label">Productos</label>
+	                            <select th:field="*{producto}" id="productos" class="form-control">
+	           	                    	<option
+	           	                    		th:fragment="productos" 
+	           	                    		th:each="pro : ${productos}"
+	           	                    		th:id="${pro.codigoProducto}" 
+	           	                    		th:value="${pro.codigoProducto}" 
+	           	                    		th:text="${pro.nombre}">
+	           	                    	</option>
+	        					</select>
+                	
+							
+								<label for="cantidad" class="col-form-label">Cantidad</label> 
+								<input type="number"
+									th:field="*{cantidad}" 
+									class="form-control" id="cantidad"
+									required="required"> 
+								<span th:if="${#fields.hasErrors('cantidad')}"
+									th:errors="*{cantidad}" 
+									class="text-danger">
+								</span>
+								<label for="bodega" class="col-form-label">Dirección de la bodega</label> 
+								<input type="text"
+									th:field="${bodega.direccion}" 
+									class="form-control" id="bodegaDireccion"
+									readonly="readonly">
+								<input type="text"
+									th:field="${bodega.idBodega}" 
+									class="form-control" id="bodegaID"
+									style="visibility:hidden">
+								<input type="text"
+									th:field="*{bodega}"
+									th:fragment="bodega"
+									class="form-control" id="bodega"
+									style="visibility:hidden">
+								<span th:if="${#fields.hasErrors('bodega')}"
+									th:errors="*{bodega}" 
+									class="text-danger">
+								</span>
+								<div class="col">
+									<input type="submit" class="btn btn-primary" th:value="Agregar">
+								</div>
+								
+								
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script th:src="@{/js/jquery.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:inline="javascript">
+		$(function() {
+			$("#productos").load('/ajax/productos', "id_categoria="+$("#categorias").val());
+			$('#categorias').on('change', function() {
+				$("#productos").load('/ajax/productos', "id_categoria="+$("#categorias").val());
+			});
+		});
+		$('#bodega').val($('#bodegaID').val());
+	</script>
+</body>
+</html>

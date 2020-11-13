@@ -50,7 +50,7 @@ class MunicipioTest {
 		Set<Authority> recibirAuthority = new HashSet<>();
 		recibirAuthority.add(authority);
 	    
-	    Municipio municipio = repository.save(new Municipio(1, "nombrePrueba", departamento));
+	    Municipio municipio = repository.save(new Municipio(1, "nombePrueba", departamento));
 
 	    assertThat(municipio).hasFieldOrPropertyWithValue("direccion", "direccionPrueba");
 	    assertThat(municipio).hasFieldOrPropertyWithValue("idBodega", 1);
