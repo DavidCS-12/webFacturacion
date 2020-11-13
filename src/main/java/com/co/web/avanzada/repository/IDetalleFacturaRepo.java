@@ -14,7 +14,7 @@ public interface IDetalleFacturaRepo extends
 CrudRepository<DetalleFactura, Integer>{
 	
 	@Query ("Select d from DetalleFactura d WHERE d.idDetalle=?1")
-	List<DetalleFactura> ListarDetalleFactura (int idDetalleFactura);
+	List<DetalleFactura> ListarDetalleFactura (int idFactura);
 	
 }
 

@@ -1,6 +1,7 @@
 package com.co.web.avanzada.controler;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,11 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.co.web.avanzada.entity.DespachoPedido;
+import com.co.web.avanzada.entity.DetalleFactura;
 import com.co.web.avanzada.entity.Factura;
+import com.co.web.avanzada.entity.Inventario;
 import com.co.web.avanzada.entity.Usuario;
 import com.co.web.avanzada.repository.IDespachoPedidosRepo;
 import com.co.web.avanzada.repository.IDetalleRepo;
 import com.co.web.avanzada.repository.IFacturaRepo;
+import com.co.web.avanzada.repository.IInventarioRepo;
 import com.co.web.avanzada.repository.IUsuarioRepo;
 
 @Controller
@@ -26,7 +30,8 @@ public class FacturaController {
 	
 	@Autowired
 	private IFacturaRepo iFacturaRepo;
-	
+	@Autowired
+	private IInventarioRepo iInventarioRepo;
 	@Autowired
 	private IDespachoPedidosRepo iDespachoPedidosRepo;
 	
@@ -94,6 +99,19 @@ public class FacturaController {
 	@GetMapping("/deleteFactura/{idFactura}")
 	public String deleteFactura(@PathVariable("idFactura")int idFactura, Model model) {
 		Factura factura = iFacturaRepo.findById(idFactura).get();
+		if(!factura.getDespachoPedido().isEstado()) {
+			List<DetalleFactura> productosFactura = iDetalleRepo.detalleFactura(idFactura);
+			if(!productosFactura.isEmpty()) {
+				int nuevaCantidad = 0;
+				for(int i=0;i<productosFactura.size();i++){
+					Inventario inventario = iInventarioRepo.findByProductoVendedor(factura.getDespachoPedido().getVendedor().getDni(), productosFactura.get(i).getProducto().getCodigoProducto());
+					nuevaCantidad = inventario.getCantidad()+productosFactura.get(i).getCantidad();
+					inventario.setCantidad(nuevaCantidad);
+					iInventarioRepo.save(inventario);
+				}
+			}
+			
+		}
 		iFacturaRepo.delete(factura);
 		iDespachoPedidosRepo.delete(factura.getDespachoPedido());
 		return "redirect:/listarFacturas/"+factura.getDespachoPedido().getVendedor().getEmail();
