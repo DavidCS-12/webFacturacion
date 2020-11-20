@@ -68,7 +68,9 @@
 			  <div class="card-body">
 			    <h5 class="card-title" th:text="${pro.nombre}"></h5>
 			    <p class="card-text" th:text="${pro.descripcion}"></p>
-			    <a th:href="@{/carroCompras/(codigoProducto=${pro.codigoProducto}, email=${#httpServletRequest.remoteUser})}" sec:authorize="${hasRole('CLIENTE')}"class="btn btn-success">Añadir al carrito</a>
+			    <a th:href="@{/carroCompras/(codigoProducto=${pro.codigoProducto}, email=${#httpServletRequest.remoteUser})}"
+			     sec:authorize="${hasRole('CLIENTE')||#httpServletRequest.remoteUser==null}"
+			     class="btn btn-success">Añadir al carrito</a>
 			  </div>
 			</div>
 			</div>

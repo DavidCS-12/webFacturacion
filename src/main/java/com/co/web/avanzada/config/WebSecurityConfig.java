@@ -88,7 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/updateDespacho/**").hasAnyRole("VENDEDOR")
 				.antMatchers("/deleteDespacho/**").hasAnyRole("VENDEDOR")
 				.anyRequest().authenticated().and().formLogin()
-				.loginPage("/login").permitAll().defaultSuccessUrl("/").failureUrl("/login?error=true")
+				.loginPage("/login").permitAll().defaultSuccessUrl("/", true).failureUrl("/login?error=true")
 				.usernameParameter("email").passwordParameter("password").and().logout().permitAll()
 				.logoutSuccessUrl("/exit");
 	}
