@@ -13,7 +13,7 @@ import com.co.web.avanzada.entity.DetalleFactura;
 public interface IDetalleFacturaRepo extends
 CrudRepository<DetalleFactura, Integer>{
 	
-	@Query ("Select d from DetalleFactura d WHERE d.idDetalle=?1")
+	@Query ("Select d from DetalleFactura d WHERE d.factura.idFactura=?1")
 	List<DetalleFactura> ListarDetalleFactura (int idFactura);
 	
 }

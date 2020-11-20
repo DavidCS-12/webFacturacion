@@ -1,5 +1,6 @@
 package com.co.web.avanzada.controler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -99,28 +100,54 @@ public class FacturaController {
 	@GetMapping("/deleteFactura/{idFactura}")
 	public String deleteFactura(@PathVariable("idFactura")int idFactura, Model model) {
 		Factura factura = iFacturaRepo.findById(idFactura).get();
-		if(!factura.getDespachoPedido().isEstado()) {
-			List<DetalleFactura> productosFactura = iDetalleRepo.detalleFactura(idFactura);
+		List<DetalleFactura> productosFactura = iDetalleRepo.detalleFactura(idFactura);
+		Usuario vendedor = factura.getDespachoPedido().getVendedor();
+		Usuario cliente = factura.getDespachoPedido().getCliente();
+		List<Inventario> inventarios = new ArrayList<>();
+		int nuevacantidad=0;
+		if(!factura.getDespachoPedido().isEstado()) {	
+			if(vendedor.getRol().equals("ADMIN")){
+				inventarios = (List<Inventario>) iInventarioRepo.findAll();
+			}
+			if(vendedor.getRol().equals("VENDEDOR")) {
+				inventarios = iInventarioRepo.findByBodegaVendedor(vendedor.getDni());
+			}
+			
 			if(!productosFactura.isEmpty()) {
-				int nuevaCantidad = 0;
-				for(int i=0;i<productosFactura.size();i++){
-					Inventario inventario = iInventarioRepo.findByProductoVendedor(factura.getDespachoPedido().getVendedor().getDni(), productosFactura.get(i).getProducto().getCodigoProducto());
-					nuevaCantidad = inventario.getCantidad()+productosFactura.get(i).getCantidad();
-					inventario.setCantidad(nuevaCantidad);
-					iInventarioRepo.save(inventario);
+				for(int i=0; i< productosFactura.size();i++) {
+					for(int j=0;j<inventarios.size();j++) {
+						if(inventarios.get(j).getProducto()==productosFactura.get(i).getProducto()) {
+							nuevacantidad = inventarios.get(j).getCantidad()+productosFactura.get(i).getCantidad();
+							inventarios.get(j).setCantidad(nuevacantidad);
+							iInventarioRepo.save(inventarios.get(j));
+							break;
+						}
+					}
 				}
 			}
 			
 		}
-		iFacturaRepo.delete(factura);
+		
 		iDespachoPedidosRepo.delete(factura.getDespachoPedido());
-		return "redirect:/listarFacturas/"+factura.getDespachoPedido().getVendedor().getEmail();
+		String email = "";
+		if(vendedor.getRol().equals("ADMIN")) {
+			email = cliente.getEmail();
+		}else {
+			email = vendedor.getEmail();
+		}
+		return "redirect:/listarFacturas/"+email;
+		
 	}
 	
 	@GetMapping("/listarFacturas/{email}")
 	public String ListarFacturas(Model model, @PathVariable("email") String email) {
-		Usuario vendedor = iUsuarioRepo.findByEmail(email).get(); 
-		model.addAttribute("facturas", iFacturaRepo.findByVendedor(vendedor.getDni()));
+		Usuario usuario = iUsuarioRepo.findByEmail(email).get();
+		if(usuario.getRol().equals("VENDEDOR")) {
+			model.addAttribute("facturas", iFacturaRepo.findByVendedor(usuario.getDni()));
+		}
+		if(usuario.getRol().equals("CLIENTE")) {
+			model.addAttribute("facturas", iFacturaRepo.findByCliente(usuario.getDni()));
+		}
 		return "listar-facturas";
 	}
 	

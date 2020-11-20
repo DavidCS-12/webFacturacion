@@ -16,4 +16,10 @@ public interface IInventarioRepo extends CrudRepository<Inventario, Integer>{
 	
 	@Query("Select I from Inventario I where I.bodega.usuario.dni=?1 and I.producto.codigoProducto=?2")
 	Inventario findByProductoVendedor(int dni, int codigoProducto);
+	
+	@Query("Select I from Inventario I where I.producto.codigoProducto=?1")
+	List<Inventario> findByProductoVendedor(int codigoProducto);
+	
+	@Query("Select I from Inventario I where I.producto.codigoProducto=?1")
+	Inventario findByProducto(int codigoProducto);
 }

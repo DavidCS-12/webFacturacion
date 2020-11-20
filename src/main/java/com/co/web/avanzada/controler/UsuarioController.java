@@ -1,10 +1,14 @@
 package com.co.web.avanzada.controler;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.co.web.avanzada.entity.Authority;
@@ -50,7 +55,7 @@ public class UsuarioController {
 	
 
 	/*Método que carga la plantilla de inicio de usuario.*/
-	@GetMapping("/")
+	@GetMapping("/login")
 	public String login() {
 		return "login";
 	}
@@ -67,12 +72,22 @@ public class UsuarioController {
     
 
 	 /*Método que direcciona al inicio del menu de un administrador.*/
-    @GetMapping("/index")
+    @RequestMapping("/")
 	public String InicioAdmin(Model model) {
     	model.addAttribute("productos", iProductoRepo.findByInventario());
 		return "index";
 	}
-    
+    @RequestMapping("/exit") 
+    public void exit(HttpServletRequest request, HttpServletResponse response) { 
+     // token can be revoked here if needed 
+     new SecurityContextLogoutHandler().logout(request, null, null); 
+     try { 
+      //sending back to client app 
+      response.sendRedirect(request.getHeader("referer")); 
+     } catch (IOException e) { 
+      e.printStackTrace(); 
+     } 
+    }
     
     /*Se reciben y se validan todos los datos del formulario mediante las anotaciones postMapping y validated, con el blinding result se manejan los resultados
      * de la inserción de los datos.*/   

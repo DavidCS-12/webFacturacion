@@ -7,7 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.co.web.avanzada.entity.Factura;
-import com.co.web.avanzada.entity.Usuario;
 
 @Repository
 public interface IFacturaRepo extends CrudRepository<Factura, Integer>{
@@ -15,6 +14,9 @@ public interface IFacturaRepo extends CrudRepository<Factura, Integer>{
 	@Query("SELECT F FROM Factura F WHERE F.despachoPedido.vendedor.dni=?1 or F.despachoPedido.cliente=?1")
 	List<Factura> findByVendedor(int dni);
 
+	@Query("SELECT F FROM Factura F WHERE F.despachoPedido.cliente.dni=?1 or F.despachoPedido.cliente=?1")
+	List<Factura> findByCliente(int dni);
+	
 	@Query("SELECT F FROM Factura F WHERE F.despachoPedido.idDespacho=?1")
 	Factura findByDespacho(int idDespacho);
 

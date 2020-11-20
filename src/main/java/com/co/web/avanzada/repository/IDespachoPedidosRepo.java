@@ -18,4 +18,11 @@ CrudRepository<DespachoPedido, Integer>{
 	
 	@Query ("Select d from DespachoPedido d")
 	List<DespachoPedido> Listar ();
+	
+	@Query ("Select d from DespachoPedido d where d.cliente.email=?1 and d.vendedor.rol='ADMIN'")
+	DespachoPedido BuscarCliente (String email);
+	
+	@Query ("Select d from DespachoPedido d where d.cliente.email=?1 and d.vendedor.email=?2")
+	DespachoPedido findAdmindCliente(String email, String email2);
+	
 }

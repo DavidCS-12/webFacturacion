@@ -5,11 +5,11 @@
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title>Historial de facturas</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-	<link rel="stylesheet" th:href="@{/css/shards.min.css}">
+	<link rel="stylesheet" th:href="@{/css/all.css}">
 	<link rel="stylesheet" th:href="@{/css/brands.css}">
 	<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
 	<link rel="stylesheet" th:href="@{/css/solid.css}">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 	<script th:src="@{/js/brands.js}"></script>
 	<script th:src="@{/js/solid.js}"></script>
 	<script th:src="@{/js/fontawesome.js}"></script>
@@ -18,8 +18,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">	 	
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
-	    	<li class="nav-item" sec:authorize="${hasRole('ADMIN') || hasRole('VENDEDOR') || hasRole('CLIENTE')}">
-	    		<a class="nav-link" th:href="@{/index}">Inicio</a></li>
+	    	<li class="nav-item">
+	    		<a class="nav-link" th:href="@{/}">Inicio</a></li>
 	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
 	        	<a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
 	      	</li>
@@ -52,10 +52,10 @@
 	        	<a class="nav-link" th:href="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}">Historial de ventas</a>
 	      	</li>
 	    </ul>
-	    <form th:action="@{/carroCompras}" method="post" class="form-inline my-2 my-lg-0 mr-2" sec:authorize="${hasRole('CLIENTE')}">
-            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Mi Carrito" />
+	    <form th:action="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}" class="form-inline my-2 my-lg-0 mr-2" sec:authorize="${hasRole('CLIENTE')}">
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Mis compras" />
         </form>
-	    <form th:action="@{/}" method="post" class="form-inline my-2 my-lg-0">
+	    <form th:action="@{/exit}" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}" class="form-inline my-2 my-lg-0">
             <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
         </form>
         </div>
@@ -73,7 +73,7 @@
 									<th>Valor compra sin IVA</th>
 									<th>Valor compra con IVA</th>
 									<th>Estado del despacho</th>
-									<th sec:authorize="${hasRole('VENDEDOR')}">Acciones</th>
+									<th sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')}">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -84,15 +84,14 @@
 									<td th:text="${fac.valorCompraIva}"></td>
 									<td th:text="${fac.despachoPedido.estado}"></td>
 									
-									<td sec:authorize="${hasRole('VENDEDOR')}">
-							 			<a th:if="${fac.despachoPedido.estado}!=true"
+									<td>
+							 			<a th:if="${fac.despachoPedido.estado}!=true" sec:authorize="${hasRole('VENDEDOR')}"
 										th:href="@{/editDespacho/{idDespacho}(idDespacho=${fac.despachoPedido.idDespacho})}"
 										class="btn btn-primary my-1 col">Editar Destinatario</a>
 									
 							 			<a 
 										th:href="@{/editFactura/{idFactura}(idFactura=${fac.idFactura})}"
 										class="btn btn-primary  my-1 col">Ver Factura</a>
-									
 									
 										<a 
 										th:href="@{/deleteFactura/{idFactura}(idFactura=${fac.idFactura})}"
@@ -101,8 +100,10 @@
 								</tr>
                             </tbody>
                         </table>
-                        <p class="my-5"><a th:href="@{/addDespacho/{email}(email=${#httpServletRequest.remoteUser})}" sec:authorize="${hasRole('VENDEDOR')}"
-                     	class="btn btn-primary">Nueva <i class="fas fa-plus"></i></a></p> 
+                        <p class="my-5"><a sec:authorize="${hasRole('VENDEDOR')}" th:href="@{/addDespacho/{email}(email=${#httpServletRequest.remoteUser})}"
+                     	class="btn btn-primary">Nueva <i class="fas fa-plus"></i></a></p>
+                     	<p class="my-5"><a sec:authorize="${hasRole('CLIENTE')}" th:href="@{/}"
+                     	class="btn btn-primary">Regresar</a></p> 
                     </div>      
                 </div>
         </div>

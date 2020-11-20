@@ -6,22 +6,17 @@
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title>Factura</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet"
-		href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-		crossorigin="anonymous">
-	<link rel="stylesheet"
-		href="https://nom.fontawesome.com/releases/v5.4.1/css/all.css"
-		integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
-		crossorigin="anonymous">
-	<link rel="stylesheet" href="../css/shards.min.css">
+	<link rel="stylesheet" th:href="@{/css/all.css}">
+	<link rel="stylesheet" th:href="@{/css/brands.css}">
+	<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
+	<link rel="stylesheet" th:href="@{/css/solid.css}">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 	<style>
-		@media print(){
+		@media 
+		print(){
 			.parte1{
 				display: none;
 			}
-			
-		
 		}
 	</style>
 </head>
@@ -29,8 +24,8 @@
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
-	    	<li class="nav-item" sec:authorize="${hasRole('ADMIN') || hasRole('VENDEDOR') || hasRole('CLIENTE')}">
-	    		<a class="nav-link" th:href="@{/index}">Inicio</a></li>
+	    	<li class="nav-item">
+	    		<a class="nav-link" th:href="@{/}">Inicio</a></li>
 	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
 	        	<a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
 	      	</li>
@@ -63,10 +58,10 @@
 	        	<a class="nav-link" th:href="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}">Historial de ventas</a>
 	      	</li>
 	    </ul>
-	    <form th:action="@{/carroCompras}" method="post" class="form-inline my-2 my-lg-0 mr-2" sec:authorize="${hasRole('CLIENTE')}">
-            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Mi Carrito" />
+	    <form th:action="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}" class="form-inline my-2 my-lg-0 mr-2" sec:authorize="${hasRole('CLIENTE')}">
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Mis compras" />
         </form>
-	    <form th:action="@{/}" method="post" class="form-inline my-2 my-lg-0">
+	    <form th:action="@{/exit}" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}" class="form-inline my-2 my-lg-0">
             <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
         </form>
 		</div>
@@ -151,6 +146,7 @@
                                 <tr>
                                     <th>Código del producto</th>
                                     <th>Nombre producto</th>
+                                    <th>Valor uni</th>
 									<th>Valor (sin iva)</th>
 									<th>Valor (iva)</th>
 									<th>Cantidad</th>
@@ -161,6 +157,7 @@
                                 <tr th:each="det : ${detalles}">
 									<td th:text="${det.producto.codigoProducto}"></td>
 									<td th:text="${det.producto.nombre}"></td>
+									<td th:text="${det.producto.precioCompra}"></td>
 									<td th:text="${det.producto.precioCompra*det.cantidad}"></td>
 									<td th:text="${det.producto.precioVenta*det.cantidad}"></td>
 									<td th:text="${det.cantidad}"></td>
@@ -177,14 +174,16 @@
                             </tbody>
                         </table>
 						</div>
-						<p class="my-2 parte1"><a th:href="@{/addDetalle/{idFactura}(idFactura=${factura.idFactura})}" sec:authorize="${hasRole('VENDEDOR')}"
+						<p class="my-2"><a th:href="@{/addDetalle/{idFactura}(idFactura=${factura.idFactura})}" sec:authorize="${hasRole('VENDEDOR')}"
                      	class="btn btn-primary col" th:if="${factura.despachoPedido.estado}!=true">Agregar producto<i class="fas fa-user-plus ml-2"></i></a></p>
-                     	<p class="my-5 parte1"><a th:href="@{/terminarCompra/{idFactura}(idFactura=${factura.idFactura})}" sec:authorize="${hasRole('VENDEDOR')}"
+                     	<p class="my-5"><a th:href="@{/terminarCompra/{idFactura}(idFactura=${factura.idFactura})}" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')}"
                      	class="btn btn-primary col" th:if="${factura.despachoPedido.estado}!=true">Finalizar compra<i class="fas fa-user-plus ml-2"></i></a></p>
-                     	<p class="my-2 parte1"><a href="#" sec:authorize="${hasRole('VENDEDOR')}"
+                     	<p class="my-2"><a href="#" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')}"
                      	class="btn btn-danger col" th:if="${factura.despachoPedido.estado}!=false" onClick="print()">Imprimir factura<i class="fas fa-user-plus ml-2"></i></a></p>
-                     	<p class="my-2 parte1"><a href="#" sec:authorize="${hasRole('VENDEDOR')}"
-                     	class="btn btn-danger col" th:if="${factura.despachoPedido.estado}!=false"  th:href="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}">Regresar<i class="fas fa-user-plus ml-2"></i></a></p>
+                     	<p class="my-2"><a href="#" sec:authorize="${hasRole('VENDEDOR')}"
+                     	class="btn btn-danger col"  th:href="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}">Regresar<i class="fas fa-user-plus ml-2"></i></a></p>
+                     	<p class="my-2"><a sec:authorize="${hasRole('CLIENTE')}"
+                     	class="btn btn-danger col" th:href="@{/index}">Seguir comprando<i class="fas fa-user-plus ml-2"></i></a></p>
 					</div>
 			</div>
 		</div>

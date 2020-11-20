@@ -15,8 +15,8 @@
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">	 	
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
-	    <li class="nav-item" sec:authorize="${hasRole('ADMIN') || hasRole('VENDEDOR') || hasRole('CLIENTE')}"><a
-					class="nav-link" th:href="@{/index}">Inicio</a></li>
+	    <li class="nav-item"><a
+					class="nav-link" th:href="@{/}">Inicio</a></li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
 	        <a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
 	      </li>
@@ -49,11 +49,14 @@
 	        <a class="nav-link" th:href="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}">Historial de ventas</a>
 	      </li>
 	    </ul>
-	    <form th:action="@{/carroCompras}" method="post" class="form-inline my-2 my-lg-0 mr-2" sec:authorize="${hasRole('CLIENTE')}">
-            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Mi Carrito" />
+	    <form th:action="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}" class="form-inline my-2 my-lg-0 mr-2" sec:authorize="${hasRole('CLIENTE')}">
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Mis compras" />
         </form>
-	    <form th:action="@{/}" method="post" class="form-inline my-2 my-lg-0">
+	    <form th:action="@{/exit}" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}" class="form-inline my-2 my-lg-0">
             <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
+        </form>
+        <form th:action="@{/login}" th:if="${#httpServletRequest.remoteUser}==null" class="form-inline my-2 my-lg-0">
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Ingresar" />
         </form>
         </div>
 	</nav>
@@ -65,7 +68,7 @@
 			  <div class="card-body">
 			    <h5 class="card-title" th:text="${pro.nombre}"></h5>
 			    <p class="card-text" th:text="${pro.descripcion}"></p>
-			    <a href="#" sec:authorize="${hasRole('CLIENTE')}" class="btn btn-success">Añadir al carrito</a>
+			    <a th:href="@{/carroCompras/(codigoProducto=${pro.codigoProducto}, email=${#httpServletRequest.remoteUser})}" sec:authorize="${hasRole('CLIENTE')}"class="btn btn-success">Añadir al carrito</a>
 			  </div>
 			</div>
 			</div>

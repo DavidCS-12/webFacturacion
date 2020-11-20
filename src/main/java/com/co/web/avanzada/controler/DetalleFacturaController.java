@@ -1,7 +1,8 @@
 package com.co.web.avanzada.controler;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,13 +11,20 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.co.web.avanzada.entity.DespachoPedido;
 import com.co.web.avanzada.entity.DetalleFactura;
 import com.co.web.avanzada.entity.Factura;
 import com.co.web.avanzada.entity.Inventario;
 import com.co.web.avanzada.entity.Producto;
+import com.co.web.avanzada.entity.Usuario;
+import com.co.web.avanzada.repository.IDespachoPedidosRepo;
 import com.co.web.avanzada.repository.IDetalleFacturaRepo;
 import com.co.web.avanzada.repository.IFacturaRepo;
 import com.co.web.avanzada.repository.IInventarioRepo;
+import com.co.web.avanzada.repository.IProductoRepo;
+import com.co.web.avanzada.repository.IUsuarioRepo;
 
 @Controller
 public class DetalleFacturaController {
@@ -27,6 +35,12 @@ public class DetalleFacturaController {
 	private IFacturaRepo iFacturaRepo;
 	@Autowired
 	private IInventarioRepo iInventarioRepo;
+	@Autowired
+	private IProductoRepo iProductoRepo;
+	@Autowired
+	private IUsuarioRepo iUsuarioRepo;
+	@Autowired
+	private IDespachoPedidosRepo iDespachoRepo;
 	
 	
 	@GetMapping("/addDetalle/{idFactura}")
@@ -128,7 +142,23 @@ public class DetalleFacturaController {
 		 * Carga en el modelo los datos del producto buscado,los proveedores y
 		 * categorias disponibles para poder hacer la modificación.
 		 */
+		Usuario vendedor = detalleFactura.getFactura().getDespachoPedido().getVendedor();
+		List<Inventario> inventarios = new ArrayList<>();
+		Inventario inventario = new Inventario(); 
+		if(vendedor.getRol().equals("ADMIN")){
+			inventarios = (List<Inventario>) iInventarioRepo.findAll();
+		}
+		if(vendedor.getRol().equals("VENDEDOR")) {
+			inventarios = iInventarioRepo.findByBodegaVendedor(vendedor.getDni());
+		}
+		for(int i=0;i<inventarios.size();i++) {
+			if(detalleFactura.getProducto()==inventarios.get(i).getProducto() && inventarios.get(i).getCantidad()>0) {
+				inventario = inventarios.get(i);
+				break;
+			}
+		}
 		model.addAttribute("detalle", detalleFactura);
+		model.addAttribute("inventario", inventario);
 		return "update-detalle";
 	}
 
@@ -151,19 +181,31 @@ public class DetalleFacturaController {
 		
 		Factura factura = detalleFactura.getFactura();
 		Producto producto = detalleFactura.getProducto();
-		List<Inventario> inventarios = iInventarioRepo.findByBodegaVendedor(factura.getDespachoPedido().getVendedor().getDni());
-		System.out.println(detalleFactura.getIdDetalle());
+		Usuario vendedor = factura.getDespachoPedido().getVendedor();
+		List<Inventario> inventarios = new ArrayList<>();
+		if(vendedor.getRol().equals("ADMIN")) {
+			inventarios = (List<Inventario>) iInventarioRepo.findAll();
+		}
+		if(vendedor.getRol().equals("VENDEDOR")) {
+			inventarios = iInventarioRepo.findByBodegaVendedor(detalleFactura.getFactura().getDespachoPedido().getVendedor().getDni());
+		}
 		DetalleFactura detalleAnterior = iDetalleFacturaRepo.findById(idDetalle).get();
+		System.out.println(detalleAnterior.getCantidad());
+		System.out.println(detalleFactura.getCantidad());
 		int nuevaCantidad = 0;
+		
 		//Se actualizan las cantidades en el inventario de donde se estan solicitando los productos
 		for(int i=0; i<inventarios.size();i++) {
-			if(producto == inventarios.get(i).getProducto()) {
+			if(producto == inventarios.get(i).getProducto() && inventarios.get(i).getCantidad()>0) {
 				if(detalleAnterior.getCantidad()>detalleFactura.getCantidad()) {
 					nuevaCantidad=inventarios.get(i).getCantidad()+(detalleAnterior.getCantidad()-detalleFactura.getCantidad());
 					inventarios.get(i).setCantidad(nuevaCantidad);
 				}
 				if(detalleAnterior.getCantidad()<detalleFactura.getCantidad()) {
 					nuevaCantidad = inventarios.get(i).getCantidad()-(detalleFactura.getCantidad()-detalleAnterior.getCantidad());
+					if(nuevaCantidad<0) {
+						return "redirect:/editFactura/"+detalleFactura.getFactura().getIdFactura();
+					}
 					inventarios.get(i).setCantidad(nuevaCantidad);
 				}
 				iInventarioRepo.save(inventarios.get(i));
@@ -171,25 +213,18 @@ public class DetalleFacturaController {
 			}
 		}
 		
-		
 		/*
 		 * Si se cumple o o la condición se modifica los datos cambiados en dicho
 		 * producto.
 		 */
 		
 		//Se actualiza los totales en la factura actual
-		System.out.println(factura.getValorCompra()+"    "+factura.getValorCompraIva()+"  "+detalleAnterior.getCantidad());
 		double valorSinIva = (factura.getValorCompra()-(detalleAnterior.getCantidad()*detalleAnterior.getProducto().getPrecioCompra()))+(detalleFactura.getCantidad()*detalleFactura.getProducto().getPrecioCompra());
 		double valorIva = (factura.getValorCompraIva()-(detalleAnterior.getCantidad()*detalleAnterior.getProducto().getPrecioVenta()))+(detalleFactura.getCantidad()*detalleFactura.getProducto().getPrecioVenta());
-		System.out.println(valorSinIva+"   "+valorIva+"  "+detalleFactura.getCantidad());
 		factura.setValorCompra(valorSinIva);
 		factura.setValorCompraIva(valorIva);
 		iFacturaRepo.save(factura);
 		iDetalleFacturaRepo.save(detalleFactura);
-		/*
-		 * Cargara los nuevos datos al modelo para que estos puedan aparecer en la lista
-		 * de productos
-		 */
 		model.addAttribute("detalle", detalleFactura);
 		model.addAttribute("productos", iInventarioRepo.findByBodegaVendedor(detalleFactura.getFactura().getDespachoPedido().getVendedor().getDni()));
 		return "redirect:/editFactura/"+detalleFactura.getFactura().getIdFactura();
@@ -211,7 +246,14 @@ public class DetalleFacturaController {
 		
 		Factura factura = iFacturaRepo.findById(detalleFactura.getFactura().getIdFactura()).get();
 		int cantidad = detalleFactura.getCantidad();
-		List<Inventario> inventarios = iInventarioRepo.findByBodegaVendedor(detalleFactura.getFactura().getDespachoPedido().getVendedor().getDni());
+		Usuario vendedor =factura.getDespachoPedido().getVendedor();
+		List<Inventario> inventarios = new ArrayList<>();
+		if(vendedor.getRol().equals("ADMIN")) {
+			inventarios = (List<Inventario>) iInventarioRepo.findAll();
+		}
+		if(vendedor.getRol().equals("VENDEDOR")) {
+			inventarios = iInventarioRepo.findByBodegaVendedor(detalleFactura.getFactura().getDespachoPedido().getVendedor().getDni());
+		}
 		for(int i=0; i<inventarios.size();i++) {
 			if(detalleFactura.getProducto()==inventarios.get(i).getProducto()) {
 				//Se cambia el valor de la compra en la factura
@@ -254,5 +296,52 @@ public class DetalleFacturaController {
 		model.addAttribute("detalle_factura", iDetalleFacturaRepo.findAll());
 		return "listarDetalleFactura";
 	}
-
+	
+	@GetMapping("/carroCompras/")
+	public String carroCompras(@RequestParam("codigoProducto")String codigoProducto, @RequestParam("email")String email, Model model) {
+		int codigoPro= Integer.parseInt(codigoProducto);
+		Producto producto = iProductoRepo.findById(codigoPro).get();
+		Usuario usuario = iUsuarioRepo.findByEmail(email).get();
+		DespachoPedido despacho = iDespachoRepo.BuscarCliente(email);
+		DetalleFactura detalle = new DetalleFactura();
+		Factura factura = new Factura();
+		if(despacho!=null && !despacho.isEstado()){
+			factura = iFacturaRepo.findByDespacho(despacho.getIdDespacho());
+			detalle.setCantidad(0);
+			detalle.setFactura(factura);
+			detalle.setProducto(producto);
+			iDetalleFacturaRepo.save(detalle);
+		}
+		if(despacho==null){
+			//Se crea el vendedor, en este caso el admin
+			Usuario vendedor=iUsuarioRepo.findByRoleAdmin().get(0);
+			//Se crea el despacho o destinatario
+			despacho = new DespachoPedido();
+			despacho.setCliente(usuario);
+			despacho.setVendedor(vendedor);
+			despacho.setEstado(false);
+			iDespachoRepo.save(despacho);
+			//Se crea la factura
+			java.util.Date fecha = new Date();
+			factura.setValorCompra(0);
+			factura.setValorCompraIva(0);
+			factura.setFechaVenta(fecha);
+			despacho = iDespachoRepo.findAdmindCliente(email, vendedor.getEmail()); 
+ 			if(despacho!=null && !despacho.isEstado()) {
+				factura.setDespachoPedido(iDespachoRepo.findAdmindCliente(email, vendedor.getEmail()));
+				iFacturaRepo.save(factura);
+			}
+ 			factura = iFacturaRepo.findByDespacho(despacho.getIdDespacho());
+ 			detalle.setCantidad(0);
+			detalle.setFactura(factura);
+			detalle.setProducto(producto);
+			iDetalleFacturaRepo.save(detalle);
+		}
+		
+		System.out.println(factura.getIdFactura());
+		List<DetalleFactura>detalles = iDetalleFacturaRepo.ListarDetalleFactura(factura.getIdFactura());
+		System.out.println(detalles.get(0).getProducto().getNombre());
+		model.addAttribute("detalles", detalles);
+		return "redirect:/editFactura/"+factura.getIdFactura();
+	}
 }

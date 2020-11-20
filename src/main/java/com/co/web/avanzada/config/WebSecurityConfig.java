@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		http.authorizeRequests().antMatchers(resources).permitAll().antMatchers("/usuario/upload","/ajax/productos","/ajax/municipios","/ajax/listarProductoCategoria","/listarProductosBodega","/ajax/departamentos","/","/addusuario","/add_usuario").permitAll()
+		http.authorizeRequests().antMatchers(resources).permitAll().antMatchers("/login","/usuario/upload","/ajax/productos","/ajax/municipios","/ajax/listarProductoCategoria","/listarProductosBodega","/ajax/departamentos","/","/addusuario","/add_usuario").permitAll()
 				.antMatchers("/addCategoria").hasAnyRole("ADMIN")
 				.antMatchers("/add_categoria").hasAnyRole("ADMIN")
 				.antMatchers("/editCategoria/**").hasAnyRole("ADMIN")
@@ -69,18 +69,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/editInventario/**").hasAnyRole("VENDEDOR")
 				.antMatchers("/updateInventario/**").hasAnyRole("VENDEDOR")
 				.antMatchers("/deleteInventario/**").hasAnyRole("VENDEDOR")
-				.antMatchers("/listarFacturas/**").hasAnyRole("VENDEDOR")
+				.antMatchers("/listarFacturas/**").hasAnyRole("VENDEDOR","CLIENTE")
 				.antMatchers("/addFactura/**").hasAnyRole("VENDEDOR")
 				.antMatchers("/add_factura/**").hasAnyRole("VENDEDOR")
-				.antMatchers("/editFactura/**").hasAnyRole("VENDEDOR")
-				.antMatchers("/updateFactura/**").hasAnyRole("VENDEDOR")
-				.antMatchers("/deleteFactura/**").hasAnyRole("VENDEDOR")
-				.antMatchers("/listarDetalles/**").hasAnyRole("VENDEDOR")
-				.antMatchers("/addDetalle/**").hasAnyRole("VENDEDOR")
-				.antMatchers("/add_detalle/**").hasAnyRole("VENDEDOR")
-				.antMatchers("/editDetalle/**").hasAnyRole("VENDEDOR")
-				.antMatchers("/updateDetalle/**").hasAnyRole("VENDEDOR")
-				.antMatchers("/deleteDetalle/**").hasAnyRole("VENDEDOR")
+				.antMatchers("/editFactura/**").hasAnyRole("VENDEDOR","CLIENTE")
+				.antMatchers("/updateFactura/**").hasAnyRole("VENDEDOR","CLIENTE")
+				.antMatchers("/deleteFactura/**").hasAnyRole("VENDEDOR","CLIENTE")
+				.antMatchers("/listarDetalles/**").hasAnyRole("VENDEDOR","CLIENTE")
+				.antMatchers("/addDetalle/**").hasAnyRole("VENDEDOR","CLIENTE")
+				.antMatchers("/add_detalle/**").hasAnyRole("VENDEDOR","CLIENTE")
+				.antMatchers("/editDetalle/**").hasAnyRole("VENDEDOR","CLIENTE")
+				.antMatchers("/updateDetalle/**").hasAnyRole("VENDEDOR","CLIENTE")
+				.antMatchers("/deleteDetalle/**").hasAnyRole("VENDEDOR","CLIENTE")
 				.antMatchers("/listarDespachos/**").hasAnyRole("VENDEDOR")
 				.antMatchers("/addDespacho/**").hasAnyRole("VENDEDOR")
 				.antMatchers("/add_despacho/**").hasAnyRole("VENDEDOR")
@@ -88,9 +88,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/updateDespacho/**").hasAnyRole("VENDEDOR")
 				.antMatchers("/deleteDespacho/**").hasAnyRole("VENDEDOR")
 				.anyRequest().authenticated().and().formLogin()
-				.loginPage("/").permitAll().defaultSuccessUrl("/index").failureUrl("/?error=true")
+				.loginPage("/login").permitAll().defaultSuccessUrl("/").failureUrl("/login?error=true")
 				.usernameParameter("email").passwordParameter("password").and().logout().permitAll()
-				.logoutSuccessUrl("/?logout");
+				.logoutSuccessUrl("/exit");
 	}
 
 	BCryptPasswordEncoder bCryptPasswordEncoder;

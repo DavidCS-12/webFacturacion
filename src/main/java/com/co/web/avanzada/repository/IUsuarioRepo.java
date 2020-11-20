@@ -18,4 +18,6 @@ public interface IUsuarioRepo extends CrudRepository<Usuario, Integer>{
 	
 	@Query("Select U from Usuario U where U.rol='VENDEDOR'")
 	List<Usuario> findByRoleVendedor();
+	@Query("Select U from Usuario U where U.rol='ADMIN'")
+	List<Usuario> findByRoleAdmin();
 }
