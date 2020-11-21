@@ -183,7 +183,7 @@
                      	<p class="my-2"><a href="#" sec:authorize="${hasRole('VENDEDOR')}"
                      	class="btn btn-danger col"  th:href="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}">Regresar<i class="fas fa-user-plus ml-2"></i></a></p>
                      	<p class="my-2"><a sec:authorize="${hasRole('CLIENTE')}"
-                     	class="btn btn-danger col" th:href="@{/index}">Seguir comprando<i class="fas fa-user-plus ml-2"></i></a></p>
+                     	class="btn btn-success col" th:href="@{/}" th:if="${factura.despachoPedido.estado}!=true">Seguir comprando<i class="fas fa-user-plus ml-2"></i></a></p>
 					</div>
 			</div>
 		</div>

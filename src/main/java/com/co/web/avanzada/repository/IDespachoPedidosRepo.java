@@ -2,6 +2,7 @@ package com.co.web.avanzada.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -19,10 +20,10 @@ CrudRepository<DespachoPedido, Integer>{
 	@Query ("Select d from DespachoPedido d")
 	List<DespachoPedido> Listar ();
 	
-	@Query ("Select d from DespachoPedido d where d.cliente.email=?1 and d.vendedor.rol='ADMIN'")
-	DespachoPedido BuscarCliente (String email);
+	@Query ("Select d from DespachoPedido d where d.cliente.email=?1 and d.vendedor.rol='ADMIN' and d.estado='false'")
+	DespachoPedido BuscarCliente (String email,PageRequest pageRequest);
 	
-	@Query ("Select d from DespachoPedido d where d.cliente.email=?1 and d.vendedor.email=?2")
-	DespachoPedido findAdmindCliente(String email, String email2);
+	@Query ("Select d from DespachoPedido d where d.cliente.email=?1 and d.vendedor.email=?2 and d.estado='false'")
+	DespachoPedido findAdmindCliente(String email, String email2, PageRequest pageRequest);
 	
 }

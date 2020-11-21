@@ -1,9 +1,11 @@
 package com.co.web.avanzada.controler;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -302,35 +304,36 @@ public class DetalleFacturaController {
 		int codigoPro= Integer.parseInt(codigoProducto);
 		Producto producto = iProductoRepo.findById(codigoPro).get();
 		Usuario usuario = iUsuarioRepo.findByEmail(email).get();
-		DespachoPedido despacho = iDespachoRepo.BuscarCliente(email);
+		DespachoPedido despacho = iDespachoRepo.BuscarCliente(email, PageRequest.of(0, 1));
+		DespachoPedido nuevoDespacho = new DespachoPedido();
 		DetalleFactura detalle = new DetalleFactura();
 		Factura factura = new Factura();
-		if(despacho!=null && !despacho.isEstado()){
+		if(despacho!=null) {
 			factura = iFacturaRepo.findByDespacho(despacho.getIdDespacho());
 			detalle.setCantidad(0);
 			detalle.setFactura(factura);
 			detalle.setProducto(producto);
 			iDetalleFacturaRepo.save(detalle);
 		}
+		
+		
 		if(despacho==null){
 			//Se crea el vendedor, en este caso el admin
 			Usuario vendedor=iUsuarioRepo.findByRoleAdmin().get(0);
 			//Se crea el despacho o destinatario
-			despacho = new DespachoPedido();
-			despacho.setCliente(usuario);
-			despacho.setVendedor(vendedor);
-			despacho.setEstado(false);
-			iDespachoRepo.save(despacho);
+			nuevoDespacho = new DespachoPedido();
+			nuevoDespacho.setCliente(usuario);
+			nuevoDespacho.setVendedor(vendedor);
+			nuevoDespacho.setEstado(false);
+			iDespachoRepo.save(nuevoDespacho);
 			//Se crea la factura
 			java.util.Date fecha = new Date();
 			factura.setValorCompra(0);
 			factura.setValorCompraIva(0);
 			factura.setFechaVenta(fecha);
-			despacho = iDespachoRepo.findAdmindCliente(email, vendedor.getEmail()); 
- 			if(despacho!=null && !despacho.isEstado()) {
-				factura.setDespachoPedido(iDespachoRepo.findAdmindCliente(email, vendedor.getEmail()));
-				iFacturaRepo.save(factura);
-			}
+			despacho = iDespachoRepo.findAdmindCliente(email, vendedor.getEmail(), PageRequest.of(0, 1)); 
+ 			factura.setDespachoPedido(despacho);
+ 			iFacturaRepo.save(factura);
  			factura = iFacturaRepo.findByDespacho(despacho.getIdDespacho());
  			detalle.setCantidad(0);
 			detalle.setFactura(factura);
@@ -340,7 +343,6 @@ public class DetalleFacturaController {
 		
 		System.out.println(factura.getIdFactura());
 		List<DetalleFactura>detalles = iDetalleFacturaRepo.ListarDetalleFactura(factura.getIdFactura());
-		System.out.println(detalles.get(0).getProducto().getNombre());
 		model.addAttribute("detalles", detalles);
 		return "redirect:/editFactura/"+factura.getIdFactura();
 	}
