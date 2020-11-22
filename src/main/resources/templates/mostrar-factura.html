@@ -13,7 +13,7 @@
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 
 <style>
-@media print{
+@media print {
 	.btn {
 		display: none;
 	}
@@ -77,15 +77,20 @@
 		</div>
 	</nav>
 
-<div id="carouselExampleSlidesOnly" class="carousel slide"
+	<div id="carouselExampleSlidesOnly" class="carousel slide"
 		data-ride="carousel">
 		<div class="carousel-inner">
 			<div class="carousel-item active">
-				<img src="../images/campo.png" class="d-block w-100"
+				<img src="../images/3.png"
+					sec:authorize="${hasRole('ADMIN')||hasRole('VENDEDOR')}"
+					class="d-block w-100" alt="..."> <img src="../images/2.png"
+					sec:authorize="${hasRole('CLIENTE')}" class="d-block w-100"
 					alt="...">
+
 			</div>
 		</div>
 	</div>
+
 
 
 
@@ -136,16 +141,16 @@
 								class="form-control parte01" id="estado" readonly="readonly">
 						</div>
 					</div>
-					<div class="row justify-content-center text-center">
-						<div class="form-group col-md-4">
-							<label for="sinIva" class="col-form-label">Total sin IVA</label>
+					<div class="row justify-content-center text-center alert-info">
+						<div class="form-group col-md-4 alert-info">
+							<label for="sinIva" class="col-form-label alert-link">Total sin IVA</label>
 							<input type="text" th:field="${factura.valorCompra}"
-								class="form-control" id="sinIva" readonly="readonly">
+								class="form-control alert-link" id="sinIva" readonly="readonly">
 						</div>
 						<div class="form-group col-md-4">
-							<label for="iva" class="col-form-label">Total con IVA</label> <input
+							<label for="iva" class="col-form-label alert-link">Total con IVA</label> <input
 								type="text" th:field="${factura.valorCompraIva}"
-								class="form-control" id="iva" readonly="readonly">
+								class="form-control alert-link" id="iva" readonly="readonly">
 						</div>
 					</div>
 					<div class="row-md-3 justify-content-center text-center">
@@ -238,16 +243,5 @@
 		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
 		crossorigin="anonymous"></script>
 
-	<script>
-		$('.btn').click(function() {
-			var printme = document.getElementByI('form-group');
-			var wme = window.open("", "", "width=990,height=700");
-			wme.document.write(printme.outerHTML);
-			wme.document.close();
-			wme.focus();
-			wme.close();
-
-		})
-	</script>
 </body>
 </html>

@@ -1,82 +1,97 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
- xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Actualizar Categoría</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" th:href="@{/css/all.css}">
-		<link rel="stylesheet" th:href="@{/css/brands.css}">
-		<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
-		<link rel="stylesheet" th:href="@{/css/solid.css}">
-		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    </head>
-    <body>
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Actualizar Categoría</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/all.css}">
+<link rel="stylesheet" th:href="@{/css/brands.css}">
+<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
+<link rel="stylesheet" th:href="@{/css/solid.css}">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
-	    <li class="nav-item"><a
-					class="nav-link" th:href="@{/}">Inicio</a></li>
-	    
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarMunicipios}">Lista municipios</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarProveedor}">Lista proveedores</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarProducto}">Lista productos</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarVendedores}">Lista vendedores</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a>
-	      </li>
-	     </ul>
-	    <form th:action="@{/exit}" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}" class="form-inline my-2 my-lg-0">
-            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
-        </form>
-	  </div>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/}">Inicio</a></li>
+
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarPaises}">Lista paises</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarDepartamentos}">Lista
+						departamentos</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarMunicipios}">Lista
+						municipios</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarProveedor}">Lista
+						proveedores</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarProducto}">Lista productos</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarVendedores}">Lista
+						vendedores</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a></li>
+			</ul>
+			<form th:action="@{/exit}"
+				sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}"
+				class="form-inline my-2 my-lg-0">
+				<input class="btn btn-outline-success my-2 my-sm-0" type="submit"
+					value="Salir" />
+			</form>
+		</div>
 	</nav>
-    
-        <div class="container my-5">
-            <h2 class="mb-5">Actualizar categoría</h2>
-            <div class="row">
-                <div class="col-md-6">
-                     <form action="#" th:action="@{/updateCategoria/{idCategoria}(idCategoria=${categorias.idCategoria})}" th:object="${categorias}" method="post">
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="nombre" class="col-form-label">Nombre</label>
-                                <input type="text" th:field="*{nombre}" class="form-control" id="nombre" placeholder="Nombre">
-                                <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="text-danger"></span>
-                            </div>
-                          
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mt-5">
-                                <input type="submit" class="btn btn-primary" 
-                                 value="Modificar">
-                            </div>
-                        </div>    
-                    </form>
-                </div>
-            </div>
-        </div>
-   <script th:src="@{/js/jquery.js}"></script>
-    <script th:src="@{/js/script.js}"></script>
-    
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+
+
+	<div id="carouselExampleSlidesOnly" class="carousel slide"
+		data-ride="carousel">
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src="../images/3.png" sec:authorize="${hasRole('ADMIN')}"
+					class="d-block w-100" alt="...">
+
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="container my-5">
+		<h2 class="mb-5">Actualizar categoría</h2>
+		<div class="row">
+			<div class="col-md-6">
+				<form action="#"
+					th:action="@{/updateCategoria/{idCategoria}(idCategoria=${categorias.idCategoria})}"
+					th:object="${categorias}" method="post">
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label for="nombre" class="col-form-label">Nombre</label> <input
+								type="text" th:field="*{nombre}" class="form-control"
+								id="nombre" placeholder="Nombre"> <span
+								th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+								class="text-danger"></span>
+						</div>
+
+					</div>
+					<div class="row">
+						<div class="col-md-6 mt-5">
+							<input type="submit" class="btn btn-primary" value="Modificar">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/js/jquery.js}"></script>
+	<script th:src="@{/js/script.js}"></script>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
 		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
 		crossorigin="anonymous"></script>
 	<script
@@ -88,6 +103,5 @@
 		integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
 		crossorigin="anonymous"></script>
 </body>
-<footer>
-</footer>
+<footer> </footer>
 </html>

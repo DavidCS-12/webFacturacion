@@ -23,8 +23,7 @@
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a
-					class="nav-link" th:href="@{/}">Inicio</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/}">Inicio</a></li>
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
 					class="nav-link" th:href="@{/listarcategorias}">Lista
 						categorías</a></li>
@@ -36,7 +35,7 @@
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
 					class="nav-link" th:href="@{/listarMunicipios}">Lista
 						municipios</a></li>
-				
+
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
 					class="nav-link" th:href="@{/listarProducto}">Lista productos</a></li>
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
@@ -47,11 +46,28 @@
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
 					class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a></li>
 			</ul>
-			<form th:action="@{/exit}" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}" class="form-inline my-2 my-lg-0">
-            	<input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
-        	</form>
+			<form th:action="@{/exit}"
+				sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}"
+				class="form-inline my-2 my-lg-0">
+				<input class="btn btn-outline-success my-2 my-sm-0" type="submit"
+					value="Salir" />
+			</form>
 		</div>
 	</nav>
+
+	<div id="carouselExampleSlidesOnly" class="carousel slide"
+		data-ride="carousel">
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src="../images/3.png"
+					sec:authorize="${hasRole('VENDEDOR') || hasRole('ADMIN')}"
+					class="d-block w-100" alt="...">
+			</div>
+		</div>
+
+	</div>
+
+
 	<div class="container my-5 text-center">
 		<h2 class="mb-5">Agregar proveedor</h2>
 		<div class="row justify-content-center text-center">
@@ -101,8 +117,7 @@
 							<label for="pais" class="col-form-label">País</label> <select
 								th:field="${paises}" id="pais" class="form-control">
 								<option th:each="pais : ${paises}" th:id="${pais.idPais}"
-									th:value="${pais.idPais}" th:text="${pais.nombre}">
-								</option>
+									th:value="${pais.idPais}" th:text="${pais.nombre}"></option>
 							</select>
 						</div>
 						<div class="form-group col-md-6">

@@ -1,173 +1,201 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Registro de usuarios</title>
-        <meta nombre="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" th:href="@{/css/all.css}">
-		<link rel="stylesheet" th:href="@{/css/brands.css}">
-		<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
-		<link rel="stylesheet" th:href="@{/css/solid.css}">
-		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    </head>
-    <body>
-    	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
-	  aria-expanded="false" aria-label="Toggle navigation">
-	  <span class="navbar-toggler-icon"></span>
-	  </button>
-	
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
-	    <li class="nav-item"><a
-					class="nav-link" th:href="@{/}">Inicio</a></li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
-	      </li>
-	    
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarProveedor}">Lista proveedores</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarProducto}">Lista productos</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarVendedores}">Lista vendedores</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a>
-	      </li>
-	     </ul>
-	    <form th:action="@{/exit}" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}" class="form-inline my-2 my-lg-0">
-            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
-        </form>
-	  </div>
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Registro de usuarios</title>
+<meta nombre="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/all.css}">
+<link rel="stylesheet" th:href="@{/css/brands.css}">
+<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
+<link rel="stylesheet" th:href="@{/css/solid.css}">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/}">Inicio</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarcategorias}">Lista
+						categorías</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarPaises}">Lista paises</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarDepartamentos}">Lista
+						departamentos</a></li>
+
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarProveedor}">Lista
+						proveedores</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarProducto}">Lista productos</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarVendedores}">Lista
+						vendedores</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a></li>
+			</ul>
+			<form th:action="@{/exit}"
+				sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}"
+				class="form-inline my-2 my-lg-0">
+				<input class="btn btn-outline-success my-2 my-sm-0" type="submit"
+					value="Salir" />
+			</form>
+		</div>
 	</nav>
-    
-    
-        <div class="container my-5 text-center">
-            <h2 class="mb-5">Agregar usuario</h2>
-            <div class="row justify-content-center text-center">
-                <div class="col-md-6">
-                    <form action="#" th:action="@{/add_usuario}" th:object="${usuario}" method="post">
-                        <div class="row">
-                         <div class="form-group col-md-6">
-                                <label for="dni" class="col-form-label">Documento</label>
-                                <input type="text" th:field="*{dni}" class="form-control" id="dni"  placeholder="Documento" required="required">
-                                <span th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" class="text-danger"></span>
-                            </div>
-                         
-                           <div class="form-group col-md-6">
-                                <label for="nombre" class="col-form-label">Nombre</label>
-                                <input type="text" th:field="*{nombre}" class="form-control" id="nombre" placeholder="Nombre" required="required">
-                                 <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="text-danger"></span>
-                            </div>
-                           
-                            <div class="form-group col-md-6">
-                                <label for="apellido" class="col-form-label">Apellido</label>
-                                <input type="text" th:field="*{apellido}" class="form-control" id="apellido" placeholder="Apellido" required="required">
-                                <span th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" class="text-danger"></span>
-                            </div>
-                            
-                             <div class="form-group col-md-6">
-                                <label for="telefono" class="col-form-label">Telefono</label>
-                                <input type="text" th:field="*{telefono}" class="form-control" id="telefono" placeholder="Telefono" required="required">
-                                 <span th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" class="text-danger"></span>
-                            </div>
-                           
-                            <div class="form-group col-md-6">
-                                <label for="contrasena" class="col-form-label">Contraseña</label>
-                                <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Contraseña" required="required">
-                                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></span>
-                            </div> 
-                            <div class="form-group col-md-6">
-                                <label for="email" class="col-form-label">Email</label>
-                                <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Email" required="required">
-                                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
-                            </div>
-                            <div class="form-group col-md-6">
-	                             <label for="pais" class="col-form-label">País</label>
-	                             <select  th:field="${paises}" id="pais" class="form-control">
-	          	                 	<option th:each="pais : ${paises}" 
-	          	                 			th:id="${pais.idPais}"
-	          	                    		th:value="${pais.idPais}" 
-	           	                    		th:text="${pais.nombre}"
-	           	                    		>
-	       	                    	</option>
-	       						</select>
-	                         </div>
-	                         <div class="form-group col-md-6">
-	                             <label for="departamento" class="col-form-label">Departamento</label>
-	                             <select th:field="${departamentos}" id="departamentos" class="form-control">
-	           	                   	<option th:fragment="departamentos" 
-	           	                    		th:each="depa : ${departamentos}"
-	           	                    		th:id="${depa.idDepartamento}" 
-	           	                    		th:value="${depa.idDepartamento}"
-	           	                    		th:text="${depa.nombre}"
-	           	                    		>
-	           	                   	</option>
-	        					</select>
-	                         </div>
-	                         <div class="form-group col-md-6">
-                   	        <label for="municipio" class="col-form-label">Municipio</label>
-	                            <select th:field="*{municipio}" id="municipios" class="form-control" >
-	           	                    	<option
-	           	                    		th:fragment="municipios" 
-	           	                    		th:each="mun : ${municipios}" 
-	           	                    		th:value="${mun.idMunicipio}" 
-	           	                    		th:text="${mun.nombre}">
-	           	                    	</option>
-	        					</select>
-	                       	</div>
-	                       	<div class="form-group col-md-6">
-	                            <label for="descripcion" class="col-form-label">Dirección</label>
-	                            <input type="text" th:field="*{direccion}" class="form-control" id="direccion" placeholder="Dirección" required="required">
-	                  	        <span th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}" class="text-danger"></span>
-	                       	</div>
-	                       	<div class="form-group col-md-6">
-	                           
-	                       	</div>
-	                       <div class="col-md-6 mt-5">
-                               
-                           </div>
-                           <input type="submit" class="btn btn-lg btn-primary btn-block mt-2" 
-                               id="btnAgregarusuario"  value="Agregar usuario" > 
-                           <a type="button" class="btn btn-lg btn-primary btn-block mt-2" th:href="@{/}">Inicio</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <script th:src="@{/js/jquery.js}"></script>
-        <script th:src="@{/js/bootstrap.min.js}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" 
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" 
-        crossorigin="anonymous"></script>
-        
-        <script th:inline="javascript">
-			$(function() {
-				$("#departamentos").load('/ajax/departamentos', "id_pais="+$("#pais").val());
-				$('#pais').on('change', function() {
-					$("#departamentos").load('/ajax/departamentos', "id_pais="+$("#pais").val());
-				});
-			});
-			$(function() {
-				$("#municipios").load('/ajax/municipios', "id_departamento="+$("#departamentos").val());
-				$('#departamentos').on('change', function() {
-					$("#municipios").load('/ajax/municipios', "id_departamento="+$("#departamentos").val());
-				});
-			});
-		</script>        
-    </body>
+
+	<div id="carouselExampleSlidesOnly" class="carousel slide"
+		data-ride="carousel">
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src="../images/3.png"
+					sec:authorize="${hasRole('VENDEDOR') || hasRole('ADMIN')}"
+					class="d-block w-100" alt="...">
+			</div>
+		</div>
+
+	</div>
+
+	<div class="container my-5 text-center">
+		<h2 class="mb-5">Agregar usuario</h2>
+		<div class="row justify-content-center text-center">
+			<div class="col-md-6">
+				<form action="#" th:action="@{/add_usuario}" th:object="${usuario}"
+					method="post">
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label for="dni" class="col-form-label">Documento</label> <input
+								type="text" th:field="*{dni}" class="form-control" id="dni"
+								placeholder="Documento" required="required"> <span
+								th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"
+								class="text-danger"></span>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="nombre" class="col-form-label">Nombre</label> <input
+								type="text" th:field="*{nombre}" class="form-control"
+								id="nombre" placeholder="Nombre" required="required"> <span
+								th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+								class="text-danger"></span>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="apellido" class="col-form-label">Apellido</label> <input
+								type="text" th:field="*{apellido}" class="form-control"
+								id="apellido" placeholder="Apellido" required="required">
+							<span th:if="${#fields.hasErrors('apellido')}"
+								th:errors="*{apellido}" class="text-danger"></span>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="telefono" class="col-form-label">Telefono</label> <input
+								type="text" th:field="*{telefono}" class="form-control"
+								id="telefono" placeholder="Telefono" required="required">
+							<span th:if="${#fields.hasErrors('telefono')}"
+								th:errors="*{telefono}" class="text-danger"></span>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="contrasena" class="col-form-label">Contraseña</label>
+							<input type="password" th:field="*{password}"
+								class="form-control" id="password" placeholder="Contraseña"
+								required="required"> <span
+								th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+								class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="email" class="col-form-label">Email</label> <input
+								type="email" th:field="*{email}" class="form-control" id="email"
+								placeholder="Email" required="required"> <span
+								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+								class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="pais" class="col-form-label">País</label> <select
+								th:field="${paises}" id="pais" class="form-control">
+								<option th:each="pais : ${paises}" th:id="${pais.idPais}"
+									th:value="${pais.idPais}" th:text="${pais.nombre}"></option>
+							</select>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="departamento" class="col-form-label">Departamento</label>
+							<select th:field="${departamentos}" id="departamentos"
+								class="form-control">
+								<option th:fragment="departamentos"
+									th:each="depa : ${departamentos}"
+									th:id="${depa.idDepartamento}"
+									th:value="${depa.idDepartamento}" th:text="${depa.nombre}">
+								</option>
+							</select>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="municipio" class="col-form-label">Municipio</label> <select
+								th:field="*{municipio}" id="municipios" class="form-control">
+								<option th:fragment="municipios" th:each="mun : ${municipios}"
+									th:value="${mun.idMunicipio}" th:text="${mun.nombre}">
+								</option>
+							</select>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="descripcion" class="col-form-label">Dirección</label>
+							<input type="text" th:field="*{direccion}" class="form-control"
+								id="direccion" placeholder="Dirección" required="required">
+							<span th:if="${#fields.hasErrors('direccion')}"
+								th:errors="*{direccion}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6"></div>
+						<div class="col-md-6 mt-5"></div>
+						<input type="submit" class="btn btn-lg btn-primary btn-block mt-2"
+							id="btnAgregarusuario" value="Agregar usuario"> <a
+							type="button" class="btn btn-lg btn-primary btn-block mt-2"
+							th:href="@{/}">Inicio</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/js/jquery.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+
+	<script th:inline="javascript">
+		$(function() {
+			$("#departamentos").load('/ajax/departamentos',
+					"id_pais=" + $("#pais").val());
+			$('#pais').on(
+					'change',
+					function() {
+						$("#departamentos").load('/ajax/departamentos',
+								"id_pais=" + $("#pais").val());
+					});
+		});
+		$(function() {
+			$("#municipios").load('/ajax/municipios',
+					"id_departamento=" + $("#departamentos").val());
+			$('#departamentos')
+					.on(
+							'change',
+							function() {
+								$("#municipios").load(
+										'/ajax/municipios',
+										"id_departamento="
+												+ $("#departamentos").val());
+							});
+		});
+	</script>
+</body>
 </html>

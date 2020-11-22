@@ -23,34 +23,49 @@
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a
-					class="nav-link" th:href="@{/}">Inicio</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/}">Inicio</a></li>
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
-					class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a></li>
+					class="nav-link" th:href="@{/listarcategorias}">Lista
+						categorías</a></li>
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
-					class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
-				</li>
+					class="nav-link" th:href="@{/listarPaises}">Lista paises</a></li>
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
-					class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
-				</li>
+					class="nav-link" th:href="@{/listarDepartamentos}">Lista
+						departamentos</a></li>
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
-					class="nav-link" th:href="@{/listarMunicipios}">Lista municipios</a>
-				</li>
+					class="nav-link" th:href="@{/listarMunicipios}">Lista
+						municipios</a></li>
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
-					class="nav-link" th:href="@{/listarProveedor}">Lista proveedores</a>
-				</li>
+					class="nav-link" th:href="@{/listarProveedor}">Lista
+						proveedores</a></li>
 				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
-					class="nav-link" th:href="@{/listarProducto}">Lista proproductos</a>
-				</li>
-				<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}">
-	      			<a class="nav-link" th:href="@{/listarBodegasVendedor/{email}(email=${#httpServletRequest.remoteUser})}">Mis bodegas</a>
-	      		</li>
+					class="nav-link" th:href="@{/listarProducto}">Lista
+						proproductos</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}"><a
+					class="nav-link"
+					th:href="@{/listarBodegasVendedor/{email}(email=${#httpServletRequest.remoteUser})}">Mis
+						bodegas</a></li>
 			</ul>
-			<form th:action="@{/exit}" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}" class="form-inline my-2 my-lg-0">
-            	<input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
-        	</form>
+			<form th:action="@{/exit}"
+				sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}"
+				class="form-inline my-2 my-lg-0">
+				<input class="btn btn-outline-success my-2 my-sm-0" type="submit"
+					value="Salir" />
+			</form>
 		</div>
 	</nav>
+
+	<div id="carouselExampleSlidesOnly" class="carousel slide"
+		data-ride="carousel">
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src="../images/3.png"
+					sec:authorize="${hasRole('ADMIN')||hasRole('VENDEDOR')}"
+					class="d-block w-100" alt="...">
+
+			</div>
+		</div>
+	</div>
 
 
 	<div class="container register">
@@ -60,81 +75,74 @@
 			</div>
 			<div class="col-md-9 register-right mt-5">
 				<h3 class="register-heading">Actualizar Bodega</h3>
-				<form th:object="${bodega}" action="#" th:action="@{/updateBodega/{idBodega}(idBodega=${bodega.idBodega})}" 
+				<form th:object="${bodega}" action="#"
+					th:action="@{/updateBodega/{idBodega}(idBodega=${bodega.idBodega})}"
 					method="post">
 					<div class="tab-content" id="myTabContent">
-						<input type="text" th:field="*{usuario}" class="form-control" id="usuario" style="visibility:hidden">				
+						<input type="text" th:field="*{usuario}" class="form-control"
+							id="usuario" style="visibility: hidden">
 						<div class="row">
-							<div class="form-group col-md-6"  sec:authorize="${hasRole('ADMIN')}">
-								<label for="Usuario" class="col-form-label">Vendedor</label> 
-								<select th:field="*{usuario}" id="usuario" class="form-control">
+							<div class="form-group col-md-6"
+								sec:authorize="${hasRole('ADMIN')}">
+								<label for="Usuario" class="col-form-label">Vendedor</label> <select
+									th:field="*{usuario}" id="usuario" class="form-control">
 									<option th:value="*{usuario.dni}" th:text="*{usuario.nombre}"
-										th:selected="selected">
-									</option>
+										th:selected="selected"></option>
 									<option th:each="usu : ${usuarios}"
 										th:if="(${usu.dni}!=*{usuario.dni})" th:id="${usu.dni}"
-										th:value="${usu.dni}" th:text="${usu.nombre}">
-									</option>
+										th:value="${usu.dni}" th:text="${usu.nombre}"></option>
 								</select>
 							</div>
-							<div class="form-group col-md-6" sec:authorize="${hasRole('VENDEDOR')}" >
-								<label for="Usuario" class="col-form-label">Vendedor</label>
-								<input type="text" th:field="${bodega.usuario.nombre}" class="form-control" id="usuario" readonly="readonly">
-                                <span th:if="${#fields.hasErrors('usuario')}" th:errors="*{usuario.nombre}" class="text-danger"></span>
+							<div class="form-group col-md-6"
+								sec:authorize="${hasRole('VENDEDOR')}">
+								<label for="Usuario" class="col-form-label">Vendedor</label> <input
+									type="text" th:field="${bodega.usuario.nombre}"
+									class="form-control" id="usuario" readonly="readonly">
+								<span th:if="${#fields.hasErrors('usuario')}"
+									th:errors="*{usuario.nombre}" class="text-danger"></span>
 							</div>
 							<div class="form-group col-md-6">
 								<label for="pais" class="col-form-label">País</label> <select
-									th:field="*{municipio.departamento.pai}" id="pais" class="form-control">
-									<option 
-										th:each="pais : ${paises}"
-										th:id="${pais.idPais}" 
-										th:value="${pais.idPais}"
-										th:text="${pais.nombre}"
-										th:selected="${pais.idPais==bodega.municipio.departamento.pai.idPais}" 
-									>
+									th:field="*{municipio.departamento.pai}" id="pais"
+									class="form-control">
+									<option th:each="pais : ${paises}" th:id="${pais.idPais}"
+										th:value="${pais.idPais}" th:text="${pais.nombre}"
+										th:selected="${pais.idPais==bodega.municipio.departamento.pai.idPais}">
 									</option>
 								</select>
 							</div>
 							<div class="form-group col-md-6">
 								<label for="departamentos" class="col-form-label">Departamento</label>
-								<select   th:field="*{municipio.departamento}" id="departamentos" class="form-control">
-									<option
-										th:fragment="departamentos" 
+								<select th:field="*{municipio.departamento}" id="departamentos"
+									class="form-control">
+									<option th:fragment="departamentos"
 										th:each="depa : ${departamentos}"
 										th:id="${depa.idDepartamento}"
-										th:value="${depa.idDepartamento}" 
-										th:text="${depa.nombre}"
-										th:selected="${depa.idDepartamento==bodega.municipio.departamento.idDepartamento}"
-										>
+										th:value="${depa.idDepartamento}" th:text="${depa.nombre}"
+										th:selected="${depa.idDepartamento==bodega.municipio.departamento.idDepartamento}">
 									</option>
 								</select>
 							</div>
 							<div class="form-group col-md-6">
 								<label for="municipios" class="col-form-label">Municipio</label>
-								<select id="municipios" name="municipio" th:field="*{municipio}" 
+								<select id="municipios" name="municipio" th:field="*{municipio}"
 									class="form-control">
 									<option th:value="''" th:text="Select"></option>
-									<option
-										th:fragment="municipios"
-										th:each="mun : ${municipios}"
-										th:value="${mun.idMunicipio}" 
-										th:text="${mun.nombre}"
-										th:selected="${mun.idMunicipio} == *{municipio.idMunicipio}"
-										>
-										
+									<option th:fragment="municipios" th:each="mun : ${municipios}"
+										th:value="${mun.idMunicipio}" th:text="${mun.nombre}"
+										th:selected="${mun.idMunicipio} == *{municipio.idMunicipio}">
+
 									</option>
 								</select>
 							</div>
 
 							<div class="form-group col-md-6">
-								<label for="descripcion" class="col-form-label" th:text="Direccion"></label> 
-									<input type="text"
+								<label for="descripcion" class="col-form-label"
+									th:text="Direccion"></label> <input type="text"
 									th:field="*{direccion}" class="form-control" id="direccion"
-									th:placeholder="Direccion" required="required">
-									<span
+									th:placeholder="Direccion" required="required"> <span
 									th:if="${#fields.hasErrors('direccion')}"
-									th:errors="*{direccion}" class="text-danger">
-									</span>
+									th:errors="*{direccion}" class="text-danger"> </span>
 
 								<div class="col-md-6 mt-5">
 									<input type="submit" class="btn btn-primary"
@@ -160,14 +168,18 @@
 
 	<script th:inline="javascript">
 		$(function() {
-			$("#departamentos").load('/ajax/departamentos',"id_pais=" + $("#pais").val());
-			$('#pais').on('change',
+			$("#departamentos").load('/ajax/departamentos',
+					"id_pais=" + $("#pais").val());
+			$('#pais').on(
+					'change',
 					function() {
-						$("#departamentos").load('/ajax/departamentos',"id_pais=" + $("#pais").val());
+						$("#departamentos").load('/ajax/departamentos',
+								"id_pais=" + $("#pais").val());
 					});
 		});
 		$(function() {
-			$("#municipios").load('/ajax/municipios',"id_departamento=" + $("#departamentos").val());
+			$("#municipios").load('/ajax/municipios',
+					"id_departamento=" + $("#departamentos").val());
 			$('#departamentos')
 					.on(
 							'change',
