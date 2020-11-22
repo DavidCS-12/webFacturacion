@@ -6,10 +6,11 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>Agregar departamento</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-        <link rel="stylesheet" href="/css/shards.min.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
         <link rel="stylesheet" th:href="@{/css/all.css}">
+		<link rel="stylesheet" th:href="@{/css/brands.css}">
+		<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
+		<link rel="stylesheet" th:href="@{/css/solid.css}">
+		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
       	<script th:src="@{/js/all.js}"></script>     
     </head>
     <body>
@@ -21,8 +22,8 @@
 	
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
-	    <li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
-					class="nav-link" th:href="@{/index}">Inicio</a></li>
+	    <li class="nav-item"><a
+					class="nav-link" th:href="@{/}">Inicio</a></li>
 	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
 	        <a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
 	      </li>
@@ -49,9 +50,10 @@
 	        <a class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a>
 	      </li>
 	     </ul>
-	    <form th:action="@{/}" method="post" class="form-inline my-2 my-lg-0">
+	    <form th:action="@{/exit}" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}" class="form-inline my-2 my-lg-0">
             <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
         </form>
+        
 	  </div>
 	</nav>
             <div class="container my-5 text-center">

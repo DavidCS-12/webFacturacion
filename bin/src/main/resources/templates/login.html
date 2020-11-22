@@ -1,4 +1,5 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
 		<meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -13,13 +14,58 @@
         
 	</head>
 	<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">	 	
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav mr-auto">
+	    <li class="nav-item"><a
+					class="nav-link" th:href="@{/}">Inicio</a></li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
+	      </li>
+	     
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarProveedor}">Lista proveedores</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarProducto}">Lista productos</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarVendedores}">Lista vendedores</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
+	        <a class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}">
+	        <a class="nav-link" th:href="@{/listarBodegasVendedor/{email}(email=${#httpServletRequest.remoteUser})}">Mis Bodegas</a>
+	      </li>
+	      <li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}">
+	        <a class="nav-link" th:href="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}">Historial de ventas</a>
+	      </li>
+	    </ul>
+	    <form th:action="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}" class="form-inline my-2 my-lg-0 mr-2" sec:authorize="${hasRole('CLIENTE')}">
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Mis compras" />
+        </form>
+	    <form th:action="@{/exit}" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}" class="form-inline my-2 my-lg-0">
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
+        </form>
+        </div>
+	</nav>
 	<div class="modal-dialog text-center">
         <div class="col-sm-8 main-section">
             <div class="modal-content">
                 <div class="col-12 user-img">
                     <img th:src="@{/images/user.png}"/>
                 </div>
-                <form class="col-12" th:action="@{/}" method="post">
+                <form class="col-12" th:action="@{/login}" method="post">
                     <div class="form-group" id="user-group">
                         <input type="email" class="form-control" placeholder="Email" name="email"/>
                     </div>
