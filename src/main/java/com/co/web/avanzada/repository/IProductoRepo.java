@@ -2,6 +2,8 @@ package com.co.web.avanzada.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -18,4 +20,7 @@ CrudRepository<Producto, Integer>{
 	
 	@Query("Select P from Producto P, Inventario I where I.producto.codigoProducto=P.codigoProducto and I.cantidad>0")
 	List<Producto> findByInventario();
+	
+	Page<Producto> findAll(Pageable pageable);
+	
 }

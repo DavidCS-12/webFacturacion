@@ -1,9 +1,13 @@
 package com.co.web.avanzada.controler;
 
 
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +23,7 @@ import com.co.web.avanzada.entity.Producto;
 import com.co.web.avanzada.repository.ICategoriaRepo;
 import com.co.web.avanzada.repository.IProductoRepo;
 import com.co.web.avanzada.repository.IProveedorRepo;
+import com.co.web.avanzada.util.RenderizadorPaginas;
 
 @Controller
 public class ProductoController {
@@ -138,7 +143,14 @@ public class ProductoController {
     
     /*Método encargado de enviar al modelo o plantilla la lista de productos existentes en la base de datos.*/
     @GetMapping("/listarProducto")
-    public String ListarProductos(Model model) {
+    public String ListarProductos(@RequestParam(name="page",defaultValue = "0")int page,Model model) {
+    
+    	Pageable userPegeable = PageRequest.of(page, 5);
+    	Page<Producto> producto = iProductoRepo.findAll(userPegeable);
+    	RenderizadorPaginas<Producto> renderizadorPaginas = new RenderizadorPaginas<Producto>("/listarProducto", producto);
+    	
+    	model.addAttribute("page",renderizadorPaginas);
+    	model.addAttribute("productos", producto);
     	/*Se buscan los productos mediante el método del repositorio findbyid y se cargan en la variable 'productos' 
     	 * a la plantilla o medelo de la plantilla.*/
     	model.addAttribute("productos", iProductoRepo.findAll());
