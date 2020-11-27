@@ -1,143 +1,171 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Registro de productos</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" th:href="@{/css/all.css}">
-		<link rel="stylesheet" th:href="@{/css/brands.css}">
-		<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
-		<link rel="stylesheet" th:href="@{/css/solid.css}">
-		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    </head>
-    <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
-	  aria-expanded="false" aria-label="Toggle navigation">
-	  <span class="navbar-toggler-icon"></span>
-	  </button>
-	
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
-	    <li class="nav-item"><a
-					class="nav-link" th:href="@{/}">Inicio</a></li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarMunicipios}">Lista municipios</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarProveedor}">Lista proveedores</a>
-	      </li>
-	      
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarVendedores}">Lista vendedores</a>
-	      </li>
-	      <li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        <a class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a>
-	      </li>
-	     </ul>
-	    <form th:action="@{/exit}" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}" class="form-inline my-2 my-lg-0">
-            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
-        </form>
-	  </div>
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Registro de productos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/all.css}">
+<link rel="stylesheet" th:href="@{/css/brands.css}">
+<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
+<link rel="stylesheet" th:href="@{/css/solid.css}">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/}">Inicio</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarcategorias}">Lista
+						categorías</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarPaises}">Lista paises</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarDepartamentos}">Lista
+						departamentos</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarMunicipios}">Lista
+						municipios</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarProveedor}">Lista
+						proveedores</a></li>
+
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarVendedores}">Lista
+						vendedores</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a></li>
+			</ul>
+			<form th:action="@{/exit}"
+				sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}"
+				class="form-inline my-2 my-lg-0">
+				<input class="btn btn-outline-success my-2 my-sm-0" type="submit"
+					value="Salir" />
+			</form>
+		</div>
 	</nav>
-        <div class="container my-5 text-center">
-            <h2 class="mb-5">Agregar producto</h2>
-            <div class="row justify-content-center text-center">
-                <div class="col-md-6">
-                    <form action="#" th:action="@{/add_producto}" th:object="${producto}" enctype="multipart/form-data" method="post">
-                        <div class="row">
-                         <div class="form-group col-md-6">
-                                <label for="codigoProducto" class="col-form-label">Código del producto</label>
-                                <input type="number" th:field="*{codigoProducto}" class="form-control" id="codigoProducto" placeholder="Codigo del producto" required="required">
-                                <span th:if="${#fields.hasErrors('codigoProducto')}" th:errors="*{codigoProducto}" class="text-danger"></span>
-                            </div>
-                         	<div class="form-group col-md-6">
-                                <label for="Nombre" class="col-form-label">nombre</label>
-                                <input type="text" th:field="*{nombre}" class="form-control" id="nombre" placeholder="Nombre del producto" required="required">
-                                 <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="text-danger"></span>
-                            </div>
-                           <div class="form-group col-md-6">
-                                <label for="Descripción" class="col-form-label">Descripción</label>
-                                <input type="text" th:field="*{descripcion}" class="form-control" id="descripcion" placeholder="descripcion" required="required">
-                                 <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" class="text-danger"></span>
-                            </div>
-                           
-                             <div class="form-group col-md-6">
-                                <label for="precioCompra" class="col-form-label">Precio de compra</label>
-                                <input type="number" th:field="*{precioCompra}" class="form-control" id="precioCompra" placeholder="Precio de compra" required="required">
-                                 <span th:if="${#fields.hasErrors('precioCompra')}" th:errors="*{precioCompra}" class="text-danger"></span>
-                            </div>
-                           
-                            <div class="form-group col-md-6">
-                                <label for="precioVenta" class="col-form-label">Precio de venta</label>
-                                <input type="number" th:field="*{precioVenta}" class="form-control" id="precioVenta" placeholder="Precio de venta" required="required">
-                                <span th:if="${#fields.hasErrors('precioVenta')}" th:errors="*{precioVenta}" class="text-danger"></span>
-                            </div> 
-                            <div class="form-group col-md-6">
-	                             <label for="categoria" class="col-form-label">Categoría</label>
-	                             <select th:field="*{categoria}" id="categorias" class="form-control">
-	           	                   	<option
-	           	                    		th:each="cate : ${categorias}"
-	           	                    		th:id="${cate.idCategoria}" 
-	           	                    		th:value="${cate.idCategoria}"
-	           	                    		th:text="${cate.nombre}"
-	           	                    		>
-	           	                   	</option>
-	        					</select>
-	                         </div>
-	                         <div class="form-group col-md-6">
-                   	        <label for="proveedor" class="col-form-label">Proveedor</label>
-	                            <select th:field="*{proveedor}" id="proveedor" class="form-control" >
-	           	                    	<option
-	           	                    		th:fragment="proveedor" 
-	           	                    		th:each="pro : ${proveedor}" 
-	           	                    		th:value="${pro.nit}" 
-	           	                    		th:text="${pro.nombreProveedor}">
-	           	                    	</option>
-	        					</select>
-	                       	</div>
-	                       	<div class="form-group col-md-6">
-	                            	<label for="titulo" class="col-form-label">URL</label>
-	                            	<div class="form-group">
-                    				<label for="file-upload" class="subir btn btn-primary" >
-                        				<i>Subir imagen</i> 
-                    				</label>
-					                    <input type="file" id="file-upload" accept="image/" class="form-control-file" style='display: none;' name="file">
-					                    <span th:if="${#fields.hasErrors('urlFoto')}" th:errors="{urlFoto}" class="text-danger"></span>
-					                    <div>
-					                        <img id="imcargar" src="/imagenes/sinImagen.jpg" class="img-fluid rounded mt-2" style='width: 14rem; heigth: auto;'>
-					                    </div>
-                					</div>
-                            </div>
-	                       	<div class="form-group col-md-6">
-	                       		<input type="submit" class="btn btn-lg btn-primary btn-block mt-2" 
-                              	 id="btnAgregarproducto"  value="Agregar producto" > 
-                        	</div>
-                      	</div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        
-        <script th:src="@{/js/jquery.js}"></script>
-        <script src="js/subirImagen.js" th:src="@{/js/subirImagen.js}"></script>
-        <script th:src="@{/js/bootstrap.min.js}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" 
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" 
-        crossorigin="anonymous"></script>        
-    </body>
+
+	<div id="carouselExampleSlidesOnly" class="carousel slide"
+		data-ride="carousel">
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src="../images/3.png"
+					sec:authorize="${hasRole('VENDEDOR') || hasRole('ADMIN')}"
+					class="d-block w-100" alt="...">
+			</div>
+		</div>
+
+	</div>
+
+
+	<div class="container my-5 text-center">
+		<h2 class="mb-5">Agregar producto</h2>
+		<div class="row justify-content-center text-center">
+			<div class="col-md-6">
+				<form action="#" th:action="@{/add_producto}"
+					th:object="${producto}" enctype="multipart/form-data" method="post">
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label for="codigoProducto" class="col-form-label">Código
+								del producto</label> <input type="number" th:field="*{codigoProducto}"
+								class="form-control" id="codigoProducto"
+								placeholder="Codigo del producto" required="required"> <span
+								th:if="${#fields.hasErrors('codigoProducto')}"
+								th:errors="*{codigoProducto}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="Nombre" class="col-form-label">nombre</label> <input
+								type="text" th:field="*{nombre}" class="form-control"
+								id="nombre" placeholder="Nombre del producto"
+								required="required"> <span
+								th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+								class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="Descripción" class="col-form-label">Descripción</label>
+							<input type="text" th:field="*{descripcion}" class="form-control"
+								id="descripcion" placeholder="descripcion" required="required">
+							<span th:if="${#fields.hasErrors('descripcion')}"
+								th:errors="*{descripcion}" class="text-danger"></span>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="precioCompra" class="col-form-label">Precio
+								de compra</label> <input type="number" th:field="*{precioCompra}"
+								class="form-control" id="precioCompra"
+								placeholder="Precio de compra" required="required"> <span
+								th:if="${#fields.hasErrors('precioCompra')}"
+								th:errors="*{precioCompra}" class="text-danger"></span>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="precioVenta" class="col-form-label">Precio de
+								venta</label> <input type="number" th:field="*{precioVenta}"
+								class="form-control" id="precioVenta"
+								placeholder="Precio de venta" required="required"> <span
+								th:if="${#fields.hasErrors('precioVenta')}"
+								th:errors="*{precioVenta}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="categoria" class="col-form-label">Categoría</label> <select
+								th:field="*{categoria}" id="categorias" class="form-control">
+								<option th:each="cate : ${categorias}"
+									th:id="${cate.idCategoria}" th:value="${cate.idCategoria}"
+									th:text="${cate.nombre}"></option>
+							</select>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="proveedor" class="col-form-label">Proveedor</label> <select
+								th:field="*{proveedor}" id="proveedor" class="form-control">
+								<option th:fragment="proveedor" th:each="pro : ${proveedor}"
+									th:value="${pro.nit}" th:text="${pro.nombreProveedor}">
+								</option>
+							</select>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="titulo" class="col-form-label">URL</label>
+							<div class="form-group">
+								<label for="file-upload" class="subir btn btn-primary">
+									<i>Subir imagen</i>
+								</label> <input type="file" id="file-upload" accept="image/"
+									class="form-control-file" style='display: none;' name="file">
+								<span th:if="${#fields.hasErrors('urlFoto')}"
+									th:errors="{urlFoto}" class="text-danger"></span>
+								<div>
+									<img id="imcargar" src="/imagenes/sinImagen.jpg"
+										class="img-fluid rounded mt-2"
+										style='width: 14rem; heigth: auto;'>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-md-6">
+							<input type="submit"
+								class="btn btn-lg btn-primary btn-block mt-2"
+								id="btnAgregarproducto" value="Agregar producto">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script th:src="@{/js/jquery.js}"></script>
+	<script src="js/subirImagen.js" th:src="@{/js/subirImagen.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+</body>
 </html>

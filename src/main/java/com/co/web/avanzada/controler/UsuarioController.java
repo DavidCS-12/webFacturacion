@@ -2,12 +2,18 @@ package com.co.web.avanzada.controler;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.co.web.avanzada.entity.Authority;
 import com.co.web.avanzada.entity.Departamento;
 import com.co.web.avanzada.entity.Municipio;
+import com.co.web.avanzada.entity.Producto;
 import com.co.web.avanzada.entity.Usuario;
 import com.co.web.avanzada.repository.AuthorityRepository;
 import com.co.web.avanzada.repository.IDepartamentoRepo;
@@ -73,8 +80,20 @@ public class UsuarioController {
 
 	 /*Método que direcciona al inicio del menu de un administrador.*/
     @RequestMapping("/")
-	public String InicioAdmin(Model model) {
-    	model.addAttribute("productos", iProductoRepo.findByInventario());
+	public String InicioAdmin(@RequestParam Map<String, Object> params,Model model) {
+    	int page = params.get("page") != null ? Integer.valueOf(params.get("page").toString())-1 : 0;
+    	PageRequest pageRequest = PageRequest.of(page, 9);
+    	Page<Producto> pageProducto = iProductoRepo.findByInventario(pageRequest);
+    	
+    	int totalPage = pageProducto.getTotalPages();
+    	List<Integer> pages = null;
+    	if(totalPage>0) {
+    		pages = IntStream.rangeClosed(1, totalPage).boxed().collect(Collectors.toList());
+    	}
+    	/*Se buscan los productos mediante el método del repositorio findbyid y se cargan en la variable 'productos' 
+    	 * a la plantilla o medelo de la plantilla.*/
+    	model.addAttribute("productos", pageProducto.getContent());
+    	model.addAttribute("pages", pages);
 		return "index";
 	}
     @RequestMapping("/exit") 

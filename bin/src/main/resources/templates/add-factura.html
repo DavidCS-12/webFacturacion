@@ -1,112 +1,131 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Registro de facturas</title>
-    <meta nombre="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" th:href="@{/css/all.css}">
-	<link rel="stylesheet" th:href="@{/css/brands.css}">
-	<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
-	<link rel="stylesheet" th:href="@{/css/solid.css}">
-	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Registro de facturas</title>
+<meta nombre="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/all.css}">
+<link rel="stylesheet" th:href="@{/css/brands.css}">
+<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
+<link rel="stylesheet" th:href="@{/css/solid.css}">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">	 	
-	 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
-	    	<li class="nav-item">
-	    		<a class="nav-link" th:href="@{/}">Inicio</a></li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
-	      	</li>
-	     
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-		        <a class="nav-link" th:href="@{/listarProveedor}">Lista proveedores</a>
-		    </li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarProducto}">Lista productos</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarVendedores}">Lista vendedores</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}">
-	        	<a class="nav-link" th:href="@{/listarBodegasVendedor/{email}(email=${#httpServletRequest.remoteUser})}">Mis Bodegas</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}">
-	        	<a class="nav-link" th:href="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}">Historial de ventas</a>
-	      	</li>
-	    </ul>
-	    <form th:action="@{/carroCompras}" method="post" class="form-inline my-2 my-lg-0 mr-2" sec:authorize="${hasRole('CLIENTE')}">
-            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Mi Carrito" />
-        </form>
-	    <form th:action="@{/exit}" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}" class="form-inline my-2 my-lg-0">
-            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
-        </form>
-    </div>
-</nav>
-<div class="container my-5 text-center">
-            <h2 class="mb-5">Crear nueva factura</h2>
-            <div class="row justify-content-center text-center">
-                <div class="col-md-6">
-                    <form action="#" th:action="@{/add_factura}" th:object="${factura}" method="post">
-                        <div class="row">
-                           <div class="form-group col-md-6">
-                                <label for="valorCompra" class="col-form-label">Valor Sin IVA</label>
-                                <input type="Number" th:field="*{valorCompra}" class="form-control" id="valorCompraIva" placeHolder="0" required="required" readonly="readonly">
-                                 <span th:if="${#fields.hasErrors('valorCompra')}" th:errors="*{valorCompra}" class="text-danger"></span>
-                            </div>
-                           
-                            <div class="form-group col-md-6">
-                                <label for="valorCompraIva" class="col-form-label">Valor Con IVA</label>
-                                <input type="Number" th:field="*{valorCompraIva}" class="form-control" id="valorCompraIva" placeHolder="0" required="required" readonly="readonly">
-                                <span th:if="${#fields.hasErrors('valorCompraIva')}" th:errors="*{valorCompraIva}" class="text-danger"></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="despacho" class="col-form-label">Cliente Despacho</label>
-                                <input type="text"
-									th:value="${despacho.cliente.nombre+' '+despacho.cliente.apellido+' - '+despacho.cliente.dni}" 
-									class="form-control" id="despachoCliente"
-									readonly="readonly">
-								<input type="text"
-									th:field="${despacho.idDespacho}" 
-									class="form-control" id="idDespacho"
-									style="visibility:hidden">
-								<input type="text"
-									th:field="*{despachoPedido}"
-									th:fragment="vendedor"
-									class="form-control" id="despachoPedido"
-									style="visibility:hidden">
-								<span th:if="${#fields.hasErrors('despachoPedido')}"
-									th:errors="*{despachoPedido}" 
-									class="text-danger">
-								</span>
-                            </div>
-                     
-                           <input type="submit" class="btn btn-lg btn-primary btn-block mt-2" 
-                               id="btnAgregar"  value="Agregar"> 
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-<script th:src="@{/js/jquery.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:inline="javascript">
-	$('#despachoPedido').val($('#idDespacho').val());
-</script>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/}">Inicio</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarcategorias}">Lista
+						categorías</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarPaises}">Lista paises</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarDepartamentos}">Lista
+						departamentos</a></li>
+
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarProveedor}">Lista
+						proveedores</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarProducto}">Lista productos</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarVendedores}">Lista
+						vendedores</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}"><a
+					class="nav-link"
+					th:href="@{/listarBodegasVendedor/{email}(email=${#httpServletRequest.remoteUser})}">Mis
+						Bodegas</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}"><a
+					class="nav-link"
+					th:href="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}">Historial
+						de ventas</a></li>
+			</ul>
+			<form th:action="@{/carroCompras}" method="post"
+				class="form-inline my-2 my-lg-0 mr-2"
+				sec:authorize="${hasRole('CLIENTE')}">
+				<input class="btn btn-outline-success my-2 my-sm-0" type="submit"
+					value="Mi Carrito" />
+			</form>
+			<form th:action="@{/exit}"
+				sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}"
+				class="form-inline my-2 my-lg-0">
+				<input class="btn btn-outline-success my-2 my-sm-0" type="submit"
+					value="Salir" />
+			</form>
+		</div>
+	</nav>
+
+	<div id="carouselExampleSlidesOnly" class="carousel slide"
+		data-ride="carousel">
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src="../images/3.png"
+					sec:authorize="${hasRole('ADMIN')||hasRole('VENDEDOR')}"
+					class="d-block w-100" alt="...">
+					<img src="../images/2.png"
+					sec:authorize="${hasRole('CLIENTE')}"
+					class="d-block w-100" alt="...">
+
+			</div>
+		</div>
+	</div>
+
+	<div class="container my-5 text-center">
+		<h2 class="mb-5">Crear nueva factura</h2>
+		<div class="row justify-content-center text-center">
+			<div class="col-md-6">
+				<form action="#" th:action="@{/add_factura}" th:object="${factura}"
+					method="post">
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label for="valorCompra" class="col-form-label">Valor Sin
+								IVA</label> <input type="Number" th:field="*{valorCompra}"
+								class="form-control" id="valorCompraIva" placeHolder="0"
+								required="required" readonly="readonly"> <span
+								th:if="${#fields.hasErrors('valorCompra')}"
+								th:errors="*{valorCompra}" class="text-danger"></span>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="valorCompraIva" class="col-form-label">Valor
+								Con IVA</label> <input type="Number" th:field="*{valorCompraIva}"
+								class="form-control" id="valorCompraIva" placeHolder="0"
+								required="required" readonly="readonly"> <span
+								th:if="${#fields.hasErrors('valorCompraIva')}"
+								th:errors="*{valorCompraIva}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="despacho" class="col-form-label">Cliente
+								Despacho</label> <input type="text"
+								th:value="${despacho.cliente.nombre+' '+despacho.cliente.apellido+' - '+despacho.cliente.dni}"
+								class="form-control" id="despachoCliente" readonly="readonly">
+							<input type="text" th:field="${despacho.idDespacho}"
+								class="form-control" id="idDespacho" style="visibility: hidden">
+							<input type="text" th:field="*{despachoPedido}"
+								th:fragment="vendedor" class="form-control" id="despachoPedido"
+								style="visibility: hidden"> <span
+								th:if="${#fields.hasErrors('despachoPedido')}"
+								th:errors="*{despachoPedido}" class="text-danger"> </span>
+						</div>
+
+						<input type="submit" class="btn btn-lg btn-primary btn-block mt-2"
+							id="btnAgregar" value="Agregar">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/js/jquery.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:inline="javascript">
+		$('#despachoPedido').val($('#idDespacho').val());
+	</script>
 </body>
 </html>

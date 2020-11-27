@@ -1,6 +1,5 @@
 package com.co.web.avanzada.controler;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -301,8 +300,7 @@ public class DetalleFacturaController {
 	
 	@GetMapping("/carroCompras/")
 	public String carroCompras(@RequestParam("codigoProducto")String codigoProducto, @RequestParam("email")String email, Model model) {
-		int codigoPro= Integer.parseInt(codigoProducto);
-		Producto producto = iProductoRepo.findById(codigoPro).get();
+		Producto producto = iProductoRepo.findById(Long.parseLong(codigoProducto)).get();
 		Usuario usuario = iUsuarioRepo.findByEmail(email).get();
 		DespachoPedido despacho = iDespachoRepo.BuscarCliente(email, PageRequest.of(0, 1));
 		DespachoPedido nuevoDespacho = new DespachoPedido();

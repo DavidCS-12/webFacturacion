@@ -1,110 +1,120 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Actualizar despacho</title>
-    <meta nombre="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" th:href="@{/css/all.css}">
-	<link rel="stylesheet" th:href="@{/css/brands.css}">
-	<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
-	<link rel="stylesheet" th:href="@{/css/solid.css}">
-	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Actualizar despacho</title>
+<meta nombre="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/all.css}">
+<link rel="stylesheet" th:href="@{/css/brands.css}">
+<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
+<link rel="stylesheet" th:href="@{/css/solid.css}">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">	 	
-	 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
-	    	<li class="nav-item" >
-	    		<a class="nav-link" th:href="@{/}">Inicio</a></li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
-	      	</li>
-	     
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-		        <a class="nav-link" th:href="@{/listarProveedor}">Lista proveedores</a>
-		    </li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarProducto}">Lista productos</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarVendedores}">Lista vendedores</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}">
-	        	<a class="nav-link" th:href="@{/listarBodegasVendedor/{email}(email=${#httpServletRequest.remoteUser})}">Mis Bodegas</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}">
-	        	<a class="nav-link" th:href="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}">Historial de ventas</a>
-	      	</li>
-	    </ul>
-	    <form th:action="@{/carroCompras}" method="post" class="form-inline my-2 my-lg-0 mr-2" sec:authorize="${hasRole('CLIENTE')}">
-            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Mi Carrito" />
-        </form>
-	    <form th:action="@{/exit}" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}" class="form-inline my-2 my-lg-0">
-            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
-        </form>
-    </div>
-</nav>
-<div class="container my-5 text-center">
-    <h2 class="mb-5">Destinatario</h2>
-    <div class="row justify-content-center text-center">
-        <div class="col-md-6">
-            <form action="#" th:action="@{/updateDespacho/{idDespacho}(idDespacho=${despacho.idDespacho})}" th:object="${despacho}" method="post">
-                <div class="row">
-                   <div class="form-group col-md-6">
-                        <label for="Vendedor" class="col-form-label">VENDEDOR</label> 
-						<input type="text"
-							th:field="${vendedor.nombre}" 
-							class="form-control" id="vendedorNombre"
-							readonly="readonly">
-						<input type="text"
-							th:field="${vendedor.dni}" 
-							class="form-control" id="dni"
-							style="visibility:hidden">
-						<input type="text"
-							th:field="*{vendedor}"
-							th:fragment="vendedor"
-							class="form-control" id="vendedor"
-							style="visibility:hidden">
-						<span th:if="${#fields.hasErrors('vendedor')}"
-							th:errors="*{vendedor}" 
-							class="text-danger">
-						</span>
-                    </div>
-                   
-                    <div class="form-group col-md-6">
-                        <label for="cliente" class="col-form-label">Clientes</label>
-                        <select th:field="*{cliente}" class="form-control">
-   	                    	<option th:each="cli : ${cliente}" 
-   	                    		th:value="${cli.dni}" 
-   	                    		th:text="${cli.nombre+' '+cli.apellido}">
-   	                    	</option>
-     					</select>
-                    </div>
-                   <input type="submit" class="btn btn-lg btn-primary btn-block mt-2" 
-                       id="btnAgregar"  value="Siguiente" > 
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<script th:src="@{/js/jquery.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:inline="javascript">
-	$('#vendedor').val($('#dni').val());
-</script>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/}">Inicio</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarcategorias}">Lista
+						categorías</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarPaises}">Lista paises</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarDepartamentos}">Lista
+						departamentos</a></li>
+
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarProveedor}">Lista
+						proveedores</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarProducto}">Lista productos</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarVendedores}">Lista
+						vendedores</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}"><a
+					class="nav-link"
+					th:href="@{/listarBodegasVendedor/{email}(email=${#httpServletRequest.remoteUser})}">Mis
+						Bodegas</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}"><a
+					class="nav-link"
+					th:href="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}">Historial
+						de ventas</a></li>
+			</ul>
+			<form th:action="@{/carroCompras}" method="post"
+				class="form-inline my-2 my-lg-0 mr-2"
+				sec:authorize="${hasRole('CLIENTE')}">
+				<input class="btn btn-outline-success my-2 my-sm-0" type="submit"
+					value="Mi Carrito" />
+			</form>
+			<form th:action="@{/exit}"
+				sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}"
+				class="form-inline my-2 my-lg-0">
+				<input class="btn btn-outline-success my-2 my-sm-0" type="submit"
+					value="Salir" />
+			</form>
+		</div>
+	</nav>
+
+	<div id="carouselExampleSlidesOnly" class="carousel slide"
+		data-ride="carousel">
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src="../images/3.png"
+					sec:authorize="${hasRole('ADMIN')||hasRole('VENDEDOR')}"
+					class="d-block w-100" alt="..."> <img src="../images/2.png"
+					sec:authorize="${hasRole('CLIENTE')}" class="d-block w-100"
+					alt="...">
+
+			</div>
+		</div>
+	</div>
+
+
+	<div class="container my-5 text-center">
+		<h2 class="mb-5">Destinatario</h2>
+		<div class="row justify-content-center text-center">
+			<div class="col-md-6">
+				<form action="#"
+					th:action="@{/updateDespacho/{idDespacho}(idDespacho=${despacho.idDespacho})}"
+					th:object="${despacho}" method="post">
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label for="Vendedor" class="col-form-label">VENDEDOR</label> <input
+								type="text" th:field="${vendedor.nombre}" class="form-control"
+								id="vendedorNombre" readonly="readonly"> <input
+								type="text" th:field="${vendedor.dni}" class="form-control"
+								id="dni" style="visibility: hidden"> <input type="text"
+								th:field="*{vendedor}" th:fragment="vendedor"
+								class="form-control" id="vendedor" style="visibility: hidden">
+							<span th:if="${#fields.hasErrors('vendedor')}"
+								th:errors="*{vendedor}" class="text-danger"> </span>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="cliente" class="col-form-label">Clientes</label> <select
+								th:field="*{cliente}" class="form-control">
+								<option th:each="cli : ${cliente}" th:value="${cli.dni}"
+									th:text="${cli.nombre+' '+cli.apellido}"></option>
+							</select>
+						</div>
+						<input type="submit" class="btn btn-lg btn-primary btn-block mt-2"
+							id="btnAgregar" value="Siguiente">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/js/jquery.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:inline="javascript">
+		$('#vendedor').val($('#dni').val());
+	</script>
 </body>
 </html>

@@ -1,112 +1,133 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>Historial de facturas</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" th:href="@{/css/all.css}">
-	<link rel="stylesheet" th:href="@{/css/brands.css}">
-	<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
-	<link rel="stylesheet" th:href="@{/css/solid.css}">
-	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-	<script th:src="@{/js/brands.js}"></script>
-	<script th:src="@{/js/solid.js}"></script>
-	<script th:src="@{/js/fontawesome.js}"></script>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Historial de facturas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/all.css}">
+<link rel="stylesheet" th:href="@{/css/brands.css}">
+<link rel="stylesheet" th:href="@{/css/fontawesome.css}">
+<link rel="stylesheet" th:href="@{/css/solid.css}">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<script th:src="@{/js/brands.js}"></script>
+<script th:src="@{/js/solid.js}"></script>
+<script th:src="@{/js/fontawesome.js}"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">	 	
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
-	    	<li class="nav-item">
-	    		<a class="nav-link" th:href="@{/}">Inicio</a></li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarcategorias}">Lista categorías</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarPaises}">Lista paises</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarDepartamentos}">Lista departamentos</a>
-	      	</li>
-	     
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-		        <a class="nav-link" th:href="@{/listarProveedor}">Lista proveedores</a>
-		    </li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarProducto}">Lista productos</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarVendedores}">Lista vendedores</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('ADMIN')}">
-	        	<a class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}">
-	        	<a class="nav-link" th:href="@{/listarBodegasVendedor/{email}(email=${#httpServletRequest.remoteUser})}">Mis Bodegas</a>
-	      	</li>
-	      	<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}">
-	        	<a class="nav-link" th:href="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}">Historial de ventas</a>
-	      	</li>
-	    </ul>
-	    <form th:action="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}" class="form-inline my-2 my-lg-0 mr-2" sec:authorize="${hasRole('CLIENTE')}">
-            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Mis compras" />
-        </form>
-	    <form th:action="@{/exit}" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}" class="form-inline my-2 my-lg-0">
-            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Salir" />
-        </form>
-        </div>
-</nav>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/}">Inicio</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarcategorias}">Lista
+						categorías</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarPaises}">Lista paises</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarDepartamentos}">Lista
+						departamentos</a></li>
+
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarProveedor}">Lista
+						proveedores</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarProducto}">Lista productos</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarUsuarios}">Lista clientes</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarVendedores}">Lista
+						vendedores</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('ADMIN')}"><a
+					class="nav-link" th:href="@{/listarBodega}">Lista bodegas</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}"><a
+					class="nav-link"
+					th:href="@{/listarBodegasVendedor/{email}(email=${#httpServletRequest.remoteUser})}">Mis
+						Bodegas</a></li>
+				<li class="nav-item" sec:authorize="${hasRole('VENDEDOR')}"><a
+					class="nav-link"
+					th:href="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}">Historial
+						de ventas</a></li>
+			</ul>
+			<form
+				th:action="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}"
+				class="form-inline my-2 my-lg-0 mr-2"
+				sec:authorize="${hasRole('CLIENTE')}">
+				<input class="btn btn-outline-success my-2 my-sm-0" type="submit"
+					value="Mis compras" />
+			</form>
+			<form th:action="@{/exit}"
+				sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')||hasRole('ADMIN')}"
+				class="form-inline my-2 my-lg-0">
+				<input class="btn btn-outline-success my-2 my-sm-0" type="submit"
+					value="Salir" />
+			</form>
+		</div>
+	</nav>
+
+	<div id="carouselExampleSlidesOnly" class="carousel slide"
+		data-ride="carousel">
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src="../images/3.png"
+					sec:authorize="${hasRole('ADMIN')||hasRole('VENDEDOR')}"
+					class="d-block w-100" alt="...">
+					<img src="../images/2.png"
+					sec:authorize="${hasRole('CLIENTE')}"
+					class="d-block w-100" alt="...">
+
+			</div>
+		</div>
+	</div>
+
+
 
 	<div th:switch="${inventario}" class="container my-5 text-center">
 		<h2 class="my-5">Lista de facturas</h2>
-            <div class="row justify-content-center text-center">
-                <div class="col">
-                        <table class="table table-striped table-responsive-md">
-                            <thead>
-                                <tr>
-                                    <th>Código de la factura</th>
-									<th>Fecha de venta</th>
-									<th>Valor compra sin IVA</th>
-									<th>Valor compra con IVA</th>
-									<th>Estado del despacho</th>
-									<th sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')}">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="fac : ${facturas}">
-									<td th:text="${fac.idFactura}"></td>
-									<td th:text="${fac.fechaVenta}"></td>
-									<td th:text="${fac.valorCompra}"></td>
-									<td th:text="${fac.valorCompraIva}"></td>
-									<td th:text="${fac.despachoPedido.estado}"></td>
-									
-									<td>
-							 			<a th:if="${fac.despachoPedido.estado}!=true" sec:authorize="${hasRole('VENDEDOR')}"
-										th:href="@{/editDespacho/{idDespacho}(idDespacho=${fac.despachoPedido.idDespacho})}"
-										class="btn btn-primary my-1 col">Editar Destinatario</a>
-									
-							 			<a 
-										th:href="@{/editFactura/{idFactura}(idFactura=${fac.idFactura})}"
-										class="btn btn-primary  my-1 col">Ver Factura</a>
-									
-										<a 
-										th:href="@{/deleteFactura/{idFactura}(idFactura=${fac.idFactura})}"
-										class="btn btn-primary my-1 col">Eliminar Factura</a>
-									</td>
-								</tr>
-                            </tbody>
-                        </table>
-                        <p class="my-5"><a sec:authorize="${hasRole('VENDEDOR')}" th:href="@{/addDespacho/{email}(email=${#httpServletRequest.remoteUser})}"
-                     	class="btn btn-primary">Nueva <i class="fas fa-plus"></i></a></p>
-                     	<p class="my-5"><a sec:authorize="${hasRole('CLIENTE')}" th:href="@{/}"
-                     	class="btn btn-primary">Regresar</a></p> 
-                    </div>      
-                </div>
-        </div>
+		<div class="row justify-content-center text-center">
+			<div class="col">
+				<table class="table table-striped table-responsive-md">
+					<thead>
+						<tr>
+							<th>Código de la factura</th>
+							<th>Fecha de venta</th>
+							<th>Valor compra sin IVA</th>
+							<th>Valor compra con IVA</th>
+							<th>Estado del despacho</th>
+							<th sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE')}">Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="fac : ${facturas}">
+							<td th:text="${fac.idFactura}"></td>
+							<td th:text="${fac.fechaVenta}"></td>
+							<td th:text="${fac.valorCompra}"></td>
+							<td th:text="${fac.valorCompraIva}"></td>
+							<td th:text="${fac.despachoPedido.estado}"></td>
+
+							<td><a th:if="${fac.despachoPedido.estado}!=true"
+								sec:authorize="${hasRole('VENDEDOR')}"
+								th:href="@{/editDespacho/{idDespacho}(idDespacho=${fac.despachoPedido.idDespacho})}"
+								class="btn btn-primary my-1 col">Editar Destinatario</a> <a
+								th:href="@{/editFactura/{idFactura}(idFactura=${fac.idFactura})}"
+								class="btn btn-primary  my-1 col">Ver Factura</a> <a
+								th:href="@{/deleteFactura/{idFactura}(idFactura=${fac.idFactura})}"
+								class="btn btn-primary my-1 col">Eliminar Factura</a></td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="my-5">
+					<a sec:authorize="${hasRole('VENDEDOR')}"
+						th:href="@{/addDespacho/{email}(email=${#httpServletRequest.remoteUser})}"
+						class="btn btn-primary">Nueva <i class="fas fa-plus"></i></a>
+				</p>
+				<p class="my-5">
+					<a sec:authorize="${hasRole('CLIENTE')}" th:href="@{/}"
+						class="btn btn-primary">Regresar</a>
+				</p>
+			</div>
+		</div>
+	</div>
 
 	<script th:src="@{/js/jquery.js}"></script>
 	<script th:src="@{/js/script.js}"></script>
@@ -121,5 +142,5 @@
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
 		integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-		crossorigin="anonymous"></script>	   
+		crossorigin="anonymous"></script>
 </body>

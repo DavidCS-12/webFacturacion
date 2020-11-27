@@ -71,7 +71,7 @@ public class InventarioController {
 	    public String editInventario(@PathVariable("idInventario") int idInventario, Model model) {
 	    	
 	    	Inventario inventario = iInventarioRepo.findById(idInventario).get();
-	    	Producto producto = iProductoRepo.findById(inventario.getProducto().getCodigoProducto()).get();
+	    	Producto producto = iProductoRepo.findById(Long.parseLong(Integer.toString(inventario.getProducto().getCodigoProducto()))).get();
 	    	model.addAttribute("inventario", inventario);
 	    	model.addAttribute("bodega", iBodegaRepo.findById(inventario.getBodega().getIdBodega()).get());
 	    	model.addAttribute("productos", new Producto());

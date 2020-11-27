@@ -2,12 +2,14 @@ package com.co.web.avanzada.controler;
 
 
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +25,6 @@ import com.co.web.avanzada.entity.Producto;
 import com.co.web.avanzada.repository.ICategoriaRepo;
 import com.co.web.avanzada.repository.IProductoRepo;
 import com.co.web.avanzada.repository.IProveedorRepo;
-import com.co.web.avanzada.util.RenderizadorPaginas;
 
 @Controller
 public class ProductoController {
@@ -91,7 +92,7 @@ public class ProductoController {
     	/*En esta parte se crea un bean de tipo producto y se le asigna el bean de la busqueda realizada a la base de datos
     	 * mediante el método del repositorio findbyid. Si no encuentra el producto arroja el
     	 * mensaje de error.*/
-    	Producto producto = iProductoRepo.findById(codigoProducto).orElseThrow(() -> new IllegalArgumentException("Invalid departamento id:" + codigoProducto));
+    	Producto producto = iProductoRepo.findById(Long.parseLong(Integer.toString(codigoProducto))).orElseThrow(() -> new IllegalArgumentException("Invalid departamento id:" + codigoProducto));
     	/*Carga en el modelo los datos del producto buscado,los proveedores y categorias disponibles para poder hacer la modificación.*/
     	model.addAttribute("producto", producto);
     	model.addAttribute("proveedores", iProveedorRepo.findAll());
@@ -132,7 +133,7 @@ public class ProductoController {
     public String deleteProducto(@PathVariable("codigoProducto") int codigoProducto, Model model) {
     	/*Se instancia un bean tipo producto y se le asigna los valores obtenidos por el método del repositorio
     	 * findById el cual va a buscar el producto dado el id recibido*/
-    	Producto producto = iProductoRepo.findById(codigoProducto).orElseThrow(() -> new IllegalArgumentException("Invalid departamento id:" + codigoProducto));
+    	Producto producto = iProductoRepo.findById(Long.parseLong(Integer.toString(codigoProducto))).orElseThrow(() -> new IllegalArgumentException("Invalid departamento id:" + codigoProducto));
     	  /* Si encuentra el producto carga el bean y medianted el método delete del repositorio se envia y se elimina el producto 
          * buscado anteriormente.*/
     	iProductoRepo.delete(producto);
@@ -143,17 +144,21 @@ public class ProductoController {
     
     /*Método encargado de enviar al modelo o plantilla la lista de productos existentes en la base de datos.*/
     @GetMapping("/listarProducto")
-    public String ListarProductos(@RequestParam(name="page",defaultValue = "0")int page,Model model) {
-    
-    	Pageable userPegeable = PageRequest.of(page, 5);
-    	Page<Producto> producto = iProductoRepo.findAll(userPegeable);
-    	RenderizadorPaginas<Producto> renderizadorPaginas = new RenderizadorPaginas<Producto>("/listarProducto", producto);
+    public String ListarProductos(@RequestParam Map<String, Object> params,Model model) {
     	
-    	model.addAttribute("page",renderizadorPaginas);
-    	model.addAttribute("productos", producto);
+    	int page = params.get("page") != null ? Integer.valueOf(params.get("page").toString())-1 : 0;
+    	PageRequest pageRequest = PageRequest.of(page, 5);
+    	Page<Producto> pageProducto = iProductoRepo.findAll(pageRequest);
+    	int totalPage = pageProducto.getTotalPages();
+    	List<Integer> pages = null;
+    	if(totalPage>0) {
+    		pages = IntStream.rangeClosed(1, totalPage).boxed().collect(Collectors.toList());
+    	}
     	/*Se buscan los productos mediante el método del repositorio findbyid y se cargan en la variable 'productos' 
     	 * a la plantilla o medelo de la plantilla.*/
-    	model.addAttribute("productos", iProductoRepo.findAll());
+    	model.addAttribute("productos", pageProducto.getContent());
+    	model.addAttribute("pages", pages);
+    	//model.addAttribute("productos", iProductoRepo.findAll());
         return "listarProducto";
     }
     /*Método encargado de enviar al modelo o plantilla la lista de productos existentes en la base de datos.*/
