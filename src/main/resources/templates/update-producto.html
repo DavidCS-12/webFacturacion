@@ -114,14 +114,6 @@
 						</div>
 
 						<div class="form-group col-md-6">
-							<label for="precioVenta" class="col-form-label">Precio de
-								venta</label> <input type="number" th:field="*{precioVenta}"
-								class="form-control" id="precioVenta"
-								placeholder="Precio de venta" required="required"> <span
-								th:if="${#fields.hasErrors('precioVenta')}"
-								th:errors="*{precioVenta}" class="text-danger"></span>
-						</div>
-						<div class="form-group col-md-6">
 							<label for="categoria" class="col-form-label">Categoría</label> <select
 								th:field="*{categoria}" id="categorias" class="form-control">
 								<option th:each="cate : ${categorias}"

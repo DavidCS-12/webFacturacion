@@ -73,6 +73,7 @@ public class ProductoController {
         try {
         	Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
             System.out.println(uploadResult.get("url").toString());
+            producto.setPrecioVenta((producto.getPrecioCompra()*0.19)+producto.getPrecioCompra());
             producto.setUrlFoto(uploadResult.get("url").toString());	
         } catch (Exception e) {
         	System.out.println(e.getMessage());
@@ -116,6 +117,7 @@ public class ProductoController {
 			try {
 	            Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
 	            System.out.println(uploadResult.get("url").toString());
+	            producto.setPrecioVenta((producto.getPrecioCompra()*0.19)+producto.getPrecioCompra());
 	            producto.setUrlFoto(uploadResult.get("url").toString());	
 	        } catch (Exception e) {
 	        	System.out.println(e.getMessage());
@@ -175,7 +177,18 @@ public class ProductoController {
     	/*Se buscan los productos mediante el método del repositorio findbyid y se cargan en la variable 'productos' 
     	 * a la plantilla o medelo de la plantilla.*/
     	int id = Integer.parseInt(idCategoria);
+    	System.out.println(id);
 		model.addAttribute("productos", iProductoRepo.findByCategoria(id));
+		return "index :: categorias";
+    }
+    
+    @GetMapping("/ajax/listarProductoCategoriaInventario")
+    public String ListarProductosCategoríaInventario(Model model, @RequestParam("idCategoria") String idCategoria) {
+    	/*Se buscan los productos mediante el método del repositorio findbyid y se cargan en la variable 'productos' 
+    	 * a la plantilla o medelo de la plantilla.*/
+    	int id = Integer.parseInt(idCategoria);
+    	System.out.println(id);
+		model.addAttribute("productos", iProductoRepo.findByCategoriaInventario(id));
 		return "index :: categorias";
     }
     

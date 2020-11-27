@@ -48,7 +48,7 @@
 
 			</ul>
 
-			<h5 class="mr-2" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE') || hasRole('ADMIN')}" th:text="' Hola! '+${#httpServletRequest.remoteUser}"></h5>
+			<h5 class="mr-2" sec:authorize="${hasRole('VENDEDOR') || hasRole('CLIENTE') || hasRole('ADMIN')}" th:text="' Hola! '+${#httpServletRequest.remoteUser}"></h5>
 		
 			<form
 				th:action="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}"
