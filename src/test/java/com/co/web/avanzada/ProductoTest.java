@@ -92,7 +92,7 @@ public class ProductoTest {
 		Producto product3 = new Producto(3, "descripcionprueba3", "nombreprueba3", 0000 , 0003, "urlprueba2", categoria, provider);
 		entityManager.persist(product3);
 	    
-	    Producto foundProduct = repository.findById(Long.parseLong(Integer.toString(product2.getCodigoProducto()))).get();
+	    Producto foundProduct = repository.findById(product2.getCodigoProducto()).get();
 
 	    assertThat(foundProduct).isEqualTo(product2);
 	  }
@@ -114,12 +114,12 @@ public class ProductoTest {
 
 	    Producto productoUpdate   = new Producto(2, "descripcionupdate", "nombreupdate", 0001,0003, "url_update",categoria, provider);
 
-	    Producto prov = repository.findById(Long.parseLong(Integer.toString(product2.getCodigoProducto()))).get();
+	    Producto prov = repository.findById(product2.getCodigoProducto()).get();
 	    prov.setNombre(productoUpdate.getNombre());
 	    prov.setDescripcion(productoUpdate.getDescripcion());
 	    repository.save(prov);
 
-	    Producto checkProv = repository.findById(Long.parseLong(Integer.toString(prov.getCodigoProducto()))).get();
+	    Producto checkProv = repository.findById(prov.getCodigoProducto()).get();
 	    
 	    assertThat(checkProv.getCodigoProducto()).isEqualTo(product2.getCodigoProducto());
 	    assertThat(checkProv.getNombre()).isEqualTo(productoUpdate.getNombre());
@@ -143,7 +143,7 @@ public class ProductoTest {
 		Producto product3 = new Producto(3, "descripcionprueba3", "nombreprueba3", 0000 , 0003, "urlprueba2", categoria, provider);
 		entityManager.persist(product3);
 		
-	    repository.deleteById(Long.parseLong(Integer.toString(product2.getCodigoProducto())));
+	    repository.deleteById(product2.getCodigoProducto());
 
 	    Iterable<Producto> products = repository.findAll();
 

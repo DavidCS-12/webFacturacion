@@ -300,7 +300,7 @@ public class DetalleFacturaController {
 	
 	@GetMapping("/carroCompras/")
 	public String carroCompras(@RequestParam("codigoProducto")String codigoProducto, @RequestParam("email")String email, Model model) {
-		Producto producto = iProductoRepo.findById(Long.parseLong(codigoProducto)).get();
+		Producto producto = iProductoRepo.findById(Integer.parseInt(codigoProducto)).get();
 		Usuario usuario = iUsuarioRepo.findByEmail(email).get();
 		DespachoPedido despacho = iDespachoRepo.BuscarCliente(email, PageRequest.of(0, 1));
 		DespachoPedido nuevoDespacho = new DespachoPedido();

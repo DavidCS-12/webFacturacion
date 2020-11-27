@@ -92,7 +92,7 @@ public class ProductoController {
     	/*En esta parte se crea un bean de tipo producto y se le asigna el bean de la busqueda realizada a la base de datos
     	 * mediante el método del repositorio findbyid. Si no encuentra el producto arroja el
     	 * mensaje de error.*/
-    	Producto producto = iProductoRepo.findById(Long.parseLong(Integer.toString(codigoProducto))).orElseThrow(() -> new IllegalArgumentException("Invalid departamento id:" + codigoProducto));
+    	Producto producto = iProductoRepo.findById(codigoProducto).orElseThrow(() -> new IllegalArgumentException("Invalid departamento id:" + codigoProducto));
     	/*Carga en el modelo los datos del producto buscado,los proveedores y categorias disponibles para poder hacer la modificación.*/
     	model.addAttribute("producto", producto);
     	model.addAttribute("proveedores", iProveedorRepo.findAll());
@@ -133,7 +133,7 @@ public class ProductoController {
     public String deleteProducto(@PathVariable("codigoProducto") int codigoProducto, Model model) {
     	/*Se instancia un bean tipo producto y se le asigna los valores obtenidos por el método del repositorio
     	 * findById el cual va a buscar el producto dado el id recibido*/
-    	Producto producto = iProductoRepo.findById(Long.parseLong(Integer.toString(codigoProducto))).orElseThrow(() -> new IllegalArgumentException("Invalid departamento id:" + codigoProducto));
+    	Producto producto = iProductoRepo.findById(codigoProducto).orElseThrow(() -> new IllegalArgumentException("Invalid departamento id:" + codigoProducto));
     	  /* Si encuentra el producto carga el bean y medianted el método delete del repositorio se envia y se elimina el producto 
          * buscado anteriormente.*/
     	iProductoRepo.delete(producto);

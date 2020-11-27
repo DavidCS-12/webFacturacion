@@ -48,8 +48,8 @@
 
 			</ul>
 
-			<h5 th:text="' Hola! '+${#httpServletRequest.remoteUser}"><i class="far fa-smile-beam"></i></h5>
-
+			<h5 class="mr-2" sec:authorize="${hasRole('VENDEDOR')||hasRole('CLIENTE') || hasRole('ADMIN')}" th:text="' Hola! '+${#httpServletRequest.remoteUser}"></h5>
+		
 			<form
 				th:action="@{/listarFacturas/{email}(email=${#httpServletRequest.remoteUser})}"
 				class="form-inline my-2 my-lg-0 mr-2"
@@ -86,18 +86,19 @@
 
 	<div class="container mt-5">
 		<div class="row row-cols-1 row-cols-md-3">
-			<div class="col mb-6 mt-2" th:each="pro : ${productos}">
-				<div class="card border-success w-100 h-100">
-					<img th:src="${pro.urlFoto}" class="card-img-top">
+			<div class="card-deck mr-2 mt-2" th:each="pro : ${productos}">
+				<div class="card border-success">
+					<img th:src="${pro.urlFoto}" class="card-img-thumbnail" style="height: 13rem;">
 					<div class="card-body">
 						<h5 class="card-title" th:text="${pro.nombre}"></h5>
 						<p class="card-text" th:text="${pro.descripcion}"></p>
 						
-						<a
-							th:href="@{/carroCompras/(codigoProducto=${pro.codigoProducto}, email=${#httpServletRequest.remoteUser})}"
+					</div>
+					<div class="card-footer">
+      					<a th:href="@{/carroCompras/(codigoProducto=${pro.codigoProducto}, email=${#httpServletRequest.remoteUser})}"
 							sec:authorize="${hasRole('CLIENTE')||#httpServletRequest.remoteUser==null}"
 							class="btn btn-success">Añadir al carrito</a>
-					</div>
+    				</div>
 				</div>
 			</div>
 		</div>
